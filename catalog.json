@@ -1,0 +1,64 @@
+{
+  "subject": "Operations",
+  "repository": "https://github.com/bpdiehl/ops_visualizations",
+  "sibling_subject": "Finance",
+  "sibling_repository": "https://github.com/bpdiehl/finance_visualizations",
+  "demos": [
+    {
+      "id": "O1",
+      "slug": "process-flow",
+      "title": "Process Flow Fundamentals",
+      "question": "How do processing time, output pace and time in the system differ?",
+      "wave": 1,
+      "status": "planned"
+    },
+    {
+      "id": "O2",
+      "slug": "bottlenecks",
+      "title": "Bottlenecks & Production Design",
+      "question": "Why does one resource constrain the whole system?",
+      "wave": 1,
+      "status": "planned"
+    },
+    {
+      "id": "O3",
+      "slug": "batching",
+      "title": "Batching, Setups & Scheduling",
+      "question": "How does batch size change setup time and order completion?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "O4",
+      "slug": "wip",
+      "title": "WIP, Storage & Buffer Dynamics",
+      "question": "How does inventory accumulate when several flows change over time?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "O5",
+      "slug": "mm1",
+      "title": "M/M/1 Queueing",
+      "question": "Why does waiting grow so quickly near full utilization?",
+      "wave": 1,
+      "status": "planned"
+    },
+    {
+      "id": "O6",
+      "slug": "inventory",
+      "title": "Inventory Decisions",
+      "question": "How much should we order or stock?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "O7",
+      "slug": "spc",
+      "title": "Quality: SPC & Capability",
+      "question": "Is a process stable, and is it meeting requirements?",
+      "wave": 3,
+      "status": "planned"
+    }
+  ]
+}

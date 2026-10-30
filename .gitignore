@@ -1,0 +1,23 @@
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+.env
+.env.*
+!.env.example
+private/
+local/
+sources/
+Human Source Dump/
+tmp/
+coverage/
+test-results/
+playwright-report/
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+
+.preview/
