@@ -2,7 +2,7 @@
 
 ## Current status
 
-As checked on 2026-10-30, the GitHub repository is public and empty; Pages is not enabled. This setup is local and uncommitted. No visualization is built yet. The catalog therefore shows planned topics without download links. Use the repository/Pages state itself for future status; this paragraph is a dated setup record.
+As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. No Operations visualization has been built yet; its catalog still shows planned topics.
 
 ## Recommended route: GitHub Pages
 
@@ -12,7 +12,7 @@ When the owner requests the initial publication:
 
 1. Run python3 scripts/manage.py build and python3 scripts/manage.py check. Complete the ready demos' browser evidence.
 2. Review all files to be committed for original course documents, personal information, secrets, machine paths and unapproved assets. Resolve the license decision in RIGHTS.md.
-3. Make the initial commit and push main to the configured origin. These repositories currently have no commit/remote main branch; the tracking message saying origin/main is gone reflects that empty state.
+3. Commit reviewed source and generated output, then push main to the configured origin.
 4. In GitHub repository Settings → Pages → Build and deployment, select Deploy from a branch, main, /docs, then Save.
 5. Wait for the Pages deployment to finish. Verify the actual URL, the catalog's Open/Download actions and a detached download before sharing the link.
 

@@ -31,7 +31,8 @@ class PackagingTests(unittest.TestCase):
     def test_embedded_assets_and_optional_web_links_are_allowed(self):
         manage.validate_offline('<!doctype html><html><style>p{color:blue}</style>'
                                 '<svg><use href="#shape"/></svg>'
-                                '<script>globalThis.answer=42;</script>'
+                                '<script>globalThis.answer=42;const file=new Blob(["hello"]);'
+                                'const url=URL.createObjectURL(file);URL.revokeObjectURL(url);</script>'
                                 '<p>Important input</p><a href="https://example.com">Reference</a></html>')
 
     def fixture(self, root):

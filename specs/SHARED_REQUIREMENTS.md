@@ -4,7 +4,7 @@ This is the working engineering standard derived from the supplied MBA Interacti
 
 ## Learning outcome and interaction
 
-Teach one central intuition in two to five minutes. Start with a fully worked, valid default. Use a dominant live visual, 2–5 primary controls with exact numeric entry, 3–5 results with units, 2–4 meaningful presets (some briefs propose more), Reset, and a concise explanation of what changed and why. Compare with a saved baseline when several inputs change. Put secondary modes/settings behind a disclosure. A prediction prompt is optional and never blocks the answer.
+Teach one central intuition in two to five minutes. Start with a fully worked, valid default. Use a dominant live visual, 2–5 primary controls with exact numeric entry, 3–5 results with units, 2–4 meaningful presets (some briefs propose more), Reset, and a concise explanation of what changed and why. Compare with a saved baseline when several inputs change. Keep the core equation(s), defined symbols beside variable names, and a live numerical substitution visible in the main view. Secondary modes/settings and full derivations can go behind a disclosure. A prediction prompt is optional and never blocks the answer.
 
 Every important input and unfamiliar output needs accessible information help: definition, units, effect of changing it, formula when helpful, and assumptions. Hover alone is insufficient; click/touch and keyboard must work. Use original paraphrases, not invented faculty quotes. Related concepts should be optional, limited to 2–3, and never necessary to run an isolated download.
 

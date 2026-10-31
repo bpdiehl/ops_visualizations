@@ -25,6 +25,7 @@ Read README.md, CONTRIBUTING.md, specs/SHARED_REQUIREMENTS.md, the selected brie
 - Ship one offline-capable HTML per demo: inline CSS, classic JS, SVG/Canvas, and any essential assets. No fetch, modules, CDN libraries, external fonts, adjacent runtime files, service workers, or local server requirement.
 - Prefer vanilla JS. Keep pure model calculations in model.js, expose one frozen globalThis.DemoModel namespace, and keep DOM work in app.js. No independent duplicate formulas in charts or help copy. Retain precision internally; format only for display.
 - Match units and periods. State model assumptions and invalid states. Deterministic simulations use a visible seed; distinguish theoretical results from observations.
+- Always show the core equation(s) and current numerical substitution in the main view, with mathematical symbols beside variable names and explicit definitions/units. Do not hide the equation behind a disclosure. Use the appropriate conservation/state-update relation for event models.
 - Follow DESIGN.md: learning goal, dominant visual, 2–5 main controls, explicit units, live results, accessible information controls, presets, Reset, causal explanation, optional math, responsive layout, reduced motion.
 - Test mathematical reference examples, a boundary, an invalid input and applicable invariants. Add model tests in tests/<slug>.test.cjs. Load model.js in a Node VM without a DOM. Do not write tests that merely restate implementation formulas.
 

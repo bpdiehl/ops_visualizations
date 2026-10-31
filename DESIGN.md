@@ -4,7 +4,7 @@ Audience: MBA classmates using a browser without developer tools. Default to a q
 
 ## Demo layout
 
-Title, one-sentence learning goal and version/date first. Keep the main diagram/chart in the first laptop viewport; place compact controls alongside it, then below at narrow widths. Show 3–5 key results with units and a short causal explanation. Group presets and Reset clearly. Put formulas, caveats and advanced settings in labeled disclosures.
+Title, one-sentence learning goal and version/date first. Keep the main diagram/chart in the first laptop viewport; place compact controls alongside it, then below at narrow widths. Show 3–5 key results with units and a short causal explanation. Group presets and Reset clearly. Keep the core symbolic equation and a live numerical substitution visible in the main view. Put derivations, detailed caveats and advanced settings in labeled disclosures.
 
 Use dark text, blue primary actions, orange warning/constraint, green favorable outcome and neutral gray comparison. Never rely on color alone; add text, shape or patterns. Use a restrained type scale and spacing. Axes have names, units, sensible scale and a labeled zero where applicable; disclose truncated axes. Clearly distinguish stock, rate, cumulative count and observed/expected plots.
 
@@ -19,3 +19,17 @@ For repeated definitions, extend src/shared/glossary.json in source and inline a
 Show valid defaults immediately. Presets reset all relevant inputs, seed and simulation time. Invalid inputs explain what failed and suppress invalid metrics. Use a stable comparison baseline for explanations. If motion teaches a process, provide Pause/Play and respect prefers-reduced-motion. Animation speed cannot change the mathematical outcome. Ensure charts also have textual numbers/summary.
 
 Test at 360 px and laptop widths without horizontal page overflow. Avoid hover-only interactions. Keep controls readable when zoomed. Detached downloads must identify their topic and assumptions, even when no catalog or internet is present.
+
+
+## Equations and notation — owner requirement
+
+Every visualization must visibly show its governing equation(s) beside the main interaction, with numerical substitution from the current model state. Do not hide the core equation behind a disclosure. For an event model, show its applicable conservation or state-update relation rather than inventing a closed-form shortcut.
+
+Put the mathematical symbol next to each variable name on controls, results and diagrams; define every symbol and its units. Keep notation consistent with the course and explain any alternative convention. Connect equation terms to the corresponding visual quantities with labels and consistent color, while preserving non-color cues. Equations must wrap or adapt at narrow widths without clipping. Invalid inputs suppress stale worked values while preserving the symbolic equation.
+
+
+## Density, precision and editing feedback
+
+Keep the main view focused on equations, the visual, controls and essential results. Put short explanatory taglines, repeated definitions, assumptions and estimation details in the relevant information controls rather than scattering them across the page. Keep units and validation visible.
+
+Choose a consistent display precision for each kind of value and retain trailing zeros. Use tabular digits and fixed-width equation value slots so changing an input does not shift neighboring terms. Keep internal model precision unchanged. A soft highlight may connect an edited input to its equation terms; keep it active while dragging, fade it after release, and respect reduced-motion settings.

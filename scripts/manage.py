@@ -100,7 +100,7 @@ def validate_offline(text):
     ):
         if re.search(pattern, text):
             errors.append(f"Unsupported runtime feature: {pattern}")
-    for url in re.findall(r"url\(\s*['\"]?([^)'\"]+)", text, re.I):
+    for url in re.findall(r"\burl\(\s*['\"]?([^)'\"]+)", text, re.I):
         if not url.strip().startswith(("data:", "#")):
             errors.append(f"Non-inline CSS resource: {url}")
     if errors:
@@ -147,7 +147,7 @@ def render_catalog(root, data):
                     f'<div class="actions">{actions}</div></li>')
     empty = ('<p class="notice"><strong>The collection is being built.</strong> '
              'No visualizations are available yet. The topics below are planned.</p>'
-             if not ready else f'<p class="notice">{ready} visualizations ready to explore.</p>')
+             if not ready else f'<p class="notice">{ready} visualization{"" if ready == 1 else "s"} ready to explore.</p>')
     theme = (root / "src/shared/theme.css").read_text(encoding="utf-8")
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
