@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,"><title>M/M/1 Queueing · Operations Lab</title>
+  <style>:root{color-scheme:light;--ink:#172838;--muted:#50616f;--blue:#1452a1;--line:#d7e0e6;--paper:#fff;--wash:#f2f5f7;--radius:12px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;color:var(--ink);background:var(--wash)}
+*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:32px 40px}header{padding-top:56px;padding-bottom:20px}h1{font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.045em;margin:10px 0 20px}h2{font-size:1.1rem;line-height:1.35;margin:0 0 6px}p{margin:8px 0;color:var(--muted)}a{color:var(--blue);text-underline-offset:3px}a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #a5480b;outline-offset:4px}.eyebrow{font-size:.75rem;font-weight:750;letter-spacing:.16em;color:var(--blue)}.intro{font-size:1.3rem;color:var(--ink)}.instructions{padding:24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:36px}.instructions ol{padding-left:22px}.instructions li{margin:8px 0}.instructions p{font-size:.92rem}summary{cursor:pointer;padding:8px 0;min-height:44px;font-weight:650}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section-heading h2{font-size:1.45rem}.section-heading p{font-size:.85rem}.notice{padding:14px 18px;border-left:3px solid var(--blue);background:#e8eff8;font-size:.94rem}.notice strong{color:var(--ink)}.demo-list{list-style:none;padding:0;margin:24px 0 0}.demo{display:grid;grid-template-columns:36px 1fr auto;gap:16px;padding:24px 0;border-top:1px solid var(--line);align-items:center}.demo p{margin:0;font-size:.95rem}.code{align-self:start;margin-top:2px;font-size:.8rem;color:var(--blue);font-weight:750}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:.8rem;font-weight:650;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:5px 12px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;text-decoration:none;font-size:.88rem;font-weight:650}.button.secondary{background:white;color:var(--blue)}.button:hover{filter:brightness(.93)}footer{font-size:.83rem;border-top:1px solid var(--line);padding-bottom:36px}.skip{position:absolute;left:-10000px;top:8px;background:white;padding:12px;z-index:10}.skip:focus{left:12px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:680px){header,main,footer{padding-left:20px;padding-right:20px}header{padding-top:32px}.instructions{padding:20px}.demo{grid-template-columns:28px 1fr;gap:10px}.actions{grid-column:2;justify-content:flex-start}.section-heading{align-items:start;flex-direction:column;gap:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.mm1-app { --arrival:#2458a8; --service:#14786d; --orange:#a85a12; background:#f5f6f8; }
+.mm1-app header,.mm1-app main,.mm1-app footer { max-width:1240px; padding:0 32px; }
+.mm1-app [hidden] { display:none!important; }.mm1-app button,.mm1-app input,.mm1-app select { font:inherit; }.mm1-app button { cursor:pointer; }.mm1-app button:disabled { opacity:.5; cursor:default; }.mm1-app svg { display:block; width:100%; font-family:inherit; overflow:visible; }.mm1-app output,.mm1-app strong,.mm1-app input,.mm1-app .worked { font-variant-numeric:tabular-nums; }
+.lab-header { padding-top:24px!important; padding-bottom:20px!important; }.masthead { display:flex; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:16px; color:#536574; letter-spacing:.13em; font-size:.66rem; font-weight:750; }.heading-row { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:20px; }.mm1-app h1 { margin:0; font-size:clamp(1.9rem,3.4vw,2.5rem); line-height:1.2; letter-spacing:-.035em; }.heading-row p { font-size:.9rem; margin:8px 0 0; }.action,.preset,.reset { min-height:44px; padding:9px 13px; border:1px solid #c7d2dd; border-radius:7px; background:white; color:var(--ink); font-size:.8rem!important; font-weight:650; }.action:hover,.preset:hover { background:#edf2f9; }.primary { background:var(--blue); color:white; border-color:var(--blue); }.primary:hover { background:#103e7a; }.preset-row { display:flex; align-items:center; gap:8px; margin-bottom:20px; }.preset-row>div { display:flex; gap:8px; flex-wrap:wrap; }.preset.active { background:#e8effa; border-color:var(--blue); color:#174c8b; }.reset { margin-left:auto; color:var(--blue); border-color:transparent; background:transparent; text-decoration:underline; text-underline-offset:3px; }
+.panel { background:white; border:1px solid var(--line); border-radius:12px; padding:20px 24px; }.workspace { display:grid; grid-template-columns:minmax(0,1.85fr) minmax(280px,1fr); gap:20px; }.section-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }.section-top h2 { margin:0; font-size:.98rem; }.section-top h3 { margin:0; font-size:.94rem; }.info { width:30px; min-width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; padding:0; border:1px solid #c4cfd9; border-radius:50%; background:white; color:#456070; font-size:.73rem!important; font-weight:750; }.info:hover { background:#e8eff8; border-color:var(--blue); }.symbol,.formula { font-family:Georgia,"Times New Roman",serif; font-style:italic; }.symbol { margin-left:3px; }.symbol sub,.formula sub { font-size:.72em; }.headline-result { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:4px 0 0; }.headline-result output { font-size:2.6rem; font-weight:750; line-height:1.2; letter-spacing:-.035em; }.headline-result>span:not(.badge) { font-size:.78rem; color:var(--muted); }.badge { margin-left:auto; border:1px solid #b4cfc7; background:#eef8f3; color:#166447; border-radius:20px; padding:3px 10px; font-size:.7rem; font-weight:650; }.badge.unstable { background:#fff1e5; border-color:#dfc3a3; color:#914809; }.wait-chart { height:252px; margin:6px 0 0; }.time-breakdown { padding-top:4px; }.time-bar { display:flex; height:12px; overflow:hidden; border-radius:3px; background:#edf1f5; }.time-bar span:first-child { background:var(--arrival); }.time-bar span:last-child { background:var(--service); }.time-key { display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px 14px; font-size:.7rem; padding-top:8px; }.time-key>span { display:flex; gap:4px; align-items:center; }.swatch { display:inline-block; width:8px; height:8px; border-radius:2px; flex-shrink:0; }.arrival { background:var(--arrival); }.service { background:var(--service); }.unstable-note { border-top:1px solid #ead8c6; padding:10px 0 0; color:#914809; font-size:.8rem; }
+.controls { display:flex; flex-direction:column; }.control { padding:17px 0; border-bottom:1px solid var(--line); }.control-name { display:flex; align-items:center; justify-content:space-between; font-size:.85rem; font-weight:650; }.number-row { display:flex; align-items:center; gap:8px; margin:7px 0 3px; font-size:.75rem; color:var(--muted); }.mm1-app input[type=number],.mm1-app select { border:1px solid #c8d2dd; border-radius:5px; padding:6px 8px; color:var(--ink); background:white; height:38px; }.number-row input { width:100px; font-weight:650; font-size:.95rem!important; }.mm1-app input[aria-invalid=true] { border-color:#ad382b; background:#fff4f1; }.control input[type=range] { display:block; width:100%; height:28px; margin:0; accent-color:var(--blue); cursor:pointer; }.utilization { margin-top:auto; padding-top:18px; font-size:.83rem; }.utilization output { display:block; font-size:2.15rem; font-weight:750; letter-spacing:-.025em; margin-bottom:8px; }.util-track { height:8px; background:#e6ebf1; border-radius:4px; overflow:hidden; }.util-track span { display:block; height:100%; background:var(--blue); }.unit-caption { display:block; font-size:.7rem; color:var(--muted); padding-top:6px; }
+.equations { background:white; border:1px solid #c8d5e6; border-radius:12px; margin:0 0 20px; padding:16px 24px; }.equation-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 24px; }.eq { padding:12px 0 10px; border-bottom:1px solid #e2e8f0; min-width:0; }.eq:nth-last-child(-n+3) { border-bottom:0; }.eq-title { display:flex; align-items:center; gap:6px; font-size:.73rem; color:var(--muted); margin-bottom:5px; }.step { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; font-size:.6rem; color:#5a6f82; background:#edf2f7; border-radius:50%; }.formula { font-size:1.08rem; color:var(--ink); line-height:1.7; font-style:normal; }.eq-token { display:inline-block; border-radius:4px; padding:1px 2px; transition:background-color .75s ease,box-shadow .75s ease; }.eq-token.is-editing { background:#dfeaff; box-shadow:0 0 0 3px #8fb7ff30,0 0 12px #8fb7ff45; transition-duration:90ms; }.worked,.dist-worked { display:flex; flex-wrap:wrap; align-items:center; gap:2px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.73rem; color:#364d62; line-height:1.7; font-variant-numeric:tabular-nums; }.worked .eq-token { width:6.5ch; text-align:right; flex-shrink:0; }.worked .eq-result { width:10ch; font-weight:650; color:var(--ink); }.worked .group { display:inline-flex; align-items:center; white-space:nowrap; }.comparison { padding:4px 2px 10px; font-size:.8rem; min-height:34px; }
+.randomness { margin-top:12px; }.distribution-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:12px; }.distribution-heading>.section-top { justify-content:start; }.window-control { display:flex; align-items:center; gap:6px; font-size:.78rem; }.window-control label { white-space:nowrap; }.window-control input { width:78px; }.distribution-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }.distribution { padding:16px 18px; min-width:0; }.distribution-type { color:var(--muted); font-size:.69rem; min-height:29px; padding-top:5px; }.distribution svg { height:194px; margin:8px 0; }.dist-summary { font-size:.77rem; min-height:62px; }.dist-summary strong { font-weight:700; }.dist-summary .muted { color:var(--muted); font-size:.7rem; }.dist-formula { font-family:Georgia,"Times New Roman",serif; font-size:.85rem; padding-top:8px; border-top:1px solid var(--line); margin-top:6px; }.dist-worked { margin-top:3px; font-size:.68rem; gap:1px; }.dist-worked .eq-token { width:6ch; text-align:right; }.dist-worked .eq-result { width:8ch; }.sample-section { background:white; border:1px solid var(--line); border-radius:12px; margin:22px 0; }.sample-section>summary { padding:16px 24px; font-size:.88rem; }.sample-tag { color:var(--muted); font-size:.7rem; font-weight:400; margin-left:12px; }.sample-content { padding:0 24px 22px; }.sample-toolbar,.sample-playback { display:flex; flex-wrap:wrap; align-items:center; gap:10px 15px; font-size:.8rem; }.sample-toolbar { padding:10px 0 18px; border-bottom:1px solid var(--line); }.sample-toolbar label { display:flex; align-items:center; gap:7px; }.sample-toolbar input { width:86px; }.sample-toolbar label:first-child input { width:108px; }.sample-toolbar .action { margin-left:auto; }.sample-playback { padding:18px 0; }.sample-playback label { display:flex; align-items:center; gap:7px; }.sample-playback .time-label { margin-left:auto; }.sample-playback output { width:8ch; text-align:right; font-weight:650; }.sample-playback input[type=range] { width:100%; accent-color:var(--blue); height:28px; }.queue-scene { display:grid; grid-template-columns:1fr auto 140px; gap:20px; align-items:center; padding:18px; background:#f6f8fb; border:1px solid var(--line); border-radius:8px; }.scene-label { font-size:.8rem; }.scene-label strong { padding-left:8px; }.customers { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:8px; min-height:62px; padding-top:12px; }.customer { display:inline-flex; flex-direction:column; align-items:center; font-size:.55rem; color:#385577; gap:2px; }.customer::before { content:""; width:13px; height:13px; border-radius:50%; background:var(--arrival); }.customer::after { content:""; width:21px; height:17px; border-radius:9px 9px 3px 3px; background:var(--arrival); order:0; }.customer>span { order:1; }.more-customers,.empty-queue { color:var(--muted); font-size:.75rem; }.flow-arrow { font-size:1.5rem; color:#6f8292; }.server { min-height:100px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:#e8eef2; border:1px solid #c6d2dc; border-radius:8px; }.server.busy { background:#e2f2ee; border-color:#9ac6bb; }.server span { font-size:.65rem; }.server>span:first-child { font-weight:700; letter-spacing:.06em; }.server strong { font-size:1.1rem; }#sample-chart { height:220px; margin:16px 0; }.sample-table { width:100%; border-collapse:collapse; font-size:.8rem; }.sample-table caption { text-align:left; color:var(--muted); margin-bottom:8px; }.sample-table caption .info { vertical-align:middle; }.sample-table th,.sample-table td { padding:10px 7px; border-bottom:1px solid var(--line); text-align:right; font-variant-numeric:tabular-nums; }.sample-table th:first-child { text-align:left; }.sample-table thead th { font-weight:650; font-size:.75rem; color:var(--muted); }.sample-table tbody th { font-weight:500; }.sample-note { font-size:.72rem; margin-top:12px; }.lab-footer { border-top:1px solid var(--line); padding-top:14px!important; padding-bottom:24px!important; display:flex; align-items:center; flex-wrap:wrap; gap:10px 24px; color:var(--muted); font-size:.7rem; }.lab-footer>span:first-child { margin-right:auto; }.text-button { border:0; background:transparent; color:var(--muted); padding:8px 0; min-height:36px; text-decoration:underline; text-underline-offset:3px; font-size:.72rem!important; }.input-error { border:1px solid #c85c50; padding:12px 15px; border-radius:7px; background:#fff4f2; color:#893329; font-size:.85rem; }
+#help-dialog { width:min(520px,calc(100vw - 32px)); border:1px solid #c1ccd8; border-radius:12px; padding:22px; color:var(--ink); box-shadow:0 14px 60px #16283c30; }#help-dialog::backdrop { background:#17283866; }.dialog-heading { display:flex; justify-content:space-between; align-items:center; gap:10px; }.dialog-heading h2 { margin:0; font-size:1.1rem; }.dialog-heading button { width:44px; min-width:44px; height:44px; background:#edf1f5; border:0; border-radius:50%; color:var(--ink); font-size:1.5rem!important; }#help-body { font-size:.9rem; line-height:1.75; margin-top:12px; }#help-body p { color:var(--ink); }#help-body a { overflow-wrap:anywhere; }
+@media(max-width:1050px) { .equation-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.eq:nth-last-child(-n+3) { border-bottom:1px solid #e2e8f0; }.eq:nth-last-child(-n+2) { border-bottom:0; }.distribution-grid { gap:12px; }.distribution { padding:14px; } }
+@media(max-width:800px) { .workspace { grid-template-columns:1fr; }.controls { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }.controls>.section-top { grid-column:1/-1; }.control { border-bottom:0; }.utilization { grid-column:1/-1; border-top:1px solid var(--line); padding-top:14px; }.utilization output { font-size:1.9rem; }.distribution-grid { grid-template-columns:1fr; }.distribution { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 20px; }.distribution>.section-top,.distribution>.distribution-type { grid-column:1/-1; }.distribution svg { grid-row:3/6; }.dist-summary { align-self:center; }.dist-formula { align-self:end; }.distribution-heading { align-items:start; flex-wrap:wrap; }.sample-toolbar .action { margin-left:0; } }
+@media(max-width:520px) { .mm1-app header,.mm1-app main,.mm1-app footer { padding-left:16px; padding-right:16px; }.masthead { font-size:.56rem; letter-spacing:.07em; }.heading-row { align-items:start; flex-wrap:wrap; gap:12px; }.heading-row .action { font-size:.72rem!important; }.heading-row p { font-size:.8rem; }.preset-row { align-items:end; }.preset { font-size:.68rem!important; padding:8px 9px; }.preset-row>div { gap:6px; }.reset { font-size:.73rem!important; padding:8px 2px; }.panel { padding:16px; }.section-top h2 { font-size:.88rem; }.headline-result output { font-size:2.3rem; }.headline-result>span:not(.badge) { font-size:.7rem; }.badge { font-size:.65rem; }.controls { gap:0 14px; }.control-name { font-size:.76rem; gap:4px; }.control .info { width:27px; min-width:27px; height:27px; }.number-row { flex-wrap:wrap; gap:2px; }.number-row input { width:100%; }.number-row>span { font-size:.65rem; }.control { padding-bottom:10px; }.utilization { padding-top:10px; }.utilization .section-top { font-size:.78rem; }.unit-caption { font-size:.65rem; }.time-key { font-size:.64rem; }.equations { padding:14px 16px; }.equation-grid { grid-template-columns:1fr; }.eq:nth-last-child(-n+2) { border-bottom:1px solid #e2e8f0; }.eq:last-child { border-bottom:0; }.eq { padding:10px 0; }.formula { font-size:1.07rem; }.worked { font-size:.73rem; }.distribution { display:block; }.distribution-heading { gap:8px; }.window-control { font-size:.73rem; }.distribution svg { height:208px; }.dist-summary { min-height:0; }.dist-formula { margin-top:12px; }.dist-worked { font-size:.73rem; }.sample-section>summary { padding:16px; font-size:.8rem; }.sample-tag { display:block; margin:4px 0 0 15px; }.sample-content { padding:0 16px 16px; }.sample-toolbar { gap:8px; font-size:.73rem; }.sample-toolbar input,.sample-toolbar select { max-width:112px; }.sample-playback { gap:8px; font-size:.72rem; }.sample-playback .time-label { margin-left:0; }.queue-scene { padding:12px; grid-template-columns:1fr auto 100px; gap:8px; }.scene-label { font-size:.7rem; }.customer::before { width:10px; height:10px; }.customer::after { width:16px; height:14px; }.customers { gap:5px; }.server>span:first-child { font-size:.56rem; }.server strong { font-size:.92rem; }.sample-table { font-size:.7rem; }.sample-table th,.sample-table td { padding:9px 3px; }.sample-table thead th { font-size:.64rem; }.lab-footer { gap:6px 18px; }.lab-footer>span:first-child { flex-basis:100%; } }
+@media(prefers-reduced-motion:reduce) { .eq-token,.eq-token.is-editing { transition:none!important; } }
+.chart-heading { flex-wrap:wrap; }.chart-controls { display:flex; margin-left:auto; border:1px solid #c7d2dd; border-radius:6px; padding:2px; gap:2px; }.chart-controls button { min-height:36px; padding:5px 10px; font-size:.72rem!important; font-weight:650; color:var(--muted); border:0; border-radius:4px; background:transparent; white-space:nowrap; }.chart-controls button[aria-pressed=true] { background:#e8effa; color:#174c8b; }.chart-controls button:hover { background:#edf2f8; }
+@media(max-width:520px) { .chart-heading { gap:7px; }.chart-heading h2 { flex-basis:calc(100% - 40px); }.chart-controls { margin-left:0; order:2; }.chart-heading>.info { margin-left:auto; }.headline-result { margin-top:10px; } }
+.dist-worked .eq-result { width:10ch; white-space:nowrap; }
+.worked .eq-result,.dist-worked .eq-result { width:13ch; min-width:13ch; white-space:nowrap; }
+</style>
+</head>
+<body class="mm1-app">
+  <a class="skip" href="#main">Skip to visualization</a>
+  <header class="lab-header">
+    <div class="masthead"><span>MBA INTERACTIVE LAB</span><span>OPERATIONS / O5</span></div>
+    <div class="heading-row"><div><h1>M/M/1 Queueing</h1><p>Why does waiting grow so quickly near full utilization?</p></div><button class="action primary" id="download">Download HTML</button></div>
+  </header>
+  <main id="main">
+    <nav class="preset-row" aria-label="Presets"><div id="presets"></div><button class="reset" id="reset">Reset</button></nav>
+    <p id="input-error" class="input-error" role="alert" hidden></p>
+    <section class="equations" aria-label="M/M/1 equations"><div class="section-top"><h2>The equations</h2><button class="info" data-help="equations" aria-label="Explain equations and units">i</button></div><div id="equation-grid" class="equation-grid"></div></section>
+    <div class="workspace">
+      <section class="panel theory-panel" aria-labelledby="wait-title">
+        <div class="section-top chart-heading"><h2 id="wait-title">Line length <span class="symbol">L<sub>q</sub></span></h2><div class="chart-controls" role="group" aria-label="Chart measure"><button id="show-length" aria-pressed="true">Line length</button><button id="show-wait" aria-pressed="false">Wait time</button></div><button class="info" data-help="curve" aria-label="Explain the queue chart">i</button></div>
+        <div class="headline-result"><output id="wait-result">3.20</output><span id="wait-unit">customers on average</span><span class="badge" id="stability">Stable</span></div>
+        <svg id="wait-chart" class="wait-chart" role="img" aria-label="Theoretical average line length versus utilization"></svg>
+        <div class="time-breakdown" id="time-breakdown"><div class="time-bar" aria-hidden="true"><span id="queue-bar"></span><span id="service-bar"></span></div><div class="time-key"><span><i class="swatch arrival"></i>Queue <span class="symbol" id="queue-symbol">L<sub>q</sub></span> <strong id="queue-time"></strong></span><span><i class="swatch service"></i>Service <span class="symbol" id="service-symbol">ρ</span> <strong id="service-time"></strong></span><span>Total <span class="symbol" id="total-symbol">L</span> <strong id="total-time"></strong></span></div></div>
+        <p id="unstable-note" class="unstable-note" hidden>λ ≥ μ. No finite long-run average waiting time or queue size.</p>
+      </section>
+      <section class="panel controls" aria-labelledby="inputs-title">
+        <div class="section-top"><h2 id="inputs-title">Rates</h2><button class="info" data-help="model" aria-label="Explain the M/M/1 model">i</button></div>
+        <div class="control"><div class="control-name"><label for="lambda-number">Arrival rate <span class="symbol">λ</span></label><button class="info" data-help="lambda" aria-label="Explain arrival rate lambda">i</button></div><div class="number-row"><input id="lambda-number" type="number" min="0" max="120" step="0.01" value="8.00" inputmode="decimal"><span>customers/hour</span></div><input id="lambda-range" type="range" min="0" max="20" step="0.01" value="8" aria-label="Arrival rate lambda slider"></div>
+        <div class="control"><div class="control-name"><label for="mu-number">Service rate <span class="symbol">μ</span></label><button class="info" data-help="mu" aria-label="Explain service rate mu">i</button></div><div class="number-row"><input id="mu-number" type="number" min="0.01" max="120" step="0.01" value="10.00" inputmode="decimal"><span>customers/hour</span></div><input id="mu-range" type="range" min="0.01" max="20" step="0.01" value="10" aria-label="Service rate mu slider"></div>
+        <div class="utilization"><div class="section-top"><span>Utilization <span class="symbol">ρ</span></span><button class="info" data-help="rho" aria-label="Explain utilization rho">i</button></div><output id="rho-result">80.00%</output><div class="util-track"><span id="util-fill"></span></div><span id="rho-description" class="unit-caption">Long-run busy time</span></div>
+      </section>
+    </div>
+    <p id="comparison" class="comparison" role="status" aria-live="polite"></p>
+    <section class="randomness" aria-labelledby="randomness-title">
+      <div class="distribution-heading"><div class="section-top"><h2 id="randomness-title">Where the randomness comes from</h2><button class="info" data-help="randomness" aria-label="Explain Poisson, exponential and Markov">i</button></div><div class="window-control"><label for="window-number">Time window <span class="symbol">t</span></label><input id="window-number" type="number" min="1" max="60" step="0.01" value="10.00" inputmode="decimal"><span>min</span><button class="info" data-help="window" aria-label="Explain the time window">i</button></div></div>
+      <div class="distribution-grid">
+        <article class="panel distribution"><div class="section-top"><h3>How many arrive?</h3><button class="info" data-help="poisson" aria-label="Explain the Poisson count distribution">i</button></div><div class="distribution-type">Poisson · count in <span data-window>10.00</span> min</div><svg id="count-chart" role="img" aria-label="Poisson probabilities for the number of arrivals"></svg><div class="dist-summary" id="count-summary"></div><div class="dist-formula">P(N = k) = e<sup>−m</sup>m<sup>k</sup>/k!</div><div class="dist-worked" id="count-worked"></div></article>
+        <article class="panel distribution"><div class="section-top"><h3>How far apart?</h3><button class="info" data-help="gaps" aria-label="Explain exponential arrival gaps">i</button></div><div class="distribution-type">Exponential · time between arrivals <span class="symbol">A</span></div><svg id="gap-chart" role="img" aria-label="Exponential density of time between arrivals"></svg><div class="dist-summary" id="gap-summary"></div><div class="dist-formula">f<sub>A</sub>(a) = (λ/60)e<sup>−(λ/60)a</sup></div><div class="dist-worked" id="gap-worked"></div></article>
+        <article class="panel distribution"><div class="section-top"><h3>How long to serve?</h3><button class="info" data-help="service" aria-label="Explain exponential service times">i</button></div><div class="distribution-type">Exponential · service time <span class="symbol">S</span></div><svg id="service-chart" role="img" aria-label="Exponential density of service time"></svg><div class="dist-summary" id="service-summary"></div><div class="dist-formula">f<sub>S</sub>(s) = (μ/60)e<sup>−(μ/60)s</sup></div><div class="dist-worked" id="service-worked"></div></article>
+      </div>
+    </section>
+    <details id="sample-details" class="sample-section"><summary>Watch one random sample <span class="sample-tag">Seeded · starts empty</span></summary>
+      <div class="sample-content">
+        <div class="sample-toolbar"><label for="seed">Seed <input id="seed" type="number" min="0" max="4294967295" step="1" value="42"></label><label for="horizon">Duration <select id="horizon"><option value="8">8 hours</option><option value="48" selected>48 hours</option><option value="240">240 hours</option></select></label><label for="warmup">Warm-up <input id="warmup" type="number" min="0" max="239" step="0.01" value="4.00"> h</label><button class="info" data-help="sample" aria-label="Explain sample measurement and warm-up">i</button><button class="action" id="run-sample">Generate sample</button></div>
+        <p class="input-error" id="sample-error" role="alert" hidden></p>
+        <div id="sample-results">
+          <div class="sample-playback"><button class="action primary" id="play-sample">Play sample</button><label for="speed">Speed <select id="speed"><option value="1">1×</option><option value="4">4×</option><option value="16">16×</option></select></label><label class="time-label" for="sample-time">Time <output id="sample-clock">0.00 h</output></label><input id="sample-time" type="range" min="0" max="48" step="0.01" value="0" aria-label="Sample time in hours"></div>
+          <div class="queue-scene"><div><div class="scene-label">Waiting now <span class="symbol">Q(t)</span> <strong id="queue-now">0</strong></div><div id="customers" class="customers"></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="server" id="server"><span>ONE SERVER</span><strong id="server-state">Idle</strong><span id="server-customer"></span></div></div>
+          <svg id="sample-chart" role="img" aria-label="Sample number waiting over time"></svg>
+          <table class="sample-table"><caption>Full-run averages · <span id="measurement-window"></span> <button class="text-button" data-help="differences" aria-label="Explain why sample and model differ">Why do they differ? ⓘ</button></caption><thead><tr><th scope="col">Measure</th><th scope="col">Sample average</th><th scope="col">Long-run model</th></tr></thead><tbody id="sample-stats"></tbody></table>
+          <p class="sample-note" id="sample-note"></p>
+        </div>
+      </div>
+    </details>
+    <noscript><p>Enable JavaScript to use the controls and calculations.</p></noscript>
+  </main>
+  <footer class="lab-footer"><span>O5 · v0.2 · October 31, 2026</span><button class="text-button" data-help="model">Model assumptions ⓘ</button><button class="text-button" data-help="sources">References ⓘ</button><span id="download-status" role="status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button id="close-help" aria-label="Close explanation" autofocus>×</button></div><div id="help-body"></div></dialog>
+  <script>/* Pure M/M/1 theory, distributions and seeded FIFO sample. Rates: customers/hour. */
+(() => {
+  "use strict";
+  const DEFAULTS = Object.freeze({ lambda: 8, mu: 10, window: 10 });
+  const PRESETS = Object.freeze([
+    Object.freeze({ name: "Moderate · 50%", inputs: Object.freeze({ lambda: 4, mu: 8, window: 10 }) }),
+    Object.freeze({ name: "Busy · 80%", inputs: DEFAULTS }),
+    Object.freeze({ name: "Near capacity · 95%", inputs: Object.freeze({ lambda: 9.5, mu: 10, window: 10 }) }),
+    Object.freeze({ name: "Overloaded · 110%", inputs: Object.freeze({ lambda: 11, mu: 10, window: 10 }) })
+  ]);
+  function validateInputs(raw) {
+    const errors = {}, inputs = {};
+    for (const [key, min, max, name, units] of [
+      ["lambda", 0, 120, "Arrival rate λ", "customers/hour"],
+      ["mu", 0.01, 120, "Service rate μ", "customers/hour"],
+      ["window", 1, 60, "Observation window t", "minutes"]
+    ]) {
+      const v = raw && raw[key];
+      if (typeof v !== "number" || !Number.isFinite(v) || v < min || v > max)
+        errors[key] = `${name} must be ${min.toFixed(2)}–${max.toFixed(2)} ${units}.`;
+      else inputs[key] = v;
+    }
+    return { ok: !Object.keys(errors).length, inputs, errors };
+  }
+  function theory(lambda, mu) {
+    const rho = lambda / mu, service = 60 / mu;
+    if (lambda >= mu) return { stable: false, rho, service, Wq: null, W: null, Lq: null, L: null };
+    const W = 60 / (mu - lambda), Wq = rho * W;
+    return { stable: true, rho, service, Wq, W, Lq: lambda * Wq / 60, L: lambda * W / 60 };
+  }
+  function niceCeiling(v) {
+    const magnitude = 10 ** Math.floor(Math.log10(v));
+    return [1, 2, 5, 10].find(n => n * magnitude >= v) * magnitude;
+  }
+  function poisson(mean) {
+    const last = Math.ceil(mean + 5 * Math.sqrt(mean) + 5);
+    const points = [{ k: 0, p: Math.exp(-mean) }];
+    for (let k = 1; k <= last; k++) points.push({ k, p: points[k - 1].p * mean / k });
+    return points;
+  }
+  function distributions({ lambda, mu, window }) {
+    const arrivalRate = lambda / 60, serviceRate = mu / 60;
+    const countMean = arrivalRate * window, counts = poisson(countMean);
+    const gapMean = lambda ? 60 / lambda : null, serviceMean = 60 / mu;
+    function exponential(rate) {
+      if (!rate) return null;
+      const mean = 1 / rate, timeMax = niceCeiling(4 * mean);
+      const points = Array.from({ length: 481 }, (_, i) => {
+        const t = timeMax * i / 480;
+        return { t, density: rate * Math.exp(-rate * t) };
+      });
+      return { mean, timeMax, points, densityMax: niceCeiling(rate), within: -Math.expm1(-rate * window),
+        windowPoint: { t: window, density: rate * Math.exp(-rate * window) } };
+    }
+    return {
+      countMean, counts, gapMean, serviceMean,
+      arrivalTime: exponential(arrivalRate), serviceTime: exponential(serviceRate),
+      countMax: Math.min(1, niceCeiling(Math.max(...counts.map(p => p.p)))),
+      pZero: counts[0].p, pOne: counts[1].p,
+      pMany: Math.max(0, 1 - counts[0].p - counts[1].p),
+      pArrivalWithin: -Math.expm1(-arrivalRate * window),
+      pServiceWithin: -Math.expm1(-serviceRate * window)
+    };
+  }
+  function calculateModel(raw) {
+    const c = validateInputs(raw);
+    if (!c.ok) throw new RangeError(Object.values(c.errors).join(" "));
+    const { lambda, mu } = c.inputs, result = theory(lambda, mu);
+    const waitMax = niceCeiling(Math.max(60, (result.Wq || 0) * 1.25));
+    const endRho = waitMax / (waitMax + result.service);
+    const curve = Array.from({ length: 201 }, (_, i) => {
+      const rho = endRho * i / 200;
+      return { rho, Wq: theory(rho * mu, mu).Wq };
+    });
+    const lengthMax = niceCeiling(Math.max(10, (result.Lq || 0) * 1.25));
+    const lengthEnd = 2 * lengthMax / (lengthMax + Math.sqrt(lengthMax * lengthMax + 4 * lengthMax));
+    const lengthCurve = Array.from({ length: 201 }, (_, i) => {
+      const rho = lengthEnd * i / 200;
+      return { rho, Lq: theory(rho * mu, mu).Lq };
+    });
+    return { inputs: c.inputs, ...result, waitMax, curve, lengthMax, lengthCurve, distributions: distributions(c.inputs) };
+  }
+  // Mulberry32 with open-interval uniforms. Independent streams keep arrival
+  // times unchanged when only service capacity changes (common random numbers).
+  function randomStream(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s = (s + 0x6D2B79F5) >>> 0;
+      let t = Math.imul(s ^ s >>> 15, 1 | s);
+      t ^= t + Math.imul(t ^ t >>> 7, 61 | t);
+      return (((t ^ t >>> 14) >>> 0) + 0.5) / 4294967296;
+    };
+  }
+  function sampleFromUniform(u, rate) {
+    if (!(u > 0 && u < 1) || !(rate > 0)) throw new RangeError("Use 0 < U < 1 and rate > 0.");
+    return -Math.log(u) / rate;
+  }
+  function summarize(customers, horizon, warmup) {
+    if (!(horizon > 0) || !(warmup >= 0 && warmup < horizon)) throw new RangeError("Warm-up must be below duration.");
+    const events = customers.flatMap(c => [
+      { t: c.arrival, delta: 1 }, ...(c.end <= horizon ? [{ t: c.end, delta: -1 }] : [])
+    ]).sort((a, b) => a.t - b.t || a.delta - b.delta);
+    let n = 0, last = 0, areaN = 0, areaQ = 0, areaBusy = 0, departed = 0;
+    const timeline = [{ t: 0, n: 0, q: 0 }];
+    for (const e of [...events, { t: horizon, delta: 0 }]) {
+      const dt = Math.max(0, e.t - Math.max(last, warmup));
+      areaN += n * dt; areaQ += Math.max(0, n - 1) * dt; areaBusy += (n > 0 ? dt : 0);
+      n += e.delta;
+      if (e.delta === -1 && e.t >= warmup) departed++;
+      timeline.push({ t: e.t, n, q: Math.max(0, n - 1) });
+      last = e.t;
+    }
+    const cohort = customers.filter(c => c.arrival >= warmup);
+    const completed = cohort.filter(c => c.end <= horizon);
+    const duration = horizon - warmup;
+    return {
+      timeline, arrivals: customers.length, departures: customers.filter(c => c.end <= horizon).length,
+      remaining: n, measuredHours: duration, completed: completed.length,
+      excluded: cohort.length - completed.length, measuredDepartures: departed,
+      L: areaN / duration, Lq: areaQ / duration, rho: areaBusy / duration,
+      throughput: departed / duration,
+      Wq: completed.length ? completed.reduce((a, c) => a + (c.start - c.arrival) * 60, 0) / completed.length : null,
+      W: completed.length ? completed.reduce((a, c) => a + (c.end - c.arrival) * 60, 0) / completed.length : null
+    };
+  }
+  function simulate(raw, settings = {}) {
+    const inputs = calculateModel(raw).inputs;
+    const { seed = 42, horizon = 48, warmup = 4 } = settings;
+    if (!Number.isInteger(seed) || seed < 0 || seed > 4294967295) throw new RangeError("Seed must be a whole number from 0 to 4294967295.");
+    if (!Number.isFinite(horizon) || horizon <= 0 || horizon > 25000 || inputs.lambda * horizon > 250000)
+      throw new RangeError("Choose a positive duration with at most 250000 expected arrivals.");
+    if (!Number.isFinite(warmup) || warmup < 0 || warmup >= horizon) throw new RangeError("Warm-up must be at least 0 and below duration.");
+    const arrivalU = randomStream(seed), serviceU = randomStream(seed ^ 0x9E3779B9);
+    const customers = [];
+    let arrival = 0, end = 0;
+    if (inputs.lambda > 0) {
+      while (true) {
+        arrival += sampleFromUniform(arrivalU(), inputs.lambda);
+        if (arrival > horizon) break;
+        const start = Math.max(arrival, end), service = sampleFromUniform(serviceU(), inputs.mu);
+        end = start + service;
+        customers.push({ id: customers.length + 1, arrival, start, end });
+        if (customers.length > 300000) throw new RangeError("Sample is too large.");
+      }
+    }
+    return { inputs, seed, horizon, warmup, customers, ...summarize(customers, horizon, warmup) };
+  }
+  function snapshot(sample, t) {
+    if (!Number.isFinite(t) || t < 0 || t > sample.horizon) throw new RangeError("Time is outside this sample.");
+    let lo = 0, hi = sample.timeline.length;
+    while (lo < hi) { const m = (lo + hi) >>> 1; if (sample.timeline[m].t <= t) lo = m + 1; else hi = m; }
+    const point = sample.timeline[Math.max(0, lo - 1)];
+    const active = sample.customers.filter(c => c.arrival <= t && c.end > t);
+    return { t, n: point.n, q: point.q, serving: active.find(c => c.start <= t) || null, waiting: active.filter(c => c.start > t) };
+  }
+  globalThis.DemoModel = Object.freeze({ DEFAULTS, PRESETS, validateInputs, calculateModel, simulate, snapshot, summarize, sampleFromUniform });
+})();
+</script><script>(() => {
+  "use strict";
+  const M = globalThis.DemoModel, $ = id => document.getElementById(id);
+  const fixed = n => n === null || !Number.isFinite(n) ? "—" : n.toFixed(2);
+  const pct = n => fixed(n * 100) + "%", min = n => fixed(n) + " min";
+  const HELP = {
+    model: ["M/M/1: one random queue", "M/M/1 assumes independent Poisson arrivals, independent exponential service times, one server, first-come-first-served service, and unlimited waiting room. Rates stay constant. Nobody leaves without service. The long-run equations require λ < μ. These are illustrative inputs, not a fitted model of a particular restaurant or business."],
+    lambda: ["Arrival rate λ", "λ (lambda) is the average number arriving per hour. It does not mean they arrive at evenly spaced times. Counts in fixed intervals follow a Poisson distribution; the gaps between individual arrivals are exponential. Raising λ changes the arrival plots and increases congestion when service capacity μ stays fixed."],
+    mu: ["Service rate μ", "μ (mu) is the average number one server could complete per hour while continuously busy. At μ = 10/hour, mean service time is 6 minutes, but individual services can be much shorter or longer. Raising μ shifts the service-time distribution toward shorter times. It does not change the arrival distribution."],
+    rho: ["Utilization ρ", "ρ (rho) = λ/μ. Below 100%, it is the fraction of time the server is busy in the stable long run. At or above 100%, it is a load ratio, not a feasible busy-time percentage. The server cannot be busy more than 100% of the time. Spare capacity absorbs random bursts and long services."],
+    curve: ["Line length or wait time", "Line length shows Lq: the long-run average number waiting, excluding the person being served. Wait time shows Wq: average time before service. The curve varies arrival rate with the current service rate held fixed; the marker is your scenario. The vertical scale adjusts and the curve continues toward infinity at 100%. The breakdown adds average occupancy at the server (ρ), or mean service time, to the queue. Fractional people are averages, not a snapshot."],
+    equations: ["Symbols and units", "λ and μ are customers/hour. All displayed times are in minutes, so the equations include a factor of 60 to convert hours to minutes. Wq is mean waiting before service; W includes waiting and service. Lq counts those waiting; L also includes the person being served. Fractional customers are long-run averages. At λ = 0, W is the expected time for a hypothetical arrival to an empty system."],
+    randomness: ["Poisson, exponential, and Markov", "Poisson describes the COUNT of arrivals in a fixed time interval. Exponential describes the TIME between arrivals and the TIME to serve one customer. Markov refers to the memoryless property: given the current queue state, earlier history adds no information about the next transition under these assumptions. It is not the name of a third arrival-time distribution."],
+    window: ["A fixed observation window t", "t is the number of minutes you watch. The Poisson mean is λt/60 arrivals in that interval. The shaded exponential areas show the probability that a gap or service ends within t minutes. Changing t changes what you measure, not λ, μ, utilization, or long-run queue performance. Chart time axes scale independently; read their labels."],
+    poisson: ["Poisson: how many arrive?", "Each bar is the probability of a whole-number arrival count k in a fixed interval t. m = λt/60 is the expected count. The dashed line marks that average; it need not be a whole number. Several arrivals within one interval can happen even at a modest average rate. Individual arrivals still occur one at a time in continuous time. Only λ and t affect this plot."],
+    gaps: ["Exponential: time between arrivals A", "The blue curve describes the gap A between consecutive arrivals. Its mean is 60/λ minutes. Many gaps are short, and a few can be long. The shaded AREA, not the height at a point, is the probability a gap ends within t minutes: 1 − exp(−λt/60). At λ = 0 there are no arrivals and no finite mean gap."],
+    service: ["Exponential: service time S", "The green curve describes how long one service takes, with mean 60/μ minutes. The shaded area is the probability service finishes within t minutes: 1 − exp(−μt/60). The height is a probability density in 1/minute, not a probability. A longer-than-average service remains possible. Even after a long service so far, the exponential model has the same expected remaining time; real services may behave differently."],
+    sample: ["A sample is not the long-run average", "The sample starts empty and uses a visible seed to make the random draws repeatable. The warm-up is excluded from time-weighted queue size, busy time, and measured departure rate. Wait averages include only customers arriving after warm-up and finishing by the horizon; unfinished customers are excluded, which can bias waits downward, especially near overload. Extending duration or changing the seed may change the result. Playback speed changes only the view."],
+    differences: ["Why do the sample and model differ?", "The model is a long-run expectation. The sample starts empty and uses one finite random sequence, chosen by its seed. A new seed gives another outcome. Longer runs usually reduce variation, but one extension can move farther from the expected value. Near 100% utilization, settling can be slow; a warm-up does not guarantee steady state. The moving line is a snapshot; this table averages the full measurement period. Wait averages exclude customers unfinished at the horizon, which can pull them downward."],
+    sources: ["Mathematical references", "The equations and distribution definitions were checked against the references below. All examples and graphics here are original and illustrative."]
+  };
+  const token = (key, text, cls = "") => `<span class="eq-token ${cls}" data-var="${key}">${text}</span>`;
+  const num = (key, value, cls = "") => token(key, fixed(value), cls);
+  const equations = [
+    ["Utilization", () => `ρ = ${token("lambda", "λ")} / ${token("mu", "μ")}`, m => `${num("lambda", m.inputs.lambda)} / ${num("mu", m.inputs.mu)} = ${token("lambda mu", pct(m.rho), "eq-result")}`],
+    ["Mean service time", () => `E[S] = 60 / ${token("mu", "μ")}`, m => `60 / ${num("mu", m.inputs.mu)} = ${token("mu", min(m.service), "eq-result")}`],
+    ["Waiting in queue", () => `W<sub>q</sub> = <span class="group">60${token("lambda", "λ")} / [${token("mu", "μ")}(${token("mu", "μ")} − ${token("lambda", "λ")})]</span>`, m => m.stable ? `<span class="group">60 × ${num("lambda", m.inputs.lambda)}</span><span class="group">/ [${num("mu", m.inputs.mu)} ×</span><span class="group">(${num("mu", m.inputs.mu)} − ${num("lambda", m.inputs.lambda)})]</span> = ${token("lambda mu", min(m.Wq), "eq-result")}` : "No finite steady-state mean"],
+    ["Time in system", () => `W = W<sub>q</sub> + 60 / ${token("mu", "μ")}`, m => m.stable ? `${num("lambda mu", m.Wq)} + ${num("mu", m.service)} = ${token("lambda mu", min(m.W), "eq-result")}` : "No finite steady-state mean"],
+    ["Customers waiting", () => `L<sub>q</sub> = ${token("lambda", "λ")}W<sub>q</sub> / 60`, m => m.stable ? `${num("lambda", m.inputs.lambda)} × ${num("lambda mu", m.Wq)} / 60 = ${token("lambda mu", fixed(m.Lq), "eq-result")} customers` : "No finite steady-state mean"],
+    ["Customers in system", () => `L = ${token("lambda", "λ")}W / 60`, m => m.stable ? `${num("lambda", m.inputs.lambda)} × ${num("lambda mu", m.W)} / 60 = ${token("lambda mu", fixed(m.L), "eq-result")} customers` : "No finite steady-state mean"]
+  ];
+  $("equation-grid").innerHTML = equations.map(([label, symbolic], i) => `<div class="eq"><div class="eq-title"><span class="step">${i + 1}</span>${label}</div><div class="formula">${symbolic()}</div><div class="worked" id="eq-${i}"></div></div>`).join("");
+  const read = () => Object.fromEntries(Object.keys(M.DEFAULTS).map(k => [k, $(k + "-number").value.trim() === "" ? NaN : Number($(k + "-number").value)]));
+  let current = null, sample = null, sampleDirty = true, timer = null, lastFrame = 0, sampleT = 0, chartMode = "length";
+  let heldKey = null, pulseTimer = null, lastHelpButton = null;
+  function highlight(key) {
+    document.querySelectorAll(".eq-token[data-var]").forEach(el => el.classList.toggle("is-editing", !!key && el.dataset.var.split(" ").includes(key)));
+  }
+  function pulse(key) {
+    clearTimeout(pulseTimer); highlight(key);
+    if (!heldKey) pulseTimer = setTimeout(() => highlight(null), 650);
+  }
+  function release() { heldKey = null; clearTimeout(pulseTimer); highlight(null); }
+  function setInputs(inputs) {
+    for (const [k, v] of Object.entries(inputs)) {
+      $(k + "-number").value = fixed(v);
+      const range = $(k + "-range");
+      if (range) { range.max = Math.max(20, Math.ceil(v / 10) * 10); range.value = v; }
+    }
+    render();
+  }
+  // SVG helpers contain only controlled labels and finite model outputs.
+  const line = (x1, y1, x2, y2, color = "#dfe6ed", extra = "") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" ${extra}/>`;
+  const text = (x, y, value, anchor = "start", color = "#536574", extra = "") => `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${color}" font-size="11" ${extra}>${value}</text>`;
+  function box(svg, height, left = 70) {
+    const width = Math.max(220, svg.getBoundingClientRect().width), right = width - 18, top = 24, bottom = height - 38;
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    return { width, height, left, right, top, bottom, x: v => left + v * (right - left), y: v => bottom - v * (bottom - top) };
+  }
+  function yAxisLabel(b, label) {
+    const x = 13, y = (b.top + b.bottom) / 2;
+    return text(x, y, label, "middle", "#536574", `class="y-axis-label" transform="rotate(-90 ${x} ${y})"`);
+  }
+  function axes(b, xMax, yMax, xName, yName, xFormat = fixed, yFormat = fixed) {
+    let out = yAxisLabel(b, yName);
+    for (let i = 0; i <= 4; i++) {
+      const f = i / 4, y = b.y(f), x = b.x(f);
+      out += line(b.left, y, b.right, y) + text(b.left - 8, y + 4, yFormat(yMax * f), "end");
+      out += text(x, b.bottom + 19, xFormat(xMax * f), "middle");
+    }
+    return out + text((b.left + b.right) / 2, b.height - 2, xName, "middle");
+  }
+  function drawWait(m) {
+    const svg = $("wait-chart"), b = box(svg, 252);
+    const length = chartMode === "length", maxY = length ? m.lengthMax : m.waitMax, value = length ? m.Lq : m.Wq;
+    let out = axes(b, 1, maxY, "Utilization ρ (%)", length ? "Average customers waiting Lq" : "Queue wait Wq (min)", x => (x * 100).toFixed(0), x => Number.isInteger(x) ? x.toFixed(0) : x.toFixed(1));
+    const points = (length ? m.lengthCurve : m.curve).map(p => [b.x(p.rho), b.y((length ? p.Lq : p.Wq) / maxY)]);
+    const d = points.map(([x, y], i) => `${i ? "L" : "M"}${x},${y}`).join(" ");
+    out += `<path d="M${b.left},${b.bottom} ${d.replace(/^M/, "L")} L${points.at(-1)[0]},${b.bottom} Z" fill="#2458a80b"/><path d="${d}" stroke="#2458a8" stroke-width="2.5" fill="none"/>`;
+    out += line(b.right, b.top, b.right, b.bottom, "#a85a12", 'stroke-dasharray="4 4"');
+    if (m.stable) {
+      const x = b.x(m.rho), y = b.y(value / maxY), labelX = Math.max(b.left + 72, Math.min(b.right - 72, x));
+      out += line(x, y, x, b.bottom, "#2458a8", 'stroke-dasharray="3 4"');
+      out += `<circle cx="${x}" cy="${y}" r="5" fill="#2458a8" stroke="white" stroke-width="2"/>`;
+      out += text(labelX, Math.max(b.top + 9, y - 12), `${pct(m.rho)} · ${length ? fixed(value) + " waiting" : min(value)}`, "middle", "#174c8b", 'font-weight="650"');
+    } else out += text(b.right - 8, b.top + 14, "No steady state", "end", "#914809", 'font-weight="650"');
+    out += text(points.at(-1)[0], b.top + 3, "↑", "middle", "#2458a8");
+    svg.innerHTML = out;
+    svg.setAttribute("aria-label", `Theoretical ${length ? "average line length" : "queue waiting time"} versus utilization, service rate ${fixed(m.inputs.mu)} customers/hour. ${m.stable ? `Current ${length ? fixed(value) + " customers waiting" : min(value)} at ${pct(m.rho)}.` : "No finite steady-state mean at this load."}`);
+  }
+  function drawCounts(m) {
+    const d = m.distributions, svg = $("count-chart"), b = box(svg, 194, 64), points = d.counts;
+    svg.setAttribute("aria-label", `Poisson arrival counts in ${fixed(m.inputs.window)} minutes. Mean ${fixed(d.countMean)}; probability of zero arrivals ${pct(d.pZero)}.`);
+    const step = (b.right - b.left) / points.length;
+    let out = yAxisLabel(b, "Probability (%)");
+    for (let i = 0; i <= 2; i++) { const f = i / 2; out += line(b.left, b.y(f), b.right, b.y(f)) + text(b.left - 7, b.y(f) + 4, (d.countMax * f * 100).toFixed(0), "end"); }
+    const tickEvery = Math.max(1, Math.ceil(points.length / 7));
+    for (const p of points) {
+      const x = b.left + p.k * step + step * .1, y = b.y(p.p / d.countMax);
+      out += `<rect x="${x}" y="${y}" width="${Math.max(.6, step * .8)}" height="${b.bottom - y}" rx="1" fill="#2458a8"><title>${p.k} arrivals: ${pct(p.p)}</title></rect>`;
+      if (p.k % tickEvery === 0) out += text(x + step * .4, b.bottom + 17, p.k, "middle");
+    }
+    const meanX = b.left + (d.countMean + .5) * step;
+    out += line(meanX, b.top, meanX, b.bottom, "#172838", 'stroke-dasharray="3 3"');
+    out += text(Math.max(b.left + 35, Math.min(b.right - 35, meanX)), b.top - 3, `Mean ${fixed(d.countMean)}`, "middle", "#172838");
+    out += text((b.left + b.right) / 2, b.height - 2, "Arrivals k (customers)", "middle");
+    svg.innerHTML = out;
+    $("count-summary").innerHTML = `<strong>${pct(d.pZero)}</strong> none · <strong>${pct(d.pOne)}</strong> one<br><strong>${pct(d.pMany)}</strong> two or more`;
+    $("count-worked").innerHTML = `m = ${num("lambda", m.inputs.lambda)} × ${num("window", m.inputs.window)} / 60 = ${num("lambda window", d.countMean, "eq-result")}`;
+  }
+  function drawExponential(m, type) {
+    const isGap = type === "gap", d = isGap ? m.distributions.arrivalTime : m.distributions.serviceTime;
+    const color = isGap ? "#2458a8" : "#14786d", svg = $(type + "-chart"), b = box(svg, 194, 64), key = isGap ? "lambda" : "mu";
+    svg.setAttribute("aria-label", d ? `Exponential ${isGap ? "arrival gap" : "service time"} density. Mean ${min(d.mean)}. ${pct(d.within)} within ${fixed(m.inputs.window)} minutes.` : "No arrivals at lambda zero; no finite mean gap.");
+    if (!d) {
+      svg.innerHTML = text(b.width / 2, 82, "λ = 0: no arrivals", "middle") + text(b.width / 2, 104, "No finite arrival-gap distribution", "middle");
+      $(type + "-summary").innerHTML = "No arrivals at λ = 0.";
+      $(type + "-worked").innerHTML = "E[A] has no finite value"; return;
+    }
+    let out = axes(b, d.timeMax, d.densityMax, "Time (min)", "Density (1/min)", x => x.toFixed(1), x => x < .01 && x > 0 ? x.toExponential(0) : x.toFixed(2));
+    const points = d.points.map(p => [b.x(p.t / d.timeMax), b.y(p.density / d.densityMax)]);
+    const path = points.map(([x, y], i) => `${i ? "L" : "M"}${x},${y}`).join(" ");
+    const shaded = d.points.filter(p => p.t < m.inputs.window);
+    if (m.inputs.window < d.timeMax) shaded.push(d.windowPoint); else if (shaded.at(-1)?.t !== d.timeMax) shaded.push(d.points.at(-1));
+    const sd = shaded.map(p => `L${b.x(p.t / d.timeMax)},${b.y(p.density / d.densityMax)}`).join(" ");
+    out += `<path d="M${b.left},${b.bottom} ${sd} L${b.x(Math.min(1, m.inputs.window / d.timeMax))},${b.bottom} Z" fill="${color}" opacity=".13"/><path d="${path}" stroke="${color}" stroke-width="2.3" fill="none"/>`;
+    const meanX = b.x(d.mean / d.timeMax);
+    out += line(meanX, b.top, meanX, b.bottom, color, 'stroke-dasharray="3 3"') + text(meanX + 4, b.top + 11, `Mean ${fixed(d.mean)}`, "start", color);
+    if (m.inputs.window <= d.timeMax) out += line(b.x(m.inputs.window / d.timeMax), b.top + 28, b.x(m.inputs.window / d.timeMax), b.bottom, "#7b8995", 'stroke-dasharray="2 4"');
+    svg.innerHTML = out;
+    $(type + "-summary").innerHTML = `<strong>${pct(d.within)}</strong> ${isGap ? "of gaps end" : "of services finish"}<br>within <span data-window>${fixed(m.inputs.window)}</span> min <span class="muted">(shaded area)</span>`;
+    $(type + "-worked").innerHTML = `E[${isGap ? "A" : "S"}] = 60 / ${num(key, m.inputs[key])} = ${token(key, min(d.mean), "eq-result")}`;
+  }
+  function drawDistributions(m) {
+    document.querySelectorAll("[data-window]").forEach(el => el.textContent = fixed(m.inputs.window));
+    drawCounts(m); drawExponential(m, "gap"); drawExponential(m, "service");
+  }
+  function stop() { if (timer) cancelAnimationFrame(timer); timer = null; $("play-sample").textContent = "Play sample"; }
+  function render() {
+    stop();
+    const raw = read(), checked = M.validateInputs(raw), previous = current;
+    $("input-error").hidden = checked.ok;
+    $("input-error").textContent = Object.values(checked.errors).join(" ");
+    for (const k of Object.keys(raw)) {
+      $(k + "-number").setAttribute("aria-invalid", String(!!checked.errors[k]));
+      if (checked.errors[k]) $(k + "-number").setAttribute("aria-describedby", "input-error"); else $(k + "-number").removeAttribute("aria-describedby");
+      const r = $(k + "-range");
+      if (r && !checked.errors[k]) { r.max = Math.max(Number(r.max), 20, Math.ceil(raw[k] / 10) * 10); r.value = raw[k]; }
+    }
+    document.querySelectorAll(".preset").forEach((b, i) => {
+      const active = checked.ok && Object.keys(raw).every(k => raw[k] === M.PRESETS[i].inputs[k]);
+      b.classList.toggle("active", active); b.setAttribute("aria-pressed", String(active));
+    });
+    $("run-sample").disabled = !checked.ok; $("download").disabled = !checked.ok;
+    if (!checked.ok) {
+      current = null; sampleDirty = true;
+      for (const id of ["wait-result", "rho-result", "stability", "rho-description", "comparison", "queue-time", "service-time", "total-time"]) $(id).textContent = "—";
+      for (const id of ["wait-chart", "count-chart", "gap-chart", "service-chart"]) { $(id).innerHTML = ""; $(id).setAttribute("aria-label", "Chart unavailable: enter valid inputs."); }
+      for (let i = 0; i < equations.length; i++) $("eq-" + i).textContent = "—";
+      for (const id of ["count", "gap", "service"]) { $(id + "-summary").textContent = "—"; $(id + "-worked").textContent = "—"; }
+      $("util-fill").style.width = "0%"; $("time-breakdown").hidden = true; $("unstable-note").hidden = true;
+      $("sample-results").hidden = true; return;
+    }
+    current = M.calculateModel(raw);
+    const m = current;
+    if (!previous || previous.inputs.lambda !== raw.lambda || previous.inputs.mu !== raw.mu) sampleDirty = true;
+    const length = chartMode === "length", q = length ? m.Lq : m.Wq, service = length ? m.rho : m.service, total = length ? m.L : m.W;
+    $("wait-title").innerHTML = length ? 'Line length <span class="symbol">L<sub>q</sub></span>' : 'Waiting in the queue <span class="symbol">W<sub>q</sub></span>';
+    $("show-length").setAttribute("aria-pressed", String(length)); $("show-wait").setAttribute("aria-pressed", String(!length));
+    $("wait-result").textContent = m.stable ? fixed(q) : "No finite mean";
+    $("wait-unit").hidden = !m.stable; $("wait-unit").textContent = length ? "customers on average" : "minutes on average";
+    $("stability").textContent = m.stable ? "Stable" : "Unstable"; $("stability").classList.toggle("unstable", !m.stable);
+    $("rho-result").textContent = pct(m.rho); $("rho-description").textContent = m.stable ? "Long-run busy time" : "Load ratio · busy time cannot exceed 100%";
+    $("util-fill").style.width = Math.min(100, m.rho * 100) + "%"; $("util-fill").style.background = m.stable ? "var(--blue)" : "var(--orange)";
+    $("time-breakdown").hidden = !m.stable; $("unstable-note").hidden = m.stable;
+    $("queue-symbol").innerHTML = length ? "L<sub>q</sub>" : "W<sub>q</sub>"; $("service-symbol").textContent = length ? "ρ" : "1/μ"; $("total-symbol").textContent = length ? "L" : "W";
+    $("queue-time").textContent = length ? fixed(q) : min(q); $("service-time").textContent = length ? fixed(service) : min(service); $("total-time").textContent = length ? fixed(total) : min(total);
+    $("queue-bar").style.width = m.stable && total ? (q / total * 100) + "%" : "0%";
+    $("service-bar").style.width = m.stable && total ? (service / total * 100) + "%" : "0%";
+    equations.forEach((eq, i) => $("eq-" + i).innerHTML = eq[2](m));
+    drawWait(m); drawDistributions(m);
+    const base = M.calculateModel(M.DEFAULTS);
+    $("comparison").hidden = raw.lambda === M.DEFAULTS.lambda && raw.mu === M.DEFAULTS.mu;
+    if (!m.stable) $("comparison").textContent = "Arrivals meet or exceed service capacity. The sample can still run; long-run queue averages do not exist.";
+    else if (raw.lambda === M.DEFAULTS.lambda && raw.mu === M.DEFAULTS.mu) $("comparison").textContent = "Starting example: 3.20 customers waiting on average; 24.00 minutes before service.";
+    else {
+      const delta = (length ? m.Lq - base.Lq : m.Wq - base.Wq);
+      $("comparison").textContent = length ? `Average line length is ${fixed(Math.abs(delta))} customers ${delta >= 0 ? "longer" : "shorter"} than the starting example (3.20).` : `Queue wait is ${fixed(Math.abs(delta))} min ${delta >= 0 ? "longer" : "shorter"} than the starting example (${min(base.Wq)}).`;
+    }
+    if ($("sample-details").open) { if (sampleDirty) generateSample(); else renderSample(); }
+  }
+  M.PRESETS.forEach((p, i) => {
+    const b = document.createElement("button"); b.className = "preset"; b.type = "button"; b.textContent = p.name;
+    b.addEventListener("click", () => { resetSampleSettings(); setInputs(p.inputs); release(); }); $("presets").append(b);
+  });
+  function resetSampleSettings() { stop(); $("seed").value = "42"; $("horizon").value = "48"; $("warmup").value = "4.00"; $("speed").value = "1"; sampleT = 0; sampleDirty = true; }
+  $("reset").addEventListener("click", () => { chartMode = "length"; resetSampleSettings(); setInputs(M.DEFAULTS); release(); });
+  $("show-length").addEventListener("click", () => { chartMode = "length"; render(); });
+  $("show-wait").addEventListener("click", () => { chartMode = "wait"; render(); });
+  for (const key of Object.keys(M.DEFAULTS)) {
+    const n = $(key + "-number"), r = $(key + "-range");
+    n.addEventListener("input", () => { render(); pulse(key); });
+    n.addEventListener("blur", () => {
+      if (n.value.trim() !== "" && Number.isFinite(Number(n.value))) { n.value = fixed(Number(n.value)); render(); }
+      release();
+    });
+    if (r) {
+      r.addEventListener("pointerdown", () => { heldKey = key; highlight(key); });
+      r.addEventListener("keydown", e => { if (e.key.startsWith("Arrow") || ["Home", "End", "PageUp", "PageDown"].includes(e.key)) { heldKey = key; highlight(key); } });
+      r.addEventListener("keyup", release); r.addEventListener("blur", release);
+      r.addEventListener("input", () => { n.value = fixed(Number(r.value)); render(); pulse(key); });
+    }
+  }
+  document.addEventListener("pointerup", release); document.addEventListener("pointercancel", release);
+  document.querySelectorAll("[data-help]").forEach(button => button.addEventListener("click", () => {
+    const [title, body] = HELP[button.dataset.help]; lastHelpButton = button;
+    $("help-title").textContent = title; $("help-body").replaceChildren();
+    const p = document.createElement("p"); p.textContent = body; $("help-body").append(p);
+    if (button.dataset.help === "sources") {
+      for (const [label, url] of [
+        ["MIT OpenCourseWare · M/M/1 queue", "https://ocw.mit.edu/courses/2-854-introduction-to-manufacturing-systems-fall-2016/resources/mit2_854f16_mm1queue/"],
+        ["NIST · Poisson process and exponential intervals", "https://itl.nist.gov/div898/handbook/apr/section1/apr171.htm"],
+        ["Queue simulation and warm-up · Victoria University of Wellington", "https://homepages.ecs.vuw.ac.nz/~schukova/SCIE201/Lectures/Lecture9_final2018.html"]
+      ]) { const p = document.createElement("p"), a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; a.textContent = label; p.append(a); $("help-body").append(p); }
+    }
+    $("help-dialog").showModal();
+  }));
+  $("close-help").addEventListener("click", () => $("help-dialog").close());
+  $("help-dialog").addEventListener("close", () => lastHelpButton?.focus());
+  $("help-dialog").addEventListener("click", e => { if (e.target === $("help-dialog")) { const r = e.target.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) e.target.close(); } });
+  function generateSample() {
+    stop(); if (!current) return;
+    try {
+      sample = M.simulate(current.inputs, { seed: $("seed").value.trim() === "" ? NaN : Number($("seed").value), horizon: Number($("horizon").value), warmup: $("warmup").value.trim() === "" ? NaN : Number($("warmup").value) });
+      sampleT = 0; sampleDirty = false; $("sample-error").hidden = true; $("sample-results").hidden = false;
+      $("sample-time").max = sample.horizon; $("sample-time").value = "0"; renderSample();
+    } catch (e) { sample = null; sampleDirty = true; $("sample-error").hidden = false; $("sample-error").textContent = e.message; $("sample-results").hidden = true; }
+  }
+  function renderSample() {
+    if (!sample || !current) return;
+    $("sample-results").hidden = false;
+    $("measurement-window").textContent = `${fixed(sample.warmup)}–${fixed(sample.horizon)} h`;
+    const rows = [["Waiting in queue <span class='symbol'>W<sub>q</sub></span>", sample.Wq, current.Wq, min], ["Time in system <span class='symbol'>W</span>", sample.W, current.W, min], ["Customers waiting <span class='symbol'>L<sub>q</sub></span>", sample.Lq, current.Lq, fixed], ["Customers in system <span class='symbol'>L</span>", sample.L, current.L, fixed], ["Busy time", sample.rho, current.stable ? current.rho : null, pct], ["Departures/hour", sample.throughput, current.stable ? current.inputs.lambda : null, fixed]];
+    $("sample-stats").innerHTML = rows.map(([label, actual, expected, format]) => `<tr><th scope="row">${label}</th><td>${actual === null ? "—" : format(actual)}</td><td>${expected === null ? "No steady state" : format(expected)}</td></tr>`).join("");
+    $("sample-note").textContent = `${sample.completed} completed post-warm-up customers included in wait averages; ${sample.excluded} unfinished post-warm-up customers excluded. ${sample.remaining} total still in the system at the horizon. Full-run sample statistics; playback only changes the snapshot.`;
+    drawSampleChart(); renderSnapshot();
+  }
+  function drawSampleChart() {
+    const svg = $("sample-chart"), b = box(svg, 220), maxQ = Math.max(4, Math.ceil(Math.max(current.Lq || 0, ...sample.timeline.map(p => p.q)) / 4) * 4);
+    let out = axes(b, sample.horizon, maxQ, "Elapsed time (hours)", "Customers waiting Q(t)", x => x.toFixed(0), x => x.toFixed(0));
+    out += `<rect x="${b.left}" y="${b.top}" width="${b.x(sample.warmup / sample.horizon) - b.left}" height="${b.bottom - b.top}" fill="#eceff3"/>`;
+    let d = `M${b.left},${b.bottom}`;
+    for (const p of sample.timeline) d += ` H${b.x(p.t / sample.horizon)} V${b.y(p.q / maxQ)}`;
+    out += `<path d="${d}" fill="none" stroke="#2458a8" stroke-width="1.4"/>`;
+    out += text(b.left + 4, b.top + 12, "Warm-up", "start", "#667786");
+    if (current.Lq !== null && current.Lq <= maxQ) out += line(b.left, b.y(current.Lq / maxQ), b.right, b.y(current.Lq / maxQ), "#14786d", 'stroke-dasharray="5 4"') + text(b.right, b.y(current.Lq / maxQ) - 5, `Theory Lq ${fixed(current.Lq)}`, "end", "#14786d");
+    out += `<line id="sample-cursor" x1="${b.x(sampleT / sample.horizon)}" x2="${b.x(sampleT / sample.horizon)}" y1="${b.top}" y2="${b.bottom}" stroke="#a85a12" stroke-width="2"/>`;
+    svg.innerHTML = out;
+  }
+  function renderSnapshot() {
+    const snap = M.snapshot(sample, sampleT);
+    $("sample-clock").textContent = fixed(sampleT) + " h"; $("sample-time").value = sampleT;
+    $("queue-now").textContent = snap.q;
+    $("customers").innerHTML = (snap.q > 12 ? `<span class="more-customers">+${snap.q - 12} more</span>` : "") + snap.waiting.slice(0, 12).reverse().map(c => `<span class="customer" aria-label="Customer ${c.id}"><span>#${c.id}</span></span>`).join("") + (snap.q ? "" : '<span class="empty-queue">Nobody waiting</span>');
+    $("server").classList.toggle("busy", !!snap.serving); $("server-state").textContent = snap.serving ? "Serving" : "Idle";
+    $("server-customer").textContent = snap.serving ? "Customer #" + snap.serving.id : "No customer";
+    const cursor = $("sample-cursor"), b = box($("sample-chart"), 220);
+    if (cursor) { cursor.setAttribute("x1", b.x(sampleT / sample.horizon)); cursor.setAttribute("x2", b.x(sampleT / sample.horizon)); }
+  }
+  $("run-sample").addEventListener("click", generateSample);
+  for (const id of ["seed", "horizon", "warmup"]) $(id).addEventListener("change", generateSample);
+  $("sample-details").addEventListener("toggle", () => { if ($("sample-details").open && current) { if (sampleDirty) generateSample(); else renderSample(); } else stop(); });
+  $("sample-time").addEventListener("input", () => { stop(); if (sample) { sampleT = Number($("sample-time").value); renderSnapshot(); } });
+  $("play-sample").addEventListener("click", () => {
+    if (timer) { stop(); return; } if (!sample) return;
+    if (sampleT >= sample.horizon) sampleT = 0;
+    $("play-sample").textContent = "Pause sample"; lastFrame = performance.now(); let lastPaint = 0;
+    function frame(now) {
+      sampleT = Math.min(sample.horizon, sampleT + (now - lastFrame) / 1000 * .25 * Number($("speed").value)); lastFrame = now;
+      if (now - lastPaint > 100 || sampleT === sample.horizon) { renderSnapshot(); lastPaint = now; }
+      if (sampleT >= sample.horizon) stop(); else timer = requestAnimationFrame(frame);
+    }
+    timer = requestAnimationFrame(frame);
+  });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
+  $("download").addEventListener("click", () => {
+    stop(); release();
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll(".is-editing").forEach(el => el.classList.remove("is-editing"));
+    clone.querySelectorAll("dialog").forEach(el => el.removeAttribute("open"));
+    const url = URL.createObjectURL(new Blob(["<!doctype html>\n" + clone.outerHTML], { type: "text/html" }));
+    const a = document.createElement("a"); a.href = url; a.download = "mm1.html"; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    $("download-status").textContent = "Save mm1.html · opens at the starting example.";
+  });
+  let resizeFrame = null;
+  new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => { if (current) { drawWait(current); drawDistributions(current); if ($("sample-details").open && sample && !sampleDirty) renderSample(); } }); }).observe($("wait-chart"));
+  setInputs(M.DEFAULTS);
+})();
+</script>
+</body>
+</html>

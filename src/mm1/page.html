@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,"><title>M/M/1 Queueing · Operations Lab</title>
+  <style>{{STYLES}}</style>
+</head>
+<body class="mm1-app">
+  <a class="skip" href="#main">Skip to visualization</a>
+  <header class="lab-header">
+    <div class="masthead"><span>MBA INTERACTIVE LAB</span><span>OPERATIONS / O5</span></div>
+    <div class="heading-row"><div><h1>M/M/1 Queueing</h1><p>Why does waiting grow so quickly near full utilization?</p></div><button class="action primary" id="download">Download HTML</button></div>
+  </header>
+  <main id="main">
+    <nav class="preset-row" aria-label="Presets"><div id="presets"></div><button class="reset" id="reset">Reset</button></nav>
+    <p id="input-error" class="input-error" role="alert" hidden></p>
+    <section class="equations" aria-label="M/M/1 equations"><div class="section-top"><h2>The equations</h2><button class="info" data-help="equations" aria-label="Explain equations and units">i</button></div><div id="equation-grid" class="equation-grid"></div></section>
+    <div class="workspace">
+      <section class="panel theory-panel" aria-labelledby="wait-title">
+        <div class="section-top chart-heading"><h2 id="wait-title">Line length <span class="symbol">L<sub>q</sub></span></h2><div class="chart-controls" role="group" aria-label="Chart measure"><button id="show-length" aria-pressed="true">Line length</button><button id="show-wait" aria-pressed="false">Wait time</button></div><button class="info" data-help="curve" aria-label="Explain the queue chart">i</button></div>
+        <div class="headline-result"><output id="wait-result">3.20</output><span id="wait-unit">customers on average</span><span class="badge" id="stability">Stable</span></div>
+        <svg id="wait-chart" class="wait-chart" role="img" aria-label="Theoretical average line length versus utilization"></svg>
+        <div class="time-breakdown" id="time-breakdown"><div class="time-bar" aria-hidden="true"><span id="queue-bar"></span><span id="service-bar"></span></div><div class="time-key"><span><i class="swatch arrival"></i>Queue <span class="symbol" id="queue-symbol">L<sub>q</sub></span> <strong id="queue-time"></strong></span><span><i class="swatch service"></i>Service <span class="symbol" id="service-symbol">ρ</span> <strong id="service-time"></strong></span><span>Total <span class="symbol" id="total-symbol">L</span> <strong id="total-time"></strong></span></div></div>
+        <p id="unstable-note" class="unstable-note" hidden>λ ≥ μ. No finite long-run average waiting time or queue size.</p>
+      </section>
+      <section class="panel controls" aria-labelledby="inputs-title">
+        <div class="section-top"><h2 id="inputs-title">Rates</h2><button class="info" data-help="model" aria-label="Explain the M/M/1 model">i</button></div>
+        <div class="control"><div class="control-name"><label for="lambda-number">Arrival rate <span class="symbol">λ</span></label><button class="info" data-help="lambda" aria-label="Explain arrival rate lambda">i</button></div><div class="number-row"><input id="lambda-number" type="number" min="0" max="120" step="0.01" value="8.00" inputmode="decimal"><span>customers/hour</span></div><input id="lambda-range" type="range" min="0" max="20" step="0.01" value="8" aria-label="Arrival rate lambda slider"></div>
+        <div class="control"><div class="control-name"><label for="mu-number">Service rate <span class="symbol">μ</span></label><button class="info" data-help="mu" aria-label="Explain service rate mu">i</button></div><div class="number-row"><input id="mu-number" type="number" min="0.01" max="120" step="0.01" value="10.00" inputmode="decimal"><span>customers/hour</span></div><input id="mu-range" type="range" min="0.01" max="20" step="0.01" value="10" aria-label="Service rate mu slider"></div>
+        <div class="utilization"><div class="section-top"><span>Utilization <span class="symbol">ρ</span></span><button class="info" data-help="rho" aria-label="Explain utilization rho">i</button></div><output id="rho-result">80.00%</output><div class="util-track"><span id="util-fill"></span></div><span id="rho-description" class="unit-caption">Long-run busy time</span></div>
+      </section>
+    </div>
+    <p id="comparison" class="comparison" role="status" aria-live="polite"></p>
+    <section class="randomness" aria-labelledby="randomness-title">
+      <div class="distribution-heading"><div class="section-top"><h2 id="randomness-title">Where the randomness comes from</h2><button class="info" data-help="randomness" aria-label="Explain Poisson, exponential and Markov">i</button></div><div class="window-control"><label for="window-number">Time window <span class="symbol">t</span></label><input id="window-number" type="number" min="1" max="60" step="0.01" value="10.00" inputmode="decimal"><span>min</span><button class="info" data-help="window" aria-label="Explain the time window">i</button></div></div>
+      <div class="distribution-grid">
+        <article class="panel distribution"><div class="section-top"><h3>How many arrive?</h3><button class="info" data-help="poisson" aria-label="Explain the Poisson count distribution">i</button></div><div class="distribution-type">Poisson · count in <span data-window>10.00</span> min</div><svg id="count-chart" role="img" aria-label="Poisson probabilities for the number of arrivals"></svg><div class="dist-summary" id="count-summary"></div><div class="dist-formula">P(N = k) = e<sup>−m</sup>m<sup>k</sup>/k!</div><div class="dist-worked" id="count-worked"></div></article>
+        <article class="panel distribution"><div class="section-top"><h3>How far apart?</h3><button class="info" data-help="gaps" aria-label="Explain exponential arrival gaps">i</button></div><div class="distribution-type">Exponential · time between arrivals <span class="symbol">A</span></div><svg id="gap-chart" role="img" aria-label="Exponential density of time between arrivals"></svg><div class="dist-summary" id="gap-summary"></div><div class="dist-formula">f<sub>A</sub>(a) = (λ/60)e<sup>−(λ/60)a</sup></div><div class="dist-worked" id="gap-worked"></div></article>
+        <article class="panel distribution"><div class="section-top"><h3>How long to serve?</h3><button class="info" data-help="service" aria-label="Explain exponential service times">i</button></div><div class="distribution-type">Exponential · service time <span class="symbol">S</span></div><svg id="service-chart" role="img" aria-label="Exponential density of service time"></svg><div class="dist-summary" id="service-summary"></div><div class="dist-formula">f<sub>S</sub>(s) = (μ/60)e<sup>−(μ/60)s</sup></div><div class="dist-worked" id="service-worked"></div></article>
+      </div>
+    </section>
+    <details id="sample-details" class="sample-section"><summary>Watch one random sample <span class="sample-tag">Seeded · starts empty</span></summary>
+      <div class="sample-content">
+        <div class="sample-toolbar"><label for="seed">Seed <input id="seed" type="number" min="0" max="4294967295" step="1" value="42"></label><label for="horizon">Duration <select id="horizon"><option value="8">8 hours</option><option value="48" selected>48 hours</option><option value="240">240 hours</option></select></label><label for="warmup">Warm-up <input id="warmup" type="number" min="0" max="239" step="0.01" value="4.00"> h</label><button class="info" data-help="sample" aria-label="Explain sample measurement and warm-up">i</button><button class="action" id="run-sample">Generate sample</button></div>
+        <p class="input-error" id="sample-error" role="alert" hidden></p>
+        <div id="sample-results">
+          <div class="sample-playback"><button class="action primary" id="play-sample">Play sample</button><label for="speed">Speed <select id="speed"><option value="1">1×</option><option value="4">4×</option><option value="16">16×</option></select></label><label class="time-label" for="sample-time">Time <output id="sample-clock">0.00 h</output></label><input id="sample-time" type="range" min="0" max="48" step="0.01" value="0" aria-label="Sample time in hours"></div>
+          <div class="queue-scene"><div><div class="scene-label">Waiting now <span class="symbol">Q(t)</span> <strong id="queue-now">0</strong></div><div id="customers" class="customers"></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="server" id="server"><span>ONE SERVER</span><strong id="server-state">Idle</strong><span id="server-customer"></span></div></div>
+          <svg id="sample-chart" role="img" aria-label="Sample number waiting over time"></svg>
+          <table class="sample-table"><caption>Full-run averages · <span id="measurement-window"></span> <button class="text-button" data-help="differences" aria-label="Explain why sample and model differ">Why do they differ? ⓘ</button></caption><thead><tr><th scope="col">Measure</th><th scope="col">Sample average</th><th scope="col">Long-run model</th></tr></thead><tbody id="sample-stats"></tbody></table>
+          <p class="sample-note" id="sample-note"></p>
+        </div>
+      </div>
+    </details>
+    <noscript><p>Enable JavaScript to use the controls and calculations.</p></noscript>
+  </main>
+  <footer class="lab-footer"><span>O5 · v0.2 · October 31, 2026</span><button class="text-button" data-help="model">Model assumptions ⓘ</button><button class="text-button" data-help="sources">References ⓘ</button><span id="download-status" role="status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button id="close-help" aria-label="Close explanation" autofocus>×</button></div><div id="help-body"></div></dialog>
+  <script>{{MODEL}}</script><script>{{APP}}</script>
+</body>
+</html>

@@ -2,13 +2,13 @@
 
 ## Current status
 
-As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. No Operations visualization has been built yet; its catalog still shows planned topics.
+This repository is public and GitHub Pages was enabled for main → /docs during setup. M/M/1 Queueing v0.2 is the first owner-approved Operations visualization, included with its generated catalog and single HTML download. Check the Pages deployment after each push.
 
 ## Recommended route: GitHub Pages
 
 Classmates should receive the Pages catalog URL. Once demos are ready, they can select Open or Download HTML with no GitHub account. The download is the same offline-capable file used online. Publish only docs/, which contains the generated catalog, .nojekyll and the ready downloads.
 
-When the owner requests the initial publication:
+For an authorized publication:
 
 1. Run python3 scripts/manage.py build and python3 scripts/manage.py check. Complete the ready demos' browser evidence.
 2. Review all files to be committed for original course documents, personal information, secrets, machine paths and unapproved assets. Resolve the license decision in RIGHTS.md.
@@ -30,5 +30,5 @@ The catalog's same-origin download attribute is designed for Pages. Test the act
 - [Choose branch and /docs publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 - [Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 
-Expected URL after Pages is configured and verified: https://bpdiehl.github.io/ops_visualizations/
-This is a planned URL, not a live deployment claim.
+Class catalog: [Operations visualizations](https://bpdiehl.github.io/ops_visualizations/).
+Direct visualization: [M/M/1 Queueing](https://bpdiehl.github.io/ops_visualizations/downloads/mm1.html). Verify the deployed version after pushing.

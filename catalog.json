@@ -42,7 +42,7 @@
       "title": "M/M/1 Queueing",
       "question": "Why does waiting grow so quickly near full utilization?",
       "wave": 1,
-      "status": "planned"
+      "status": "ready"
     },
     {
       "id": "O6",

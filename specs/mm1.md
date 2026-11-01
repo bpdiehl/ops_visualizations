@@ -1,6 +1,6 @@
 # O5 — M/M/1 Queueing
 
-Status: planned. Catalog slug: mm1. Recommended build wave: 1.
+Status: ready, owner accepted v0.2 on 2026-10-31; documented release coverage limits apply. Catalog slug: mm1. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -49,3 +49,26 @@ Show units and dimensional consistency. The distribution of simulated waits shou
 **Out of scope:** Multiple servers (M/M/c), balking/reneging behavior, psychological perception of waits as a quantitative model. Paramount can be an optional qualitative case vignette rather than pretending it is accurately represented by one M/M/1 server.
 
 **Acceptance tests:** λ=8/h, μ=10/h → ρ=.8, L=4, Lq=3.2, W=.5 h (30 min), Wq=.4 h (24 min). λ=9.5/h, μ=10/h → ρ=.95, W=2 h, Wq=1.9 h. λ≥μ flags unstable and hides invalid steady-state metrics. Long seeded runs should approach theoretical values within a **tolerance**, not exact equality.
+
+
+## Implemented pilot — v0.1, 2026-10-31
+
+- Default theoretical chart: average customers waiting Lq versus utilization. Toggle to Wq (minutes waiting) without changing the scenario. Queue excludes the customer in service; a composition bar shows queue plus service equals the whole system.
+- λ and μ controls pair exact two-decimal entry with sliders. Rates are customers/hour; times are minutes. Observation window t (1–60 minutes) changes distribution probabilities only.
+- All six theoretical results have visible equations and current substitution. A factor of 60 makes the hourly-rate/minute-time conversion explicit. Results retain two decimal places and fixed-width numeric slots; related equation terms highlight during editing and fade afterward.
+- Three always-visible probability plots: Poisson count in t minutes, exponential interarrival gap, and exponential service time. Independent time axes, marked means, and shaded cumulative probability; density height is not presented as a point probability. No third “Markov distribution” is invented.
+- Four presets, Reset, keyboard/touch help, and a paused-by-default seeded FIFO sample. Seed, duration, warm-up, speed and scrubber are under the sample disclosure. Statistics use the full simulation horizon, separate from playback time.
+- Sample queue/system sizes and busy time are time-weighted over [warm-up, horizon]. Wait averages use only post-warm-up arrivals completed by the horizon; unfinished cohort members are counted and excluded with an explicit downward-bias caveat. Measured throughput includes all departures in that interval. The sample does not claim finite-window Little's Law equality.
+- λ ≥ μ suppresses finite steady-state means; λ/μ is then labeled a load ratio rather than an achievable busy-time percentage. λ = 0 gives no finite interarrival mean; W is hypothetical service time for an arrival to an empty system.
+- Illustrative examples, original graphics/copy. Course references remain private; no original notes or case screenshots are embedded.
+- Deferred: multiple servers, alternate distributions, empirical fitting, wait histogram, confidence intervals and replication controls. No general-purpose queueing package or dependency was added.
+- Owner accepted v0.2 and authorized commit/push on 2026-10-31. See ../verification/mm1.md for completed checks and the explicit saved-file/offline coverage exception.
+
+Mathematical references checked 2026-10-31: [MIT OpenCourseWare, M/M/1 Queue](https://ocw.mit.edu/courses/2-854-introduction-to-manufacturing-systems-fall-2016/resources/mit2_854f16_mm1queue/) and [NIST, homogeneous Poisson process](https://itl.nist.gov/div898/handbook/apr/section1/apr171.htm).
+
+
+## Owner feedback — v0.2
+
+The equation section precedes the main chart and rate controls. Distributions immediately follow the controls, with no equation section between them. All five vertical-axis titles are rotated −90 degrees along the left edge, with reserved margins. Sample statistics are explicitly full-run averages, distinct from the playback snapshot. A “Why do they differ?” information control explains finite random samples, seed variation, empty-start transients, warm-up limitations, slow settling near capacity, and existing unfinished-customer exclusions. Longer does not imply closer on every individual extension. The sample plot scale includes the theoretical Lq line even when a short run stays below it.
+
+The queue calculations and sample measurement conventions are unchanged. An independent regression integrates each customer's queue/service/system intervals to check the event-based time averages across seeds 42–44 and arrival rates 0, 8, 9.5 and 11 per hour.

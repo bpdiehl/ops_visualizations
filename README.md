@@ -2,15 +2,15 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**The collection is being built. No visualizations are available yet.** The topics below are planned. No GitHub account will be needed to use finished downloads.
+**M/M/1 Queueing is available.** Other topics are planned. No GitHub account is needed.
 
 ## For classmates
 
-Once available, choose a topic in the [visualization catalog](docs/index.html), select Download HTML, find the .html file in Downloads, and double-click it to open in your browser. Each download will work by itself offline. No coding, software installation or ZIP extraction is needed. A laptop is recommended.
+Choose a topic in the [visualization catalog](https://bpdiehl.github.io/ops_visualizations/), select Download HTML, find the .html file in Downloads, and double-click it to open in your browser. Each download will work by itself offline. No coding, software installation or ZIP extraction is needed. A laptop is recommended.
 
-GitHub displays HTML source rather than running the catalog. The intended class link will be the GitHub Pages address after the owner enables and verifies it. Until then, a tested HTML file can be shared directly. If a file opens in an editor, right-click → Open With → your browser.
+[Open M/M/1 Queueing](https://bpdiehl.github.io/ops_visualizations/downloads/mm1.html) or use the catalog’s Download HTML button. If a downloaded file opens in an editor, right-click → Open With → your browser. See verification/mm1.md for tested coverage and the remaining saved-file/offline testing limits.
 
-## Planned topics
+## Topics
 
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ GitHub displays HTML source rather than running the catalog. The intended class 
 | O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Planned |
 | O3 | [Batching, Setups & Scheduling](specs/batching.md) | 2 | Planned |
 | O4 | [WIP, Storage & Buffer Dynamics](specs/wip.md) | 2 | Planned |
-| O5 | [M/M/1 Queueing](specs/mm1.md) | 1 | Planned |
+| O5 | [M/M/1 Queueing](specs/mm1.md) | 1 | Available |
 | O6 | [Inventory Decisions](specs/inventory.md) | 2 | Planned |
 | O7 | [Quality: SPC & Capability](specs/spc.md) | 3 | Planned |
 
@@ -49,3 +49,9 @@ python3 scripts/manage.py check
 Ready downloads and the catalog are checked in. [Publishing instructions](PUBLISHING.md) use main → /docs for GitHub Pages. Original lecture files and the private source dump belong outside this repository.
 
 [Rights and provenance](RIGHTS.md): a public reuse license has not been selected. The briefs derive from a supplied planning specification; referenced original course notes were not supplied or verified in this setup.
+
+## M/M/1 Queueing
+
+v0.2 defaults to average line length, with a wait-time toggle, Poisson arrival-count and exponential-time plots, visible worked equations, and an optional seeded FIFO sample. The owner approved it for commit and publication on 2026-10-31.
+
+For local development, run `python3 scripts/manage.py preview mm1`, then serve only `.preview/` with `python3 -m http.server 8771 --directory .preview --bind 127.0.0.1`. Open `http://127.0.0.1:8771/mm1.html`. See `verification/mm1.md` for evidence and remaining download/offline checks.
