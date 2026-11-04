@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**M/M/1 Queueing is available.** Other topics are planned. No GitHub account is needed.
+**M/M/1 Queueing is available.** Bottlenecks is in local review; the remaining topics are planned. No GitHub account is needed.
 
 ## For classmates
 
@@ -15,7 +15,7 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/ops_visu
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
 | O1 | [Process Flow Fundamentals](specs/process-flow.md) | 1 | Planned |
-| O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Planned |
+| O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Local draft |
 | O3 | [Batching, Setups & Scheduling](specs/batching.md) | 2 | Planned |
 | O4 | [WIP, Storage & Buffer Dynamics](specs/wip.md) | 2 | Planned |
 | O5 | [M/M/1 Queueing](specs/mm1.md) | 1 | Available |
@@ -55,3 +55,7 @@ Ready downloads and the catalog are checked in. [Publishing instructions](PUBLIS
 v0.2 defaults to average line length, with a wait-time toggle, Poisson arrival-count and exponential-time plots, visible worked equations, and an optional seeded FIFO sample. The owner approved it for commit and publication on 2026-10-31.
 
 For local development, run `python3 scripts/manage.py preview mm1`, then serve only `.preview/` with `python3 -m http.server 8771 --directory .preview --bind 127.0.0.1`. Open `http://127.0.0.1:8771/mm1.html`. See `verification/mm1.md` for evidence and remaining download/offline checks.
+
+## Bottlenecks draft
+
+The O2 constraint lab is in local owner review. Build it with `python3 scripts/manage.py preview bottlenecks` and serve `.preview/` using the same local-development workflow. It is not a public download yet. See `specs/bottlenecks.md` and `verification/bottlenecks.md` for scope and evidence.

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><meta name="description" content="An interactive three-station bottleneck and capacity lab. Standalone browser visualization."><title>Bottlenecks · Operations Lab</title><style>{{STYLES}}</style></head>
+<body class="bottleneck-app">
+  <a class="skip" href="#main">Skip to visualization</a>
+  <header class="lab-header">
+    <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>OPERATIONS / 02</span></div>
+    <div class="heading-row"><div><h1>Bottlenecks</h1><p>Improve a station. Watch what limits the line.</p></div><button class="action" id="download">Download HTML ↓</button></div>
+  </header>
+  <main id="main">
+    <nav class="preset-row" aria-label="Example scenarios"><div id="presets"></div><button id="reset" class="text-button">Reset</button></nav>
+    <details class="equations" id="equation-details">
+      <summary>Station &amp; system capacity</summary>
+      <div class="equation-content"><div class="equation-grid">
+      <div class="equation"><div class="eq-heading">Station capacity <button class="info" data-help="capacity" aria-label="Explain station capacity">i</button></div>
+        <div class="formula"><span data-symbol="Ci">C<sub data-symbol="i">i</sub></span> = <span data-symbol="n" data-edit="nA nB nC">n<sub data-symbol="i">i</sub></span><span data-symbol="r" data-edit="rA rB rC">r<sub data-symbol="i">i</sub></span> = <span data-symbol="n" data-edit="nA nB nC">n<sub data-symbol="i">i</sub></span> × 60 / <span data-symbol="CT" data-edit="rA rB rC">CT<sub data-symbol="i">i</sub></span></div><div class="worked" id="station-equations"></div>
+      </div>
+      <div class="equation"><div class="eq-heading">System capacity <button class="info" data-help="bottleneck" aria-label="Explain system capacity and bottlenecks">i</button></div>
+        <div class="formula"><span data-symbol="C">C</span> = min(<span data-symbol="Ci">C<sub data-symbol="i">A</sub></span>, <span data-symbol="Ci">C<sub data-symbol="i">B</sub></span>, <span data-symbol="Ci">C<sub data-symbol="i">C</sub></span>)</div><div class="worked" id="capacity-equation"></div>
+      </div>
+      <div class="equation"><div class="eq-heading">Output rate <button class="info" data-help="throughput" aria-label="Explain output rate">i</button></div>
+        <div class="formula"><span data-symbol="rout">r<sub data-symbol="rout">out</sub></span> = min(<span data-symbol="d" data-edit="d">d</span>, <span data-symbol="C">C</span>)</div><div class="worked" id="throughput-equation"></div>
+      </div>
+      <div class="equation"><div class="eq-heading">Utilization <button class="info" data-help="utilization" aria-label="Explain utilization">i</button></div>
+        <div class="formula"><span data-symbol="u">u<sub data-symbol="i">i</sub></span> = <span data-symbol="rout">r<sub data-symbol="rout">out</sub></span> / <span data-symbol="Ci">C<sub data-symbol="i">i</sub></span></div><div id="utilization-equations" class="worked"></div>
+      </div>
+      </div>
+      <div class="notation-body"><div class="notation-toolbar"><span>Choose a symbol to highlight it.</span><button class="text-button" id="clear-symbol">Clear highlight</button></div><div class="notation-grid" id="symbol-key"></div></div></div>
+    </details>
+    <p class="input-error" id="error" role="alert" hidden></p>
+    <div class="workspace">
+      <section class="visual panel" aria-labelledby="flow-title">
+        <div class="section-top"><h2 id="flow-title">Station capacities</h2><button class="info" data-help="model" aria-label="Explain production line assumptions">i</button></div>
+        <div class="result-line"><div><span class="result-label">Output rate <span class="symbol" data-symbol="rout">r<sub data-symbol="rout">out</sub></span></span><div><output id="throughput">8.00</output><span class="result-unit">units/hour</span></div></div><span class="binding-badge" id="binding">Station B limits output</span></div>
+        <div id="chart-area"><svg id="capacity-chart" role="img" aria-labelledby="chart-title chart-desc"></svg></div>
+        <div class="chart-key"><span><i class="key-box capacity"></i>Station capacity</span><span><i class="key-box constraint"></i>Capacity bottleneck</span><span><i class="key-line output"></i>Output rate</span><span><i class="key-line demand"></i>Demand</span></div>
+        <table class="station-table"><caption class="sr-only">Station capacities and utilization</caption><thead><tr><th scope="col">Station</th><th scope="col">Capacity <span class="symbol" data-symbol="Ci">C<sub data-symbol="i">i</sub></span><span class="table-unit">units/hour</span></th><th scope="col">Utilization <span class="symbol" data-symbol="u">u<sub data-symbol="i">i</sub></span> <button class="info" data-help="utilization" aria-label="Explain utilization">i</button></th></tr></thead><tbody id="station-results"></tbody></table>
+      </section>
+      <aside class="input-column" aria-label="Production inputs">
+        <section class="controls panel" aria-labelledby="assumptions-title"><div class="section-top"><h2 id="assumptions-title">Main assumptions</h2><button class="info" data-help="rates" aria-label="Explain machine rates and cycle times">i</button></div><div class="input-mode" role="group" aria-label="Station input units"><button id="mode-rate" aria-pressed="true">Rate</button><button id="mode-time" aria-pressed="false">Cycle Time (CT)</button></div><div id="main-controls"></div></section>
+        <details class="advanced panel" id="advanced"><summary>Parallel machines</summary><div id="resource-controls"></div></details>
+      </aside>
+    </div>
+    <section class="comparison" aria-labelledby="comparison-title"><div class="comparison-heading"><h2 id="comparison-title">Compared with saved case</h2><button class="text-button" id="save-case">Save current case</button><button class="info" data-help="comparison" aria-label="Explain saved comparison">i</button></div><div class="comparison-metrics"><div><span>System capacity <span class="symbol" data-symbol="C">C</span></span><strong id="capacity-change"></strong></div><div><span>Output rate <span class="symbol" data-symbol="rout">r<sub data-symbol="rout">out</sub></span></span><strong id="throughput-change"></strong></div><div><span>Unmet demand</span><strong id="unmet-change"></strong></div></div><p id="comparison-note" role="status"></p></section>
+    <noscript><p class="input-error">Enable JavaScript to use the visualization and calculations.</p></noscript>
+  </main>
+  <footer class="lab-footer"><span>O2 · v0.3.4 draft · November 3, 2026</span><button class="text-button" data-help="model">Model assumptions ⓘ</button><button class="text-button" data-help="references">References ⓘ</button><span role="status" id="download-status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button id="close-help" aria-label="Close explanation" autofocus>×</button></div><div id="help-body"></div></dialog>
+  <script>{{MODEL}}</script><script>{{APP}}</script>
+</body></html>

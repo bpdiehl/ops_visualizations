@@ -1,6 +1,6 @@
 # O2 — Bottlenecks & Production Design
 
-Status: planned. Catalog slug: bottlenecks. Recommended build wave: 1.
+Status: local owner-review draft v0.2. Catalog slug: bottlenecks. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -41,3 +41,17 @@ The full brief preserves future modes. For a pilot, deliver the simplest faithfu
 **Out of scope:** General combinatorial line-balancing optimization, detailed multi-product scheduling, arbitrary reentrant networks.
 
 **Acceptance tests:** 12/8/10 yields capacity 8, changing 8→11 yields 10. Demand 6 yields actual throughput 6 with capacity still 8. Two 8-capacity stages are both binding. Rate conversion and yields produce correct comparable finished-unit limits.
+
+## Implemented pilot — November 3, 2026
+
+The constraint lab uses exactly three serial stations, one product and one shared finished-unit basis. Four main controls are three machine rates r_i (units/hour), or equivalent machine Cycle Times CT_i (minutes/unit), and demand d. A Rate / Cycle Time (CT) toggle preserves the full-precision underlying rates. Collapsed **Parallel machines** inputs n_i sit directly beneath the main assumptions. C_i = n_i r_i = n_i × 60/CT_i, C = min(C_A,C_B,C_C), r_out = min(d,C). The station/system equations, substitutions, utilization relation and interactive symbol key are together in one collapsed disclosure under the top/preset section. The chart compares station capacity, demand and line output rate; a table gives utilization r_out/C_i. The line CT at capacity is 60/C. An interactive key defines one symbol per row, including CT_i and station index i, and targets nested subscripts.
+
+This is an ideal deterministic steady-flow calculation, not an event simulation or observed output. It assumes sufficient materials, coordinated release, nonrestrictive buffers, identical independent parallel resources, 100% yield, and no setup/transfer/failure losses. No queue lengths are fabricated. A zero-rate station stops the line; its 0/0 utilization is undefined. Low demand limits output while capacity bottlenecks still identify the minimum capacity.
+
+Presets: middle constraint, B improved to 11, two tied stations, low demand. Presets restore the original baseline and retain the chosen input view; Save current case replaces the baseline. Reset restores initial inputs, rate view and baseline. Machine rates allow 0–30 units/hour, parallel machines integer 1–6, demand 0–60 units/hour. Equivalent finite times must be at least 2 minutes/unit (the 30-unit/hour maximum). A stopped machine has rate 0 and time ∞; its time slider is disabled until a finite time is entered. Finite time sliders start at 2–60 minutes and expand to accommodate larger entered times. Full precision is retained in canonical rates; displayed values use two decimals, machine counts integers.
+
+Cycle Time (CT) for one machine is its interval between completions while working. The station's interval becomes CT/n_i with n_i identical parallel machines; the line CT is set by capacity. The UI avoids presenting the machine CT as whole-line CT. Throughput Time (TPT) measures how long an item spends in the entire process, including waits, and belongs in O1 Process Flow Fundamentals, where WIP and time in system can be taught together. This capacity pilot does not model TPT.
+
+Deferred: 4–6 stations, queue/flow animation, yield and mix conversion, layout comparison and economics. These are future modes, not claims supported by the pilot. No course-case reproduction is included.
+
+Definitions independently checked against [Asef-Vaziri, CSUN, Business Process Flow Engineering, Chapter 2](https://www.csun.edu/~aa2035/CourseBase/Chapters/Process_Flow_Engineering.pdf) (PDF pages 21–23). The pilot uses its own symbols and original numerical examples, and explicitly omits variability. See verification/bottlenecks.md for observed checks and coverage limits. Draft remains outside public downloads pending owner review and release authorization.
