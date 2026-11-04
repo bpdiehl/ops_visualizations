@@ -33,3 +33,10 @@ Put the mathematical symbol next to each variable name on controls, results and 
 Keep the main view focused on equations, the visual, controls and essential results. Put short explanatory taglines, repeated definitions, assumptions and estimation details in the relevant information controls rather than scattering them across the page. Keep units and validation visible.
 
 Choose a consistent display precision for each kind of value and retain trailing zeros. Use tabular digits and fixed-width equation value slots so changing an input does not shift neighboring terms. Keep internal model precision unchanged. A soft highlight may connect an edited input to its equation terms; keep it active while dragging, fade it after release, and respect reduced-motion settings.
+
+
+## Owner review refinements — November 3, 2026
+
+Use the browser's native disclosure triangle on the **left** with a concise section name; no extra Show/Hide labels or decorative toggle badges. Keys default collapsed, with one symbol per row and exact highlighting of nested indices/exponents. Keep numeric columns, info buttons and mixed-unit fields aligned; retain trailing decimals and stable substitution widths. Abbreviations and short explanatory copy belong in info buttons. Rotate vertical axis names along the left. Advanced inputs belong immediately below main assumptions. Keep core equations visible in new demos; a specific owner request can group them in a disclosure.
+
+Operations notation: use CT for Cycle Time, C for capacity, r_out for line output rate. Reserve throughput for Throughput Time (TPT); distinguish raw processing time from effective CT when setups exist. Prefer concrete Parallel machines to resources and units/hour as the displayed rate unit, with scope in help. Include utilization beside capacity equations when relevant, with its own help. New drafts need owner review before their commit/push.

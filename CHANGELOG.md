@@ -1,5 +1,29 @@
 # Change log
 
+## 2026-11-03 — Batching badge refinement
+
+- Matched the capacity-limiting station badge to the corresponding station color; tied constraints use a combined palette.
+- Verified the A/B/C presets in the browser; the project remains a catalog draft without a public download.
+
+## 2026-11-03 — Batching & Setups owner-review draft v0.3
+
+- Retuned shared station assumptions so Small/Middle/Large batch presets move the bottleneck A → B → C by changing only batch size.
+- Explicitly labeled the equation group Steady-state capacity.
+- Updated independent model examples, crossover checks and browser evidence.
+
+## 2026-11-03 — Batching & Setups owner-review draft v0.2
+
+- Added six synchronized station setup/processing sliders alongside exact entry.
+- Limited the key to the main equation symbols and removed schedule equations and the secondary order-rate metric.
+- Kept schedule explanation in its info button; aligned the main equation headings.
+
+## 2026-11-03 — Batching & Setups owner-review draft v0.1
+
+- Added setup-amortized capacity, moving bottlenecks, utilization and a batch-size curve.
+- Added exact three-station whole-batch scheduling, partial final batches and distinct first-batch/order completion metrics.
+- Carried forward native disclosure arrows, collapsed symbol key, precise index highlighting, consistent decimals, aligned controls, info buttons and rotated axis titles.
+- Added independent model checks and browser evidence; remains local draft awaiting owner review.
+
 ## 2026-11-03 — Bottlenecks owner-review draft v0.3.4
 
 - Matched the earlier equation panel pattern: a native disclosure arrow at the left and a concise heading, with no extra show/hide wording.

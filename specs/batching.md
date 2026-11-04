@@ -1,6 +1,6 @@
 # O3 — Batching, Setups & Scheduling
 
-Status: planned. Catalog slug: batching. Recommended build wave: 2.
+Status: local owner-review draft v0.3. Catalog slug: batching. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -36,3 +36,17 @@ The full brief preserves future modes. For a pilot, deliver the simplest faithfu
 **Out of scope:** Full general job-shop solver, automated optimal scheduling, complex calendar/shift management.
 
 **Acceptance tests:** A single machine processing 10 units at 2 min/unit plus one 5-minute setup has 25 min of scheduled processing/setup. No overlapping bars on one exclusive machine. Two machines may overlap legitimately if precedence allows. Altering a sequence can change completion times without changing individual process times.
+
+
+## Implemented pilot — November 3, 2026
+
+Focused first mode: three serial stations, one machine each, one product. Shared process/transfer batch B (1–60 whole units), setup s_i (0–60 min/batch), processing time t_i (0.1–5 min/unit). Effective CT_i=s_i/B+t_i; C_i=60/CT_i; C=min C_i; u_i=C/C_i at repeating line capacity. Keep raw processing time t_i distinct from effective CT_i. Capacity curves and current outputs consume the same pure model.
+
+Finite order Q (1–600 units) uses whole-batch transfer, immediate transport, setup on arrival, repeated setup at every batch including a partial final batch, exclusive station occupancy and initially available material. Start S_i,b=max(F_i−1,b,F_i,b−1); finish F_i,b=S_i,b+s_i+q_b t_i, with missing predecessors finishing at zero. First-batch completion is at station C; makespan T finishes the whole order; finite-order r_out=60Q/T includes startup. This is not individual-item TPT. No shared workers, outside setup or restricted buffers.
+
+Original illustrative defaults: s=[30,15,0], t=[0.5,1.5,2], B=20, Q=120. Small B5 has bottleneck A and capacity9.2308…; Middle ground B20 has bottleneck B and capacity26.6667…; Large B60 has bottleneck C and capacity30 units/hour. These three presets change only batch size. A/B tie at B15; B/C tie at B30. Default first batch finishes at125 minutes and order at350 minutes; at B60 these increase to285 and405 minutes. Capacity is a steady-state repeating-full-batch limit, whereas the finite schedule includes startup/handoff and the final partial batch.
+
+Deferred: mixed products/sequencing, external setup, parallel machines and optimization. These remain future modes in the inherited brief. No course-case reproduction or exact course notation claim. Owner review precedes commit/push; no public download while draft. See verification/batching.md.
+
+
+Owner refinement v0.2: every setup/processing input now has a synchronized slider and exact-entry field. The collapsed key contains only the eight symbols present in the four main capacity equations. Removed scheduling recurrence equations, their symbol entries, and the secondary finite-order-rate metric from the UI; the Gantt area focuses on first-batch and whole-order completion. Its precedence/transfer rules remain in the information button and pure model.
