@@ -87,19 +87,15 @@
   function pulse(key) { edited = key; clearTimeout(glowTimer); applyHighlights(); if (!held) glowTimer = setTimeout(() => { edited = null; applyHighlights(); }, 1000); }
   function release() { held = false; if (edited) pulse(edited); }
   function renderEquations(m) {
-    const valid = !!m;
-    $('station-equations').innerHTML = stationIds.map((id, i) => {
-      const s = valid ? m.stations[i] : {};
-      const speed = inputMode === 'time' ? `60 / ${num(s.time, 'CT', 'r' + id)}` : num(s.rate, 'r', 'r' + id);
-      return `<div class="worked-row"><span class="eq-id">${symbol('Ci', `C${sub(id)}`)}</span> = ${num(s.resources, 'n', 'n' + id, 'count')} × ${speed} = ${num(s.capacity, 'Ci', '', 'result')}<span class="inline-unit">u/h</span></div>`;
-    }).join('');
-    $('capacity-equation').innerHTML = `<div class="system-worked"><div class="substitution">min(${stationIds.map((id, i) => num(valid ? m.stations[i].capacity : null, 'Ci')).join(',')})</div><div class="answer">= ${num(valid ? m.capacity : null, 'C', '', 'result')}<span class="eq-unit">units/hour</span></div></div>`;
-    $('throughput-equation').innerHTML = `<div class="system-worked"><div class="substitution">min(${num(valid ? m.inputs.demand : null, 'd', 'd')}, ${num(valid ? m.capacity : null, 'C')})</div><div class="answer">= ${num(valid ? m.throughput : null, 'rout', '', 'result')}<span class="eq-unit">units/hour</span></div></div>`;
-    $('utilization-equations').innerHTML = stationIds.map((id, i) => {
-      const s = valid ? m.stations[i] : {};
-      return `<span>${symbol('u', `u${sub(id)}`)} = ${symbol('rout', fixed(valid ? m.throughput : null))} / ${symbol('Ci', fixed(s.capacity))} = ${symbol('u', s.utilization == null ? '—' : fixed(s.utilization * 100) + '%')}</span>`;
-    }).join('');
+
+    const valid=!!m,pair=(id,symbols,rows)=>EquationLayout.render(id,symbols,valid?rows:[]),sym=(key,body)=>symbol(key,body);
+    const time=inputMode==='time';
+    pair('station-equations',['Station',sym('Ci','C'+sub('i')),'=',sym('n','n'+sub('i')),'×',...(time?['60','/',sym('CT','CT'+sub('i'))]:[sym('r','r'+sub('i'))])],stationIds.map((id,i)=>{const s=valid?m.stations[i]:{};return[sym('i',id),num(s.capacity,'Ci','','result'),'=',num(s.resources,'n','n'+id,'count'),'×',...(time?['60','/',num(s.time,'CT','r'+id)]:[num(s.rate,'r','r'+id)])];}));
+    pair('capacity-equation',[sym('C','C'),'=','min(',sym('Ci','C'+sub('A')),',',sym('Ci','C'+sub('B')),',',sym('Ci','C'+sub('C')),')'],[[num(valid?m.capacity:null,'C','','result'),'=','min(',...stationIds.flatMap((id,i)=>[...(i?[',']:[]),num(valid?m.stations[i].capacity:null,'Ci')]),')']]);
+    pair('throughput-equation',[sym('rout','r<sub>out</sub>'),'=','min(',sym('d','d'),',',sym('C','C'),')'],[[num(valid?m.throughput:null,'rout','','result'),'=','min(',num(valid?m.inputs.demand:null,'d','d'),',',num(valid?m.capacity:null,'C'),')']]);
+    pair('utilization-equations',['Station',sym('u','u'+sub('i')),'=',sym('rout','r<sub>out</sub>'),'/',sym('Ci','C'+sub('i'))],stationIds.map((id,i)=>{const st=valid?m.stations[i]:{};return[sym('i',id),sym('u',st.utilization==null?'—':fixed(st.utilization*100)+'%'),'=',num(valid?m.throughput:null,'rout'),'/',num(st.capacity,'Ci')];}));
   }
+
   function drawChart(m) {
     const svg = $('capacity-chart');
     if (!m) { svg.innerHTML = '<title id="chart-title">Capacity chart unavailable</title><desc id="chart-desc">Correct the input errors to see current results.</desc><text x="50%" y="50%" text-anchor="middle" fill="#50616f">Correct the inputs to see the line.</text>'; return; }

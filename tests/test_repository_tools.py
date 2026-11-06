@@ -76,6 +76,25 @@ class PackagingTests(unittest.TestCase):
             self.assertNotIn('{{', output)
             self.assertIn('body{color:black}', output)
 
+    def test_shared_equation_helper_is_embedded_before_app_and_checked(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _, demo = self.fixture(root)
+            source = root / 'src/example'
+            (source / 'page.html').write_text('<!doctype html><html><style>{{STYLES}}</style>'
+                                             '<script>{{MODEL}}</script><script>{{APP}}</script></html>', encoding="utf-8")
+            (source / 'styles.css').write_text('/* styles */', encoding="utf-8")
+            (source / 'model.js').write_text('/* model */', encoding="utf-8")
+            (source / 'app.js').write_text('globalThis.appOrder=globalThis.helperReady;', encoding="utf-8")
+            helper = root / 'src/shared/equation-layout.js'
+            helper.write_text('globalThis.helperReady=true;', encoding="utf-8")
+            output = manage.render_demo(root, demo, require_evidence=False)
+            self.assertEqual(output.count('globalThis.helperReady=true;'), 1)
+            self.assertLess(output.index('globalThis.helperReady=true;'), output.index('globalThis.appOrder='))
+            helper.write_text('</script><p>invalid helper</p>', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, 'closing style/script'):
+                manage.render_demo(root, demo, require_evidence=False)
+
     def test_duplicate_ids_and_path_traversal_are_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

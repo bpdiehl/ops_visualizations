@@ -85,3 +85,9 @@ No public reuse license was selected or changed. Public source and sharing remai
 - No matching mm1 HTML appeared in the local Downloads folder, so saving remains unverified. The button action and correct target are verified, not an actual saved download or offline execution.
 - Reviewed 37 public candidate files for private paths, key/token signatures, original course/Office/archive files and symlinks. No findings. Personal originals and screenshots remain outside the repository. No new license or shared Finance change was made.
 - Remote main matched the local base before committing. The authorized push and Pages deployment will be verified externally after this release commit.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

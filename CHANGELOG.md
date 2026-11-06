@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-11-06 — Equation and legend consistency release
+
+- M/M/1 v0.2.1, Bottlenecks v0.4 and Batching & Setups v0.4.
+- Aligned symbolic and numeric terms/results, including distribution means; rendered divisions as textbook fractions.
+- Standardized soft amber editing/symbol feedback and notation buttons; coordinated graph legend typography while preserving series colors and markers.
+- Published the previously accepted Bottlenecks and Batching demos in the Operations catalog with Open/Download actions.
+- Owner authorized commit/push. Evidence and coverage limits: verification/equation-layout-review.md and individual records.
+
 ## 2026-11-03 — Batching badge refinement
 
 - Matched the capacity-limiting station badge to the corresponding station color; tied constraints use a combined palette.

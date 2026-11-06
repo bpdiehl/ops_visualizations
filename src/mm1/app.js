@@ -21,15 +21,8 @@
   };
   const token = (key, text, cls = "") => `<span class="eq-token ${cls}" data-var="${key}">${text}</span>`;
   const num = (key, value, cls = "") => token(key, fixed(value), cls);
-  const equations = [
-    ["Utilization", () => `ρ = ${token("lambda", "λ")} / ${token("mu", "μ")}`, m => `${num("lambda", m.inputs.lambda)} / ${num("mu", m.inputs.mu)} = ${token("lambda mu", pct(m.rho), "eq-result")}`],
-    ["Mean service time", () => `E[S] = 60 / ${token("mu", "μ")}`, m => `60 / ${num("mu", m.inputs.mu)} = ${token("mu", min(m.service), "eq-result")}`],
-    ["Waiting in queue", () => `W<sub>q</sub> = <span class="group">60${token("lambda", "λ")} / [${token("mu", "μ")}(${token("mu", "μ")} − ${token("lambda", "λ")})]</span>`, m => m.stable ? `<span class="group">60 × ${num("lambda", m.inputs.lambda)}</span><span class="group">/ [${num("mu", m.inputs.mu)} ×</span><span class="group">(${num("mu", m.inputs.mu)} − ${num("lambda", m.inputs.lambda)})]</span> = ${token("lambda mu", min(m.Wq), "eq-result")}` : "No finite steady-state mean"],
-    ["Time in system", () => `W = W<sub>q</sub> + 60 / ${token("mu", "μ")}`, m => m.stable ? `${num("lambda mu", m.Wq)} + ${num("mu", m.service)} = ${token("lambda mu", min(m.W), "eq-result")}` : "No finite steady-state mean"],
-    ["Customers waiting", () => `L<sub>q</sub> = ${token("lambda", "λ")}W<sub>q</sub> / 60`, m => m.stable ? `${num("lambda", m.inputs.lambda)} × ${num("lambda mu", m.Wq)} / 60 = ${token("lambda mu", fixed(m.Lq), "eq-result")} customers` : "No finite steady-state mean"],
-    ["Customers in system", () => `L = ${token("lambda", "λ")}W / 60`, m => m.stable ? `${num("lambda", m.inputs.lambda)} × ${num("lambda mu", m.W)} / 60 = ${token("lambda mu", fixed(m.L), "eq-result")} customers` : "No finite steady-state mean"]
-  ];
-  $("equation-grid").innerHTML = equations.map(([label, symbolic], i) => `<div class="eq"><div class="eq-title"><span class="step">${i + 1}</span>${label}</div><div class="formula">${symbolic()}</div><div class="worked" id="eq-${i}"></div></div>`).join("");
+  const equations=['Utilization','Mean service time','Waiting in queue','Time in system','Customers waiting','Customers in system'];
+  $("equation-grid").innerHTML=equations.map((label,i)=>`<div class="eq"><div class="eq-title"><span class="step">${i+1}</span>${label}</div><div class="formula"></div><div class="worked" id="eq-${i}"></div></div>`).join('');
   const read = () => Object.fromEntries(Object.keys(M.DEFAULTS).map(k => [k, $(k + "-number").value.trim() === "" ? NaN : Number($(k + "-number").value)]));
   let current = null, sample = null, sampleDirty = true, timer = null, lastFrame = 0, sampleT = 0, chartMode = "length";
   let heldKey = null, pulseTimer = null, lastHelpButton = null;
@@ -106,7 +99,7 @@
     out += text((b.left + b.right) / 2, b.height - 2, "Arrivals k (customers)", "middle");
     svg.innerHTML = out;
     $("count-summary").innerHTML = `<strong>${pct(d.pZero)}</strong> none · <strong>${pct(d.pOne)}</strong> one<br><strong>${pct(d.pMany)}</strong> two or more`;
-    $("count-worked").innerHTML = `m = ${num("lambda", m.inputs.lambda)} × ${num("window", m.inputs.window)} / 60 = ${num("lambda window", d.countMean, "eq-result")}`;
+    EquationLayout.render("count-worked",["m","=",token("lambda","λ"),"×",token("window","Δt"),"/","60"],[[num("lambda window",d.countMean,"eq-result"),"=",num("lambda",m.inputs.lambda),"×",num("window",m.inputs.window),"/","60"]]);
   }
   function drawExponential(m, type) {
     const isGap = type === "gap", d = isGap ? m.distributions.arrivalTime : m.distributions.serviceTime;
@@ -115,7 +108,7 @@
     if (!d) {
       svg.innerHTML = text(b.width / 2, 82, "λ = 0: no arrivals", "middle") + text(b.width / 2, 104, "No finite arrival-gap distribution", "middle");
       $(type + "-summary").innerHTML = "No arrivals at λ = 0.";
-      $(type + "-worked").innerHTML = "E[A] has no finite value"; return;
+      EquationLayout.render(type+"-worked",["E[A]","=","60","/",token("lambda","λ")],[]);$(type+"-worked").innerHTML='<span style="grid-column:1/-1;grid-row:2">E[A] has no finite value</span>'; return;
     }
     let out = axes(b, d.timeMax, d.densityMax, "Time (min)", "Density (1/min)", x => x.toFixed(1), x => x < .01 && x > 0 ? x.toExponential(0) : x.toFixed(2));
     const points = d.points.map(p => [b.x(p.t / d.timeMax), b.y(p.density / d.densityMax)]);
@@ -129,7 +122,7 @@
     if (m.inputs.window <= d.timeMax) out += line(b.x(m.inputs.window / d.timeMax), b.top + 28, b.x(m.inputs.window / d.timeMax), b.bottom, "#7b8995", 'stroke-dasharray="2 4"');
     svg.innerHTML = out;
     $(type + "-summary").innerHTML = `<strong>${pct(d.within)}</strong> ${isGap ? "of gaps end" : "of services finish"}<br>within <span data-window>${fixed(m.inputs.window)}</span> min <span class="muted">(shaded area)</span>`;
-    $(type + "-worked").innerHTML = `E[${isGap ? "A" : "S"}] = 60 / ${num(key, m.inputs[key])} = ${token(key, min(d.mean), "eq-result")}`;
+    EquationLayout.render(type+"-worked",[`E[${isGap?"A":"S"}]`,"=","60","/",token(key,isGap?"λ":"μ")],[[token(key,min(d.mean),"eq-result"),"=","60","/",num(key,m.inputs[key])]]);
   }
   function drawDistributions(m) {
     document.querySelectorAll("[data-window]").forEach(el => el.textContent = fixed(m.inputs.window));
@@ -177,7 +170,18 @@
     $("queue-time").textContent = length ? fixed(q) : min(q); $("service-time").textContent = length ? fixed(service) : min(service); $("total-time").textContent = length ? fixed(total) : min(total);
     $("queue-bar").style.width = m.stable && total ? (q / total * 100) + "%" : "0%";
     $("service-bar").style.width = m.stable && total ? (service / total * 100) + "%" : "0%";
-    equations.forEach((eq, i) => $("eq-" + i).innerHTML = eq[2](m));
+
+    const l=token('lambda','λ'),u=token('mu','μ'),v=(key,value)=>num(key,value),out=(text)=>token('lambda mu',text,'eq-result');
+    const aligned=[
+      [['ρ','=',l,'/',u],[out(pct(m.rho)),'=',v('lambda',m.inputs.lambda),'/',v('mu',m.inputs.mu)],true],
+      [['E[S]','=','60','/',u],[out(min(m.service)),'=','60','/',v('mu',m.inputs.mu)],true],
+      [['W<sub>q</sub>','=','60','×',l,'/','[',u,'×','(',u,'−',l,')',']'],[out(min(m.Wq)),'=','60','×',v('lambda',m.inputs.lambda),'/','[',v('mu',m.inputs.mu),'×','(',v('mu',m.inputs.mu),'−',v('lambda',m.inputs.lambda),')',']'],m.stable],
+      [['W','=','W<sub>q</sub>','+','60','/',u],[out(min(m.W)),'=',v('lambda mu',m.Wq),'+','60','/',v('mu',m.inputs.mu)],m.stable],
+      [['L<sub>q</sub>','=',l,'×','W<sub>q</sub>','/','60'],[out(fixed(m.Lq)),'=',v('lambda',m.inputs.lambda),'×',v('lambda mu',m.Wq),'/','60'],m.stable],
+      [['L','=',l,'×','W','/','60'],[out(fixed(m.L)),'=',v('lambda',m.inputs.lambda),'×',v('lambda mu',m.W),'/','60'],m.stable]
+    ];
+    aligned.forEach(([symbols,values,ok],idx)=>{EquationLayout.render('eq-'+idx,symbols,ok?[values]:[]);if(!ok)$('eq-'+idx).innerHTML='<span style="grid-column:1/-1;grid-row:2">No finite steady-state mean</span>';});
+
     drawWait(m); drawDistributions(m);
     const base = M.calculateModel(M.DEFAULTS);
     $("comparison").hidden = raw.lambda === M.DEFAULTS.lambda && raw.mu === M.DEFAULTS.mu;

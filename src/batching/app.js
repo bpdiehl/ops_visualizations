@@ -45,10 +45,12 @@ function render(){
  const v=M.validate(state);$('error').hidden=v.ok;$('error').textContent=v.errors.join(' ');$('download').disabled=!v.ok;
  if(!v.ok){current=null;for(const id of ['cycle-worked','capacity-worked','system-worked','utilization-worked','capacity-result','bottleneck','first-batch','makespan','capacity-chart','gantt'])$(id).replaceChildren();return;}
  current=M.calculate(state);
- $('cycle-worked').innerHTML=current.stations.map(s=>`<div class="worked-row">${sy('CT','CT',s.id)} = ${num(s.setup,'s',s.id)} / <span data-symbol="B" data-edit="batch">${state.batch}</span> + ${num(s.time,'t',s.id)} = ${num(s.cycle,'CT')}</div>`).join('');
- $('capacity-worked').innerHTML=current.stations.map(s=>`<div class="worked-row">${sy('Ci','C',s.id)} = 60 / ${num(s.cycle,'CT')} = ${num(s.capacity,'Ci')}</div>`).join('');
- $('system-worked').innerHTML=`min(${current.stations.map(s=>num(s.capacity,'Ci')).join(', ')})<br>= ${num(current.capacity,'C')} units/hour`;
- $('utilization-worked').innerHTML=current.stations.map(s=>`<div class="worked-row">${sy('u','u',s.id)} = ${num(current.capacity,'C')} / ${num(s.capacity,'Ci')} = ${num(100*current.capacity/s.capacity,'u')}%</div>`).join('');
+
+ const pair=(id,symbols,rows)=>EquationLayout.render(id,symbols,rows),station=s=>sy('i',s.id);
+ pair('cycle-worked',['Station',sy('CT','CT','i'),'=',sy('s','s','i'),'/',sy('B','B'),'+',sy('t','t','i')],current.stations.map(s=>[station(s),num(s.cycle,'CT'),'=',num(s.setup,'s',s.id),'/',`<span data-symbol="B" data-edit="batch">${state.batch}</span>`,'+',num(s.time,'t',s.id)]));
+ pair('capacity-worked',['Station',sy('Ci','C','i'),'=','60','/',sy('CT','CT','i')],current.stations.map(s=>[station(s),num(s.capacity,'Ci'),'=','60','/',num(s.cycle,'CT')]));
+ pair('system-worked',[sy('C','C'),'=','min(',sy('Ci','C','A'),',',sy('Ci','C','B'),',',sy('Ci','C','C'),')'],[[num(current.capacity,'C'),'=','min(',num(current.stations[0].capacity,'Ci'),',',num(current.stations[1].capacity,'Ci'),',',num(current.stations[2].capacity,'Ci'),')']]);
+ pair('utilization-worked',['Station',sy('u','u','i'),'=',sy('C','C'),'/',sy('Ci','C','i')],current.stations.map(s=>[station(s),num(100*current.capacity/s.capacity,'u')+'%','=',num(current.capacity,'C'),'/',num(s.capacity,'Ci')]));
  $('capacity-result').textContent=fixed(current.capacity);
  const badge=$('bottleneck'),leaders=current.bottlenecks.map(i=>'ABC'[i]);
  badge.textContent=`Station ${leaders.join(' & ')} limits capacity`;

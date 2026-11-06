@@ -112,8 +112,10 @@ def render_demo(root, demo, require_evidence=True):
     page = (source / "page.html").read_text(encoding="utf-8")
     styles = ((root / "src/shared/theme.css").read_text(encoding="utf-8")
               + "\n" + (source / "styles.css").read_text(encoding="utf-8"))
-    values = [styles, (source / "model.js").read_text(encoding="utf-8"),
-              (source / "app.js").read_text(encoding="utf-8")]
+    equation_helper = root / "src/shared/equation-layout.js"
+    app = ((equation_helper.read_text(encoding="utf-8") + "\n") if equation_helper.exists() else "")
+    app += (source / "app.js").read_text(encoding="utf-8")
+    values = [styles, (source / "model.js").read_text(encoding="utf-8"), app]
     if "</style" in styles.lower() or any("</script" in s.lower() for s in values[1:]):
         raise ValueError("Inline asset contains a closing style/script tag")
     for token, value in zip(TOKENS, values):

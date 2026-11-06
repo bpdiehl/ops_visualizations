@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**M/M/1 Queueing is available.** Bottlenecks is a committed draft; Batching & Setups is in local review. No GitHub account is needed.
+**M/M/1 Queueing, Bottlenecks and Batching & Setups are available.** No GitHub account is needed.
 
 ## For classmates
 
@@ -15,8 +15,8 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/ops_visu
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
 | O1 | [Process Flow Fundamentals](specs/process-flow.md) | 1 | Planned |
-| O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Local draft |
-| O3 | [Batching, Setups & Scheduling](specs/batching.md) | 2 | Local draft |
+| O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Available |
+| O3 | [Batching, Setups & Scheduling](specs/batching.md) | 2 | Available |
 | O4 | [WIP, Storage & Buffer Dynamics](specs/wip.md) | 2 | Planned |
 | O5 | [M/M/1 Queueing](specs/mm1.md) | 1 | Available |
 | O6 | [Inventory Decisions](specs/inventory.md) | 2 | Planned |

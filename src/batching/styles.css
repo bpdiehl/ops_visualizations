@@ -14,3 +14,5 @@
 .equations>h2{font-size:1rem;margin:0 0 12px}
 
 .badge.station-a{background:#edf4fa;border-color:#9ab5ce;color:#285b85}.badge.station-b{background:#fbf1e7;border-color:#d9ad84;color:#854716}.badge.station-c{background:#eaf5f3;border-color:#90c1b9;color:#12695f}.badge.station-tied{background:linear-gradient(115deg,#edf4fa 0 33%,#fbf1e7 33% 66%,#eaf5f3 66%);border-color:#aab7c3;color:#374957}
+
+.equation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:720px){.equation-grid{grid-template-columns:1fr}}

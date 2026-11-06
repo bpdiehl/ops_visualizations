@@ -1,6 +1,6 @@
 # O2 — Bottlenecks & Production Design
 
-Status: local owner-review draft v0.2. Catalog slug: bottlenecks. Recommended build wave: 1.
+Status: owner-approved release v0.4, November 6, 2026. Catalog slug: bottlenecks. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -55,3 +55,7 @@ Cycle Time (CT) for one machine is its interval between completions while workin
 Deferred: 4–6 stations, queue/flow animation, yield and mix conversion, layout comparison and economics. These are future modes, not claims supported by the pilot. No course-case reproduction is included.
 
 Definitions independently checked against [Asef-Vaziri, CSUN, Business Process Flow Engineering, Chapter 2](https://www.csun.edu/~aa2035/CourseBase/Chapters/Process_Flow_Engineering.pdf) (PDF pages 21–23). The pilot uses its own symbols and original numerical examples, and explicitly omits variability. See verification/bottlenecks.md for observed checks and coverage limits. Draft remains outside public downloads pending owner review and release authorization.
+
+## November 6, 2026 — v0.4 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/bottlenecks.md and verification/equation-layout-review.md for evidence and limits.

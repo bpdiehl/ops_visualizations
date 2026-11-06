@@ -1,6 +1,6 @@
 # O5 — M/M/1 Queueing
 
-Status: ready, owner accepted v0.2 on 2026-10-31; documented release coverage limits apply. Catalog slug: mm1. Recommended build wave: 1.
+Status: owner-approved release v0.2.1, November 6, 2026. Catalog slug: mm1. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -72,3 +72,7 @@ Mathematical references checked 2026-10-31: [MIT OpenCourseWare, M/M/1 Queue](ht
 The equation section precedes the main chart and rate controls. Distributions immediately follow the controls, with no equation section between them. All five vertical-axis titles are rotated −90 degrees along the left edge, with reserved margins. Sample statistics are explicitly full-run averages, distinct from the playback snapshot. A “Why do they differ?” information control explains finite random samples, seed variation, empty-start transients, warm-up limitations, slow settling near capacity, and existing unfinished-customer exclusions. Longer does not imply closer on every individual extension. The sample plot scale includes the theoretical Lq line even when a short run stays below it.
 
 The queue calculations and sample measurement conventions are unchanged. An independent regression integrates each customer's queue/service/system intervals to check the event-based time averages across seeds 42–44 and arrival rates 0, 8, 9.5 and 11 per hour.
+
+## November 6, 2026 — v0.2.1 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/mm1.md and verification/equation-layout-review.md for evidence and limits.

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Batching & Setups · Operations Lab</title><style>:root{color-scheme:light;--ink:#172838;--muted:#50616f;--blue:#1452a1;--line:#d7e0e6;--paper:#fff;--wash:#f2f5f7;--radius:12px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;color:var(--ink);background:var(--wash)}
+*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:32px 40px}header{padding-top:56px;padding-bottom:20px}h1{font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.045em;margin:10px 0 20px}h2{font-size:1.1rem;line-height:1.35;margin:0 0 6px}p{margin:8px 0;color:var(--muted)}a{color:var(--blue);text-underline-offset:3px}a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #a5480b;outline-offset:4px}.eyebrow{font-size:.75rem;font-weight:750;letter-spacing:.16em;color:var(--blue)}.intro{font-size:1.3rem;color:var(--ink)}.instructions{padding:24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:36px}.instructions ol{padding-left:22px}.instructions li{margin:8px 0}.instructions p{font-size:.92rem}summary{cursor:pointer;padding:8px 0;min-height:44px;font-weight:650}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section-heading h2{font-size:1.45rem}.section-heading p{font-size:.85rem}.notice{padding:14px 18px;border-left:3px solid var(--blue);background:#e8eff8;font-size:.94rem}.notice strong{color:var(--ink)}.demo-list{list-style:none;padding:0;margin:24px 0 0}.demo{display:grid;grid-template-columns:36px 1fr auto;gap:16px;padding:24px 0;border-top:1px solid var(--line);align-items:center}.demo p{margin:0;font-size:.95rem}.code{align-self:start;margin-top:2px;font-size:.8rem;color:var(--blue);font-weight:750}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:.8rem;font-weight:650;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:5px 12px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;text-decoration:none;font-size:.88rem;font-weight:650}.button.secondary{background:white;color:var(--blue)}.button:hover{filter:brightness(.93)}footer{font-size:.83rem;border-top:1px solid var(--line);padding-bottom:36px}.skip{position:absolute;left:-10000px;top:8px;background:white;padding:12px;z-index:10}.skip:focus{left:12px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:680px){header,main,footer{padding-left:20px;padding-right:20px}header{padding-top:32px}.instructions{padding:20px}.demo{grid-template-columns:28px 1fr;gap:10px}.actions{grid-column:2;justify-content:flex-start}.section-heading{align-items:start;flex-direction:column;gap:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Paired equation rows: keep each value below its symbol, including the result. */
+.eq-aligned{display:grid;grid-template-columns:repeat(var(--eq-columns),max-content);column-gap:.38rem;row-gap:.2rem;align-items:baseline;justify-content:start;max-width:100%;min-width:0;overflow-x:auto;padding:5px 3px 9px;margin:4px 0 10px;font-variant-numeric:tabular-nums}
+.eq-aligned>.formula,.eq-aligned>.worked,.eq-aligned>.symbolic-equation,.eq-aligned>.live-values,.eq-aligned>.dist-formula,.eq-aligned>.dist-worked{display:contents!important}
+.eq-aligned .eq-cell{white-space:nowrap;text-align:center;line-height:1.9;min-width:0}
+.eq-aligned .eq-value-cell:not(.eq-operator){min-width:6.8ch}
+.eq-aligned .eq-cell .num,.eq-aligned .eq-cell .eq-token,.eq-aligned .eq-cell .term,.eq-aligned .eq-cell .result-value{min-width:0!important;width:auto!important;text-align:center;display:inline}
+.eq-aligned .eq-value-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.76rem;color:#385269}
+.eq-aligned .eq-cell.eq-operator{min-width:0}
+@media(max-width:560px){.eq-aligned{column-gap:.25rem}.eq-aligned .eq-value-cell{font-size:.7rem}}
+
+.eq-fraction{display:inline-grid;grid-template-rows:auto auto;line-height:1.4;text-align:center;vertical-align:middle}.eq-fraction>span:first-child{border-bottom:1px solid currentColor;padding:0 4px 2px}.eq-fraction>span:last-child{padding:2px 4px 0}.eq-message{font-size:.76rem;color:var(--muted)}
+
+.eq-inline-atom{display:inline-block;text-align:center;vertical-align:baseline}.eq-fraction{gap:0}.eq-fraction>span{white-space:nowrap}.eq-aligned .eq-cell .eq-fraction{display:inline-grid}
+
+.eq-aligned{width:100%}.equations>div,.equation-grid>div,.equation-grid>article{min-width:0}
+
+.eq-aligned{scrollbar-width:thin;scrollbar-color:#aabac8 #f1f4f6}.eq-aligned:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* Shared attention and legend language across the learning collection. */
+:root{--attention-wash:#fff1c7;--attention-edge:#c59b3b;--attention-ink:#513d17;--attention-shadow:0 0 0 2px #c59b3b30,0 0 12px #c59b3b20;--legend-paper:#f7f9fc;--legend-line:#d2dce5}
+body :is(.eq-token.is-editing,.term.is-editing,[data-edit].editing,[data-symbol].selected,[data-symbol].editing,[data-symbol].symbol-highlight,[data-symbol].is-symbol-highlight,[data-symbols].is-symbol-highlight){background:var(--attention-wash)!important;box-shadow:var(--attention-shadow)!important;color:var(--attention-ink)!important;border-radius:3px;transition-duration:90ms}
+body #forecast-table tr.is-editing td,body #forecast-table tr.is-editing th{background:var(--attention-wash)!important}
+body .column-wash{fill:var(--attention-wash)}body .bridge-column.input-highlight .column-wash{opacity:.9}body .bridge-column.input-highlight>rect:not(.column-wash){stroke:var(--attention-edge)}body .statement tr.input-highlight{background:var(--attention-wash)}
+body .key-row{grid-template-columns:72px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:.79rem;line-height:1.5;align-items:center}
+body .key-row button,body .notation-grid .symbol-link{display:inline-block;text-align:center;vertical-align:middle;min-width:64px;min-height:44px;max-width:100%;padding:6px 8px;border:1px solid var(--legend-line);border-radius:6px;background:var(--legend-paper);font:1.02rem/1.4 Georgia,"Times New Roman",serif;color:var(--ink);text-decoration:none;cursor:pointer;transition:background-color .2s,border-color .2s,box-shadow .2s}
+body .key-row button:hover,body .notation-grid .symbol-link:hover{background:#edf2f7;border-color:#a9bdcf}
+body .key-row button[aria-pressed=true],body .notation-grid .symbol-link[aria-pressed=true]{background:var(--attention-wash);border-color:var(--attention-edge);color:var(--attention-ink);box-shadow:var(--attention-shadow)}
+body .key-row small{display:block;margin-top:3px;font-size:.7rem;line-height:1.45;color:var(--muted)}
+body .notation-grid dl{grid-template-columns:84px minmax(0,1fr);font-size:.79rem}body .notation-grid dt,body .notation-grid dd{padding:8px 0;border-top:1px solid var(--line);line-height:1.5}
+body :is(.key,.notation,.notation-key,.equations)>summary{color:var(--ink);font-size:.82rem;font-weight:650}
+body :is(.chart-key,.mix-key,.time-key,.matrix-key,.composition-key){font-size:.74rem;line-height:1.5;color:var(--muted);gap:8px 14px;flex-wrap:wrap}
+body :is(.chart-key,.mix-key,.time-key,.matrix-key)>span{display:inline-flex;align-items:center;gap:6px}
+body .swatch{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+body .swatch.legend-line{width:14px;height:0;border:0;border-top:2px solid #1452a1;border-radius:0;background:none}
+body .swatch.legend-dash{width:14px;height:0;border:0;border-top:2px dashed #6d7c89;border-radius:0;background:none}
+body .swatch.legend-dot{width:9px;height:9px;border:2px solid #a65d1c;border-radius:50%;background:white}
+.swatch.bridge-total{background:#24649d}.swatch.bridge-add{background:#2b8776}.swatch.bridge-deduct{background:#b36b47}
+@media(prefers-reduced-motion:reduce){body .key-row button,body .notation-grid .symbol-link{transition:none!important}}
+
+body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-link sub,body .notation-grid .symbol-link sup{font-size:.7em}
+
+.batch-app{background:#f5f6f8}.batch-app header,.batch-app main,.batch-app footer{max-width:1240px;margin:auto;padding:0 32px}.batch-app header{padding-top:24px}.masthead{display:flex;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line);font-size:.65rem;letter-spacing:.13em;color:var(--muted);font-weight:700}.heading-row{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:20px 0}.heading-row h1{font-size:2.5rem;margin:0;letter-spacing:-.04em}.heading-row p{margin:6px 0;font-size:.88rem;color:var(--muted)}button,input{font:inherit}button,summary{cursor:pointer}.action,.preset{min-height:44px;border:1px solid #c4cfdc;border-radius:7px;padding:9px 13px;background:white;color:var(--ink);font-size:.8rem}.preset[aria-pressed=true]{background:#e8effa;color:var(--blue);border-color:var(--blue)}.text-button{border:0;background:none;color:var(--blue);text-decoration:underline;min-height:44px;font-size:.77rem}.preset-row,.preset-row>div{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.preset-row{margin-bottom:16px}.preset-row #reset{margin-left:auto}.panel{background:white;border:1px solid #cbd5df;border-radius:12px;padding:18px;min-width:0}.section-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-top h2{font-size:1rem;margin:0}.equations{margin-bottom:18px}.equation-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:24px}.eq-heading{display:flex;gap:8px;align-items:center;font-size:.78rem;color:var(--muted)}.formula,.symbol{font-family:Georgia,serif}.symbol{font-style:italic;margin-left:3px}.formula{font-size:1.18rem;line-height:1.8}.formula sub,.symbol sub{font-size:.7em}.worked{font-family:ui-monospace,monospace;font-size:.71rem;color:#385269;line-height:1.9;font-variant-numeric:tabular-nums}.worked-row{white-space:nowrap}.num{display:inline-block;min-width:6ch;text-align:right}.num.result{font-weight:750}.notation{margin-top:16px;border-top:1px solid var(--line)}summary{padding:14px 0;font-size:.83rem;font-weight:650}.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.key-row{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:.78rem}.key-row button{min-height:44px;background:white;border:1px solid var(--line);border-radius:4px;font:1rem Georgia,serif}.key-row small{display:block;color:var(--muted);font-size:.68rem;margin-top:3px}.workspace{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,1fr);gap:18px}.result-line{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:16px 0 4px}output{font-size:2.5rem;font-weight:750;letter-spacing:-.035em}.muted{font-size:.75rem;color:var(--muted)}.badge{background:#fff5e8;border:1px solid #e4c7a6;border-radius:6px;color:#80501e;font-size:.75rem;padding:9px 12px;max-width:160px;text-align:center}.batch-app svg{width:100%;display:block;overflow:visible}#capacity-chart{margin-top:10px}.chart-key{display:flex;flex-wrap:wrap;gap:12px;font-size:.7rem;color:var(--muted);margin-top:10px}.a{color:#33699b}.b{color:#a65c1a}.c{color:#168177}.control{margin:16px 0}.control-heading{display:flex;align-items:center;justify-content:space-between;font-size:.83rem;font-weight:650}.field-row{display:grid;grid-template-columns:100px 1fr;align-items:center;gap:10px;margin-top:6px}.field-row span{font-size:.73rem;color:var(--muted)}input[type=number]{height:38px;width:100%;min-width:0;border:1px solid #c4cfda;border-radius:5px;padding:6px 8px;font-weight:650;color:var(--ink);background:white;font-variant-numeric:tabular-nums}input[type=range]{width:100%;height:30px;accent-color:var(--blue);margin:4px 0}input[aria-invalid=true]{border-color:#ad382b;background:#fff4f1}.station-head,.station-input{display:grid;grid-template-columns:45px minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:center}.station-head{font-size:.72rem;padding-bottom:10px;border-bottom:1px solid var(--line)}.station-head small{display:block;color:var(--muted);font-size:.65rem;margin-top:4px}.station-head .info{width:24px;min-width:24px;height:24px;margin-left:4px}.station-input{padding:12px 0;border-bottom:1px solid var(--line);font-size:.85rem}.schedule{margin-top:18px;padding:0 18px}.schedule>summary{padding:16px 0;font-size:1rem}.schedule-content{padding:4px 0 18px}.quantity-field{display:flex;gap:10px;align-items:center;font-size:.82rem;flex-wrap:wrap}.quantity-field input{width:90px}.schedule-results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0;color:var(--muted);font-size:.77rem}.schedule-results strong{display:block;margin-top:5px;color:var(--ink);font-size:1.15rem;font-variant-numeric:tabular-nums}.schedule-results .info{width:24px;min-width:24px;height:24px;margin-left:5px}.input-error{background:#fff4f1;border:1px solid #b84334;padding:12px;border-radius:7px;color:#8a3025}footer{display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:.7rem;color:var(--muted);margin-top:18px!important;margin-bottom:28px!important}[data-symbol],[data-edit]{border-radius:3px;transition:background-color .65s,box-shadow .65s}.symbol-highlight{background:#fff0b8!important;box-shadow:0 0 0 2px #d4aa3f55}.editing{background:#e0ebfe;box-shadow:0 0 10px #91b8ff55;transition-duration:70ms}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:3px}[hidden]{display:none!important}dialog{max-width:460px;width:calc(100% - 36px);border:1px solid #bfcbd6;border-radius:12px;padding:22px;color:var(--ink)}dialog::backdrop{background:#12233755}.dialog-heading{display:flex;justify-content:space-between;gap:12px;align-items:center}.dialog-heading h2{font-size:1.05rem;margin:0}.dialog-heading button{width:44px;height:44px;border:1px solid var(--line);border-radius:6px;background:white;font-size:1.4rem}dialog p{font-size:.86rem;line-height:1.65}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.equation-grid{gap:12px;grid-template-columns:1fr 1fr}.formula{font-size:1.04rem}.worked{font-size:.64rem}.station-input input{max-width:180px}.station-head,.station-input{grid-template-columns:55px 1fr 1fr}}
+@media(max-width:560px){.batch-app header,.batch-app main,.batch-app footer{padding-left:16px;padding-right:16px}.heading-row{align-items:start;flex-wrap:wrap}.heading-row h1{font-size:2rem}.equation-grid{grid-template-columns:1fr;gap:12px}.equation-grid>div+div{border-top:1px solid var(--line);padding-top:10px}.worked{font-size:.73rem}.formula{font-size:1.15rem}.key-grid{grid-template-columns:1fr}.schedule-results{grid-template-columns:1fr;gap:10px}.schedule-results>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.schedule-results strong{margin:0 0 0 auto}.masthead{font-size:.55rem}.panel{padding:14px}.schedule{padding:0 14px}.station-head,.station-input{grid-template-columns:40px 1fr 1fr;gap:10px}.badge{max-width:125px}}
+@media(prefers-reduced-motion:reduce){[data-symbol],[data-edit]{transition:none}}
+
+.batch-app .info{display:inline-flex;align-items:center;justify-content:center;width:28px;min-width:28px;height:28px;border:1px solid #c4cfda;border-radius:50%;background:white;color:#456174;font-size:.75rem;font-weight:650;padding:0;vertical-align:middle}.batch-app .info:hover{background:#edf3fa}.equation-grid .worked{font-size:.67rem}
+
+/* Paired exact entry and slider for every station time. */
+.station-time-control{min-width:0}.station-time-control input[type=number]{max-width:none}.station-time-control input[type=range]{display:block;margin:4px 0 0}.station-input{align-items:center}.schedule-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:560px){.schedule-results{grid-template-columns:1fr}}
+
+.equation-grid .eq-heading{min-height:48px}@media(max-width:560px){.equation-grid .eq-heading{min-height:28px}}
+
+.equations>h2{font-size:1rem;margin:0 0 12px}
+
+.badge.station-a{background:#edf4fa;border-color:#9ab5ce;color:#285b85}.badge.station-b{background:#fbf1e7;border-color:#d9ad84;color:#854716}.badge.station-c{background:#eaf5f3;border-color:#90c1b9;color:#12695f}.badge.station-tied{background:linear-gradient(115deg,#edf4fa 0 33%,#fbf1e7 33% 66%,#eaf5f3 66%);border-color:#aab7c3;color:#374957}
+
+.equation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:720px){.equation-grid{grid-template-columns:1fr}}
+</style></head>
+<body class="batch-app"><a class="skip" href="#main">Skip to visualization</a>
+<header><div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>OPERATIONS / O3</span></div><div class="heading-row"><div><h1>Batching &amp; Setups</h1><p>Change the batch. Move the bottleneck.</p></div><button class="action" id="download">Download HTML ↓</button></div></header>
+<main id="main"><nav class="preset-row" aria-label="Example scenarios"><div id="presets"></div><button class="text-button" id="reset">Reset</button></nav>
+<section class="equations panel" aria-label="Steady-state capacity equations"><h2>Steady-state capacity</h2><div class="equation-grid">
+<div><div class="eq-heading">Effective Cycle Time · min/unit <button class="info" data-help="cycle" aria-label="Explain effective Cycle Time">i</button></div><div class="formula"><span data-symbol="CT">CT<sub data-symbol="i">i</sub></span> = <span data-symbol="s" data-edit="setup">s<sub data-symbol="i">i</sub></span> / <span data-symbol="B" data-edit="batch">B</span> + <span data-symbol="t" data-edit="time">t<sub data-symbol="i">i</sub></span></div><div class="worked" id="cycle-worked"></div></div>
+<div><div class="eq-heading">Station capacity · units/hour <button class="info" data-help="capacity" aria-label="Explain station capacity">i</button></div><div class="formula"><span data-symbol="Ci">C<sub data-symbol="i">i</sub></span> = 60 / <span data-symbol="CT">CT<sub data-symbol="i">i</sub></span></div><div class="worked" id="capacity-worked"></div></div>
+<div><div class="eq-heading">System capacity <button class="info" data-help="system" aria-label="Explain system capacity">i</button></div><div class="formula"><span data-symbol="C">C</span> = min(<span data-symbol="Ci">C<sub data-symbol="i">A</sub></span>, <span data-symbol="Ci">C<sub data-symbol="i">B</sub></span>, <span data-symbol="Ci">C<sub data-symbol="i">C</sub></span>)</div><div class="worked" id="system-worked"></div></div><div><div class="eq-heading">Utilization <button class="info" data-help="utilization" aria-label="Explain utilization at line capacity">i</button></div><div class="formula"><span data-symbol="u">u<sub data-symbol="i">i</sub></span> = <span data-symbol="C">C</span> / <span data-symbol="Ci">C<sub data-symbol="i">i</sub></span></div><div class="worked" id="utilization-worked"></div></div></div>
+<details class="notation"><summary>Symbols &amp; units</summary><div id="symbol-key" class="key-grid"></div></details></section>
+<p class="input-error" id="error" role="alert" hidden></p>
+<div class="workspace"><section class="panel visual"><div class="section-top"><h2>Capacity by batch size</h2><button class="info" data-help="curve" aria-label="Explain capacity chart">i</button></div><div class="result-line"><div><span class="muted">System capacity <span class="symbol" data-symbol="C">C</span></span><div><output id="capacity-result"></output> <span class="muted">units/hour</span></div></div><span class="badge" id="bottleneck"></span></div><svg id="capacity-chart" role="img" aria-label="Station capacities by batch size"></svg><div class="chart-key"><span class="a">● Station A</span><span class="b">● Station B</span><span class="c">● Station C</span><span>┊ Current batch</span></div></section>
+<aside class="panel"><div class="section-top"><h2>Main assumptions</h2><button class="info" data-help="model" aria-label="Explain model assumptions">i</button></div><div class="control"><div class="control-heading"><label for="batch-number">Batch size <span class="symbol" data-symbol="B">B</span></label><button class="info" data-help="batch" aria-label="Explain batch size">i</button></div><div class="field-row"><input id="batch-number" type="number" min="1" max="60" step="1" value="20"><span>units/batch</span></div><input id="batch-range" type="range" min="1" max="60" step="1" value="20" aria-label="Batch size slider"></div>
+<div class="station-head"><span>Station</span><span>Setup <span class="symbol" data-symbol="s">s<sub data-symbol="i">i</sub></span><button class="info" data-help="setup" aria-label="Explain setup time">i</button><small>min/batch</small></span><span>Processing <span class="symbol" data-symbol="t">t<sub data-symbol="i">i</sub></span><button class="info" data-help="time" aria-label="Explain processing time">i</button><small>min/unit</small></span></div><div id="station-controls"></div></aside></div>
+<details class="panel schedule" open><summary>Order schedule</summary><div class="schedule-content"><div class="section-top"><div class="quantity-field"><label for="quantity">Order size</label><input id="quantity" type="number" min="1" max="600" step="1" value="120"><span class="muted">units</span></div><button class="info" data-help="schedule" aria-label="Explain order schedule and transfer policy">i</button></div><div class="schedule-results"><div>First batch finished<strong id="first-batch"></strong></div><div>Whole order finished<strong id="makespan"></strong></div></div><svg id="gantt" role="img" aria-label="Setup and processing schedule across three stations"></svg><div class="chart-key"><span>■ Setup</span><span class="a">■ Processing</span><span>Numbers identify batches</span></div></div></details>
+<noscript><p>Enable JavaScript to use the model.</p></noscript></main>
+<footer><span>O3 · v0.4 · November 6, 2026</span><button class="text-button" data-help="model">Model assumptions ⓘ</button><span id="download-status" role="status"></span></footer>
+<dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p></dialog><script>(function () {
+  'use strict';
+  const DEFAULTS = Object.freeze({ batch:20, quantity:120, setups:Object.freeze([30,15,0]), times:Object.freeze([.5,1.5,2]) });
+  const PRESETS = Object.freeze([
+    {id:'small',label:'Small batches',batch:5,setups:DEFAULTS.setups,times:DEFAULTS.times},
+    {id:'middle',label:'Middle ground',batch:20,setups:DEFAULTS.setups,times:DEFAULTS.times},
+    {id:'large',label:'Large batches',batch:60,setups:DEFAULTS.setups,times:DEFAULTS.times},
+    {id:'setup',label:'Shorter setup',batch:5,setups:Object.freeze([4,15,0]),times:DEFAULTS.times}
+  ].map(Object.freeze));
+  function validate(x) {
+    const errors=[];
+    if(!x || !Number.isInteger(x.batch)||x.batch<1||x.batch>60) errors.push('Batch size must be a whole number from 1 to 60.');
+    if(!x || !Number.isInteger(x.quantity)||x.quantity<1||x.quantity>600) errors.push('Order size must be a whole number from 1 to 600.');
+    for(const [k,min,max,label] of [['setups',0,60,'Setup time'],['times',.1,5,'Processing time']]) {
+      if(!x || !Array.isArray(x[k])||x[k].length!==3) {errors.push(label+' needs three station values.');continue;}
+      x[k].forEach((v,i)=>{if(typeof v!=='number'||!Number.isFinite(v)||v<min||v>max)errors.push(`Station ${'ABC'[i]} ${label.toLowerCase()} must be from ${min} to ${max}.`);});
+    }
+    return {ok:!errors.length,errors};
+  }
+  function capacity(batch,setups,times) {
+    const stations=times.map((t,i)=>({id:'ABC'[i],setup:setups[i],time:t,cycle:t+setups[i]/batch,capacity:60/(t+setups[i]/batch)}));
+    const value=Math.min(...stations.map(s=>s.capacity));
+    return {stations,capacity:value,bottlenecks:stations.flatMap((s,i)=>Math.abs(s.capacity-value)<1e-9?[i]:[])};
+  }
+  function calculate(x) {
+    const v=validate(x);if(!v.ok)throw new RangeError(v.errors.join(' '));
+    const inputs={batch:x.batch,quantity:x.quantity,setups:[...x.setups],times:[...x.times]};
+    const full=capacity(x.batch,x.setups,x.times), jobs=[],available=[0,0,0];
+    const batches=Math.ceil(x.quantity/x.batch);
+    for(let b=0;b<batches;b++) {
+      const units=Math.min(x.batch,x.quantity-b*x.batch);let arrival=0;
+      for(let i=0;i<3;i++) {
+        const start=Math.max(arrival,available[i]),setupEnd=start+x.setups[i],finish=setupEnd+units*x.times[i];
+        jobs.push({station:i,batch:b,units,arrival,start,setupEnd,finish});available[i]=finish;arrival=finish;
+      }
+    }
+    return {...full,inputs,jobs,batches,firstBatch:jobs[2].finish,makespan:available[2],
+      orderRate:60*x.quantity/available[2],totalSetup:batches*x.setups.reduce((a,b)=>a+b,0),
+      curves:Array.from({length:60},(_,i)=>({batch:i+1,...capacity(i+1,x.setups,x.times)}))};
+  }
+  globalThis.DemoModel=Object.freeze({DEFAULTS,PRESETS,validate,calculate});
+})();
+</script><script>/* A shared grid aligns symbolic and numerical rows; matched fractions share atom widths. */
+(() => {
+ 'use strict';
+ function render(target,symbols,rows,symbolicTarget){
+  const worked=typeof target==='string'?document.getElementById(target):target;
+  let formula=symbolicTarget?(typeof symbolicTarget==='string'?document.getElementById(symbolicTarget):symbolicTarget):worked.previousElementSibling;
+  if(!formula||!formula.matches('.formula,.symbolic-equation,.dist-formula')){formula=document.createElement('div');formula.className='formula';worked.before(formula);}
+  let grid=formula.parentElement;
+  if(!grid.classList.contains('eq-aligned')){grid=document.createElement('div');grid.className='eq-aligned';formula.before(grid);grid.append(formula,worked);}
+  const text=html=>{const el=document.createElement('span');el.innerHTML=String(html??'—');return el.textContent.trim();};
+  const op=s=>/^(?:[=+−×/(),≈\[\]]|min\(|\(1\s*[+−-]|\)[A-Za-z0-9]+)$/.test(s);
+  let nodes=symbols.map((s,i)=>({values:[s,...rows.map(r=>r[i]??'—')]}));
+  const raw=node=>node.values?text(node.values[0]):'';
+  const opening=node=>/^[([]/.test(raw(node)),closing=node=>/^[)\]]/.test(raw(node));
+  function leftOperand(end){let start=end;if(closing(nodes[end])){let depth=1;while(start>0&&depth){start--;if(closing(nodes[start]))depth++;if(opening(nodes[start]))depth--;}}return start;}
+  for(let slash=0;slash<nodes.length;slash++){
+   if(raw(nodes[slash])!=='/'||slash===0||slash===nodes.length-1)continue;
+   let start=leftOperand(slash-1);while(start>1&&raw(nodes[start-1])==='×')start=leftOperand(start-2);
+   let end=slash+1;
+   if(opening(nodes[end])){let depth=1;while(end<nodes.length-1&&depth){end++;if(opening(nodes[end]))depth++;if(closing(nodes[end]))depth--;}if(end<nodes.length-1&&/^<sup\b/.test(String(nodes[end+1].values?.[0])))end++;}
+   let bottom=nodes.slice(slash+1,end+1);if(bottom.length>2&&['(','['].includes(raw(bottom[0]))&&[')',']'].includes(raw(bottom.at(-1))))bottom=bottom.slice(1,-1);
+   const fraction={top:nodes.slice(start,slash),bottom};nodes.splice(start,end-start+1,fraction);slash=start;
+  }
+  function renderNode(node,row){
+   if(node.values)return String(node.values[row]??'—');
+   const line=parts=>parts.map(part=>{const strings=part.values?.map(text)||[],isOp=strings.length&&op(strings[0]);const width=isOp?Math.max(14,...strings.map(s=>s.length*7)):Math.max(46,...strings.map(s=>s.length*7.7));return `<span class="eq-inline-atom" style="min-width:${width}px">${renderNode(part,row)}</span>`;}).join('');
+   return `<span class="eq-fraction"><span>${line(node.top)}</span><span>${line(node.bottom)}</span></span>`;
+  }
+  grid.tabIndex=0;grid.setAttribute('role','group');grid.setAttribute('aria-label','Equation and current values; scroll horizontally if needed');
+  grid.style.setProperty('--eq-columns',nodes.length);
+  const cells=row=>nodes.map((node,col)=>`<span class="eq-cell${row?' eq-value-cell':''}${node.values&&op(raw(node))?' eq-operator':''}" style="grid-column:${col+1};grid-row:${row+1}">${renderNode(node,row)}</span>`).join('');
+  formula.innerHTML=cells(0);worked.innerHTML=rows.map((r,i)=>cells(i+1)).join('');
+ }
+ globalThis.EquationLayout=Object.freeze({render});
+})();
+
+(function(){
+'use strict';
+const M=globalThis.DemoModel,$=id=>document.getElementById(id),fixed=n=>n.toFixed(2),colors=['#33699b','#a65c1a','#168177'];
+let state={...M.DEFAULTS,setups:[...M.DEFAULTS.setups],times:[...M.DEFAULTS.times]},current=null,activeSymbol=null,trigger=null,fade,held=null;
+const help={
+ utilization:['Utilization at line capacity','The fraction of a station’s available time required when the repeating line runs at capacity: uᵢ = C/Cᵢ. Setup and processing both count as occupied time. This assumes full batches in the long run; it is not the busy percentage measured over the finite order schedule.'],
+ cycle:['Effective Cycle Time','CT is the average time per unit over repeated full batches: setup time divided by batch size, plus processing time per unit. It includes the setup burden. It is not the elapsed time an item spends across the whole line (Throughput Time, TPT). Units: minutes/unit.'],
+ capacity:['Station capacity','One machine at each station repeats a setup followed by B units of processing. A full batch takes s + Bt minutes, giving capacity 60B/(s + Bt) units/hour. Increasing batch size spreads setup time across more units; it does not change the raw processing time.'],
+ system:['System capacity','The lowest station capacity limits the repeating line. It assumes sufficient demand and material, independent machines, no restrictive buffers or other losses. This is a long-run rate for full batches; the order schedule includes startup, handoffs and a possible partial final batch.'],
+ curve:['Capacity by batch size','Each curve uses the current station setup and processing times. The dashed line marks your chosen batch. A crossing can move the bottleneck: high-setup stations can limit small batches, while slower per-unit processing can limit larger batches. There is no universal best batch size in this simplified model.'],
+ model:['Model assumptions','Three stations in series, one machine each, one product, 100% yield. Every batch needs the entered setup at every station. Setup occupies the machine and starts only when the entire batch arrives. Whole batches transfer instantly after processing. No failures, external setup, worker conflicts, transport times, costs or due dates are modeled. All examples are illustrative.'],
+ batch:['Batch size B','Units processed together before the next setup. Here process batch and transfer batch are the same: all units wait until their batch finishes before moving to the next station. The final batch may be smaller for a fixed order. Larger batches dilute setup time but can delay handoffs.'],
+ setup:['Setup time sᵢ','Minutes to prepare station i for each batch, before processing its units. The machine is occupied throughout setup, even for the first or a partial batch. A zero setup means this station has no batch-size benefit. Setup is repeated by assumption, rather than only after a product change.'],
+ time:['Processing time tᵢ','Minutes of machine processing per unit after setup. The symbol t distinguishes raw processing time from effective Cycle Time CT, which also includes setup per unit. Each station has one machine. Batch processing time is the number of units multiplied by processing time per unit.'],
+ schedule:['Order schedule','Each row is one machine. Gray is setup; station color is processing. Numbers identify batches. A batch can start only after it arrives from the preceding station and its machine finishes the previous batch. All units in the order are available at time zero. The last batch can be partial. First-batch completion is when that entire batch leaves C; whole-order completion is the makespan.']
+};
+const sy=(key,base,sub)=>`<span data-symbol="${key}">${base}${sub?`<sub data-symbol="i">${sub}</sub>`:''}</span>`;
+const num=(n,key,index='')=>`<span class="num" ${key?`data-symbol="${key}" data-edit="${key==='s'?'setup'+index:key==='t'?'time'+index:''}"`:''}>${fixed(n)}</span>`;
+const keys=[['B','B','Batch size','units/batch'],['s',sy('s','s','i'),'Setup time at station i','min/batch'],['t',sy('t','t','i'),'Processing time at station i','min/unit'],['CT',sy('CT','CT','i'),'Effective Cycle Time at station i','min/unit'],['Ci',sy('Ci','C','i'),'Station capacity','units/hour'],['C','C','System capacity','units/hour'],['i','i','Station index','A, B or C'],['u',sy('u','u','i'),'Utilization at line capacity','displayed as %']];
+$('symbol-key').innerHTML=keys.map(([k,s,n,u])=>`<div class="key-row"><button data-key="${k}" aria-pressed="false" aria-label="Highlight ${n}">${s}</button><div>${n}<small>${u}</small></div></div>`).join('');
+$('presets').innerHTML=M.PRESETS.map(p=>`<button class="preset" data-preset="${p.id}" aria-pressed="${p.id==='middle'}">${p.label}</button>`).join('');
+$('station-controls').innerHTML='ABC'.split('').map((station,i)=>`<div class="station-input"><span class="${'abc'[i]}">${station}</span>${[['s','setup time',0,60,.5,state.setups[i],'minutes per batch'],['t','processing time',.1,5,.1,state.times[i],'minutes per unit']].map(([prefix,label,min,max,step,value,unit])=>`<div class="station-time-control"><input id="${prefix}${i}" aria-label="Station ${station} ${label} in ${unit}" type="number" min="${min}" max="${max}" step="${step}" value="${value}"><input id="${prefix}${i}-range" aria-label="Station ${station} ${label} slider in ${unit}" type="range" min="${min}" max="${max}" step="${step}" value="${value}"></div>`).join('')}</div>`).join('');
+const svg=(tag,attrs={},text)=>{const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;return n;};
+function chart(){
+ const root=$('capacity-chart');root.replaceChildren();const width=Math.max(300,root.clientWidth);root.setAttribute('viewBox',`0 0 ${width} 320`);
+ root.append(svg('title',{},`Capacity ${fixed(current.capacity)} units/hour; bottleneck ${current.bottlenecks.map(i=>'ABC'[i]).join(' and ')}.`));
+ const x=b=>62+(b-1)/59*(width-90),ymax=Math.ceil(Math.max(...current.curves.flatMap(c=>c.stations.map(s=>s.capacity)))/20)*20,y=v=>270-v/ymax*235;
+ for(let j=0;j<=4;j++){const v=ymax*j/4;root.append(svg('line',{x1:62,x2:width-28,y1:y(v),y2:y(v),stroke:'#e1e6ec'}),svg('text',{x:51,y:y(v)+4,'text-anchor':'end','font-size':11,fill:'#586c7e'},v.toFixed(0)));}
+ for(const b of (width<450?[1,20,40,60]:[1,10,20,30,40,50,60]))root.append(svg('text',{x:x(b),y:288,'text-anchor':'middle','font-size':11},b));
+ root.append(svg('text',{x:width/2+15,y:314,'text-anchor':'middle','font-size':12},'Batch size B · units/batch'),svg('text',{transform:'translate(16 155) rotate(-90)','text-anchor':'middle','font-size':12},'Capacity · units/hour'));
+ current.stations.forEach((s,i)=>{root.append(svg('path',{d:current.curves.map((c,j)=>`${j?'L':'M'}${x(c.batch)},${y(c.stations[i].capacity)}`).join(' '),fill:'none',stroke:colors[i],'stroke-width':2.5}));});
+ root.append(svg('line',{x1:x(state.batch),x2:x(state.batch),y1:27,y2:270,stroke:'#6a7885','stroke-dasharray':'4 4'}));
+ current.stations.forEach((s,i)=>root.append(svg('circle',{cx:x(state.batch),cy:y(s.capacity),r:current.bottlenecks.includes(i)?6:4,fill:colors[i],stroke:'white','stroke-width':2})));
+}
+function gantt(){
+ const root=$('gantt');root.replaceChildren();const width=Math.max(300,root.clientWidth);root.setAttribute('viewBox',`0 0 ${width} 218`);root.append(svg('title',{},`${current.batches} batches; first batch finished ${fixed(current.firstBatch)} minutes; whole order finished ${fixed(current.makespan)} minutes.`));
+ const x=t=>65+t/current.makespan*(width-95);
+ const ticks=width<500?3:5;for(let j=0;j<=ticks;j++){const t=current.makespan*j/ticks;root.append(svg('line',{x1:x(t),x2:x(t),y1:22,y2:166,stroke:'#e3e8ef'}),svg('text',{x:x(t),y:186,'text-anchor':'middle','font-size':12},fixed(t)));}
+ for(let i=0;i<3;i++)root.append(svg('text',{x:48,y:47+i*50,'text-anchor':'end','font-size':14},'ABC'[i]));
+ for(const job of current.jobs){const y=25+job.station*50;for(const [start,end,fill,label] of [[job.start,job.setupEnd,'#87939f','Setup'],[job.setupEnd,job.finish,colors[job.station],'Processing']]){if(end===start)continue;const r=svg('rect',{x:x(start),y,width:Math.max(.2,x(end)-x(start)),height:28,fill,rx:1});r.append(svg('title',{},`Station ${'ABC'[job.station]}, batch ${job.batch+1}, ${job.units} units. ${label}: ${fixed(start)}–${fixed(end)} min.`));root.append(r);}if(x(job.finish)-x(job.start)>25)root.append(svg('text',{x:(x(job.start)+x(job.finish))/2,y:y+19,'text-anchor':'middle',fill:'white','font-size':12},job.batch+1));}
+ root.append(svg('text',{x:width/2+20,y:214,'text-anchor':'middle','font-size':13},'Elapsed time · minutes'));
+}
+function render(){
+ document.querySelectorAll('input[type=number]').forEach(el=>{const n=el.valueAsNumber;el.setAttribute('aria-invalid',String(!Number.isFinite(n)||n<Number(el.min)||n>Number(el.max)||(['batch-number','quantity'].includes(el.id)&&!Number.isInteger(n))));});
+ const v=M.validate(state);$('error').hidden=v.ok;$('error').textContent=v.errors.join(' ');$('download').disabled=!v.ok;
+ if(!v.ok){current=null;for(const id of ['cycle-worked','capacity-worked','system-worked','utilization-worked','capacity-result','bottleneck','first-batch','makespan','capacity-chart','gantt'])$(id).replaceChildren();return;}
+ current=M.calculate(state);
+
+ const pair=(id,symbols,rows)=>EquationLayout.render(id,symbols,rows),station=s=>sy('i',s.id);
+ pair('cycle-worked',['Station',sy('CT','CT','i'),'=',sy('s','s','i'),'/',sy('B','B'),'+',sy('t','t','i')],current.stations.map(s=>[station(s),num(s.cycle,'CT'),'=',num(s.setup,'s',s.id),'/',`<span data-symbol="B" data-edit="batch">${state.batch}</span>`,'+',num(s.time,'t',s.id)]));
+ pair('capacity-worked',['Station',sy('Ci','C','i'),'=','60','/',sy('CT','CT','i')],current.stations.map(s=>[station(s),num(s.capacity,'Ci'),'=','60','/',num(s.cycle,'CT')]));
+ pair('system-worked',[sy('C','C'),'=','min(',sy('Ci','C','A'),',',sy('Ci','C','B'),',',sy('Ci','C','C'),')'],[[num(current.capacity,'C'),'=','min(',num(current.stations[0].capacity,'Ci'),',',num(current.stations[1].capacity,'Ci'),',',num(current.stations[2].capacity,'Ci'),')']]);
+ pair('utilization-worked',['Station',sy('u','u','i'),'=',sy('C','C'),'/',sy('Ci','C','i')],current.stations.map(s=>[station(s),num(100*current.capacity/s.capacity,'u')+'%','=',num(current.capacity,'C'),'/',num(s.capacity,'Ci')]));
+ $('capacity-result').textContent=fixed(current.capacity);
+ const badge=$('bottleneck'),leaders=current.bottlenecks.map(i=>'ABC'[i]);
+ badge.textContent=`Station ${leaders.join(' & ')} limits capacity`;
+ badge.className='badge '+(leaders.length===1?'station-'+leaders[0].toLowerCase():'station-tied');
+ $('first-batch').textContent=fixed(current.firstBatch)+' min';$('makespan').textContent=fixed(current.makespan)+' min';
+ chart();gantt();highlight(activeSymbol);
+}
+function highlight(key){document.querySelectorAll('.symbol-highlight').forEach(n=>n.classList.remove('symbol-highlight'));if(key)document.querySelectorAll(`[data-symbol="${key}"]`).forEach(n=>{if(!n.closest('#symbol-key'))n.classList.add('symbol-highlight');});document.querySelectorAll('[data-key]').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.key===activeSymbol)));}
+document.querySelectorAll('[data-key]').forEach(n=>{n.addEventListener('click',()=>{activeSymbol=activeSymbol===n.dataset.key?null:n.dataset.key;highlight(activeSymbol);});n.addEventListener('mouseenter',()=>highlight(n.dataset.key));n.addEventListener('mouseleave',()=>highlight(activeSymbol));n.addEventListener('focus',()=>highlight(n.dataset.key));n.addEventListener('blur',()=>highlight(activeSymbol));});
+function edit(key){clearTimeout(fade);document.querySelectorAll('.editing').forEach(n=>n.classList.remove('editing'));document.querySelectorAll(`[data-edit="${key}"], [data-edit="${key.replace(/[ABC]$/,'')}"]`).forEach(n=>n.classList.add('editing'));if(!held)fade=setTimeout(()=>document.querySelectorAll('.editing').forEach(n=>n.classList.remove('editing')),650);}
+function bind(id,read,key){const el=$(id);if(el.type==='range')el.addEventListener('pointerdown',()=>{held=key;edit(key);});el.addEventListener('input',()=>{read(el.value===''?NaN:Number(el.value));document.querySelectorAll('[data-preset]').forEach(n=>n.setAttribute('aria-pressed','false'));render();edit(key);});el.addEventListener('blur',()=>{if(el.value!==''&&Number.isFinite(Number(el.value)))el.value=(id==='batch-number'||id==='quantity')?String(Number(el.value)):fixed(Number(el.value));});}
+bind('batch-number',v=>{state.batch=v;if(Number.isFinite(v))$('batch-range').value=v;},'batch');bind('batch-range',v=>{state.batch=v;$('batch-number').value=String(v);},'batch');bind('quantity',v=>state.quantity=v,'quantity');
+for(let i=0;i<3;i++)for(const [prefix,field,key] of [['s','setups','setup'],['t','times','time']]) {
+ const id=prefix+i;
+ bind(id,v=>{state[field][i]=v;if(Number.isFinite(v))$(id+'-range').value=v;},key+'ABC'[i]);
+ bind(id+'-range',v=>{state[field][i]=v;$(id).value=fixed(v);},key+'ABC'[i]);
+}
+function sync(){ $('batch-number').value=String(state.batch);$('batch-range').value=state.batch;$('quantity').value=String(state.quantity);for(let i=0;i<3;i++){$('s'+i).value=fixed(state.setups[i]);$('t'+i).value=fixed(state.times[i]);$('s'+i+'-range').value=state.setups[i];$('t'+i+'-range').value=state.times[i];}}
+document.querySelectorAll('[data-preset]').forEach(n=>n.addEventListener('click',()=>{const p=M.PRESETS.find(p=>p.id===n.dataset.preset);state={batch:p.batch,quantity:120,setups:[...p.setups],times:[...p.times]};sync();render();document.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b===n)));}));
+$('reset').addEventListener('click',()=>{state={...M.DEFAULTS,setups:[...M.DEFAULTS.setups],times:[...M.DEFAULTS.times]};activeSymbol=null;sync();render();document.querySelectorAll('[data-preset]').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.preset==='middle')));});
+document.querySelectorAll('[data-help]').forEach(n=>n.addEventListener('click',()=>{trigger=n;const h=help[n.dataset.help];$('help-title').textContent=h[0];$('help-body').textContent=h[1];$('help-dialog').showModal();}));$('close-help').addEventListener('click',()=>$('help-dialog').close());$('help-dialog').addEventListener('close',()=>trigger?.focus());document.addEventListener('keydown',e=>{if(e.key==='Escape'){activeSymbol=null;highlight(null);}});
+$('download').addEventListener('click',()=>{if(!current)return;const clone=document.documentElement.cloneNode(true);clone.querySelectorAll('input').forEach(n=>{n.setAttribute('value',$(n.id).value);});clone.querySelectorAll('.editing,.symbol-highlight').forEach(n=>n.classList.remove('editing','symbol-highlight'));clone.querySelectorAll('dialog').forEach(n=>n.removeAttribute('open'));const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='batching.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('download-status').textContent='Saved as batching.html';});
+for(const name of ['pointerup','pointercancel'])window.addEventListener(name,()=>{const key=held;held=null;if(key)edit(key);});
+window.addEventListener('resize',()=>{if(current){chart();gantt();}});
+sync();render();
+})();
+</script></body></html>

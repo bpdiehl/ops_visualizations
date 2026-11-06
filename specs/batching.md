@@ -1,6 +1,6 @@
 # O3 — Batching, Setups & Scheduling
 
-Status: local owner-review draft v0.3. Catalog slug: batching. Recommended build wave: 2.
+Status: owner-approved release v0.4, November 6, 2026. Catalog slug: batching. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -50,3 +50,7 @@ Deferred: mixed products/sequencing, external setup, parallel machines and optim
 
 
 Owner refinement v0.2: every setup/processing input now has a synchronized slider and exact-entry field. The collapsed key contains only the eight symbols present in the four main capacity equations. Removed scheduling recurrence equations, their symbol entries, and the secondary finite-order-rate metric from the UI; the Gantt area focuses on first-batch and whole-order completion. Its precedence/transfer rules remain in the information button and pure model.
+
+## November 6, 2026 — v0.4 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/batching.md and verification/equation-layout-review.md for evidence and limits.

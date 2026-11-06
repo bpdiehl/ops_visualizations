@@ -65,3 +65,9 @@ Owner selected r_out for line Output rate after discussing alternatives. Replace
 ## Owner review layout update — 2026-11-03
 
 Added live utilization values and its information button as a fourth equation column beside station capacity, system capacity and line output rate. Matched the DCF disclosure style with a native left-side arrow and concise “Station & system capacity” heading. The refreshed 8775 preview was inspected collapsed and expanded; the four equations and substitutions, including the utilization values, were visible above the notation key. `git diff --check` passed; automated tests were not rerun for this layout-only change.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

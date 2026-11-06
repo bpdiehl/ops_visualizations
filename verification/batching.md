@@ -43,3 +43,9 @@ Browser clicks verified Small B5 → A9.23, Middle B20 → B26.67, Large B60 →
 ## Owner-approved badge refinement
 
 The capacity-limiting station badge uses the same station palette as the capacity chart. Browser inspection verified the small, middle and large presets display Station A, B and C colors respectively; Reset was used to return to the default scenario. `git diff --check` passed. This does not change the model or catalog status.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

@@ -40,3 +40,13 @@ Choose a consistent display precision for each kind of value and retain trailing
 Use the browser's native disclosure triangle on the **left** with a concise section name; no extra Show/Hide labels or decorative toggle badges. Keys default collapsed, with one symbol per row and exact highlighting of nested indices/exponents. Keep numeric columns, info buttons and mixed-unit fields aligned; retain trailing decimals and stable substitution widths. Abbreviations and short explanatory copy belong in info buttons. Rotate vertical axis names along the left. Advanced inputs belong immediately below main assumptions. Keep core equations visible in new demos; a specific owner request can group them in a disclosure.
 
 Operations notation: use CT for Cycle Time, C for capacity, r_out for line output rate. Reserve throughput for Throughput Time (TPT); distinguish raw processing time from effective CT when setups exist. Prefer concrete Parallel machines to resources and units/hour as the displayed rate unit, with scope in help. Include utilization beside capacity equations when relevant, with its own help. New drafts need owner review before their commit/push.
+
+## Equation alignment — owner requirement
+
+Symbolic equations and their numerical substitutions share columns. Keep the result on the same side of the equals sign in both rows; place each value directly under its symbol, and align operators as well. Retain consistent precision, exact symbol/edit highlights and invalid-state suppression. Use the shared equation-layout helper for paired rows. On narrow screens keep long equations inside their own scroll area, never clip them or overflow the page.
+
+Prefer textbook stacked fractions to slash division in displayed symbolic equations and numerical substitutions. Keep matching numerator/denominator terms aligned as well as the outer equality. Avoid long chained equalities when separate steps are clearer. For interactive statement demos, connect edited inputs to their corresponding plot bars and statement rows with a soft, fading highlight; respect reduced motion.
+
+## Attention and legend styling
+
+Use shared amber attention tokens for edited values, selected symbols, linked plot bands and statement rows. Preserve semantic data-series colors. Notation keys share neutral bordered44px symbol buttons, amber selected states, consistent row spacing and muted units; retain one/two-column layouts appropriate to key size. Graph legends share typography/spacing while retaining meaningful line, dot and swatch shapes. Respect reduced motion.

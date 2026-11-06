@@ -2,7 +2,7 @@
 
 ## Current status
 
-This repository is public and GitHub Pages was enabled for main → /docs during setup. M/M/1 Queueing v0.2 is the first owner-approved Operations visualization, included with its generated catalog and single HTML download. Check the Pages deployment after each push.
+This repository is public and GitHub Pages was enabled for main → /docs during setup. M/M/1 Queueing v0.2.1, Bottlenecks v0.4 and Batching & Setups v0.4 are owner-approved Operations visualizations, included in the catalog with single HTML downloads. Check the Pages deployment after each push.
 
 ## Recommended route: GitHub Pages
 
