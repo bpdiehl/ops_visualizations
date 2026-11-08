@@ -7,10 +7,10 @@
     {
       "id": "O1",
       "slug": "process-flow",
-      "title": "Process Flow Fundamentals",
-      "question": "How do processing time, output pace and time in the system differ?",
+      "title": "Cycle Time & Throughput Time",
+      "question": "How do one unit\u2019s process time and the line\u2019s steady output pace differ?",
       "wave": 1,
-      "status": "planned"
+      "status": "ready"
     },
     {
       "id": "O2",

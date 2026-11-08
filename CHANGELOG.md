@@ -1,5 +1,25 @@
 # Change log
 
+## 2026-11-07 — Process Flow v0.3
+
+- Released the owner-approved desktop Cycle Time & Throughput Time visualization with a steady-state process diagram, looping unit and fixed-point observations, station activity glow, and one to six configurable processes.
+- Default processing times 2/4/1 min distinguish TPT 7 min from line CT 4 min/unit. Added capacity utilization, aligned equations, and the complete Entrance-to-Exit marker range.
+- Added the standalone HTML and catalog Open/Download links. Browser and offline verification limits are recorded in verification/process-flow.md.
+
+## Local draft — Process Flow v0.2
+
+- Rebuilt around following one moving unit for TPT and watching successive crossings of a fixed marker for CT.
+- Added prominent stopwatches, observed/upcoming events, arbitrary marker placement and zoom that preserves the measurement.
+- Explicit local crossing gaps during queue buildup; moved detailed schedules into a disclosure.
+- Retained paired equations, shared amber feedback and standalone packaging. No commit/push or publication yet.
+
+## Local draft — Process Flow v0.1
+
+- Added deterministic FIFO process playback, a tracked unit journey and completion-spacing comparison.
+- Visible aligned rate/CT/TPT/conservation equations, shared amber editing and notation feedback.
+- Independent model checks and a separate exact complete-run average identity; overload/zero-arrival states are explicit.
+- Draft only, awaiting owner review; no public download or commit/push.
+
 ## 2026-11-06 — Equation and legend consistency release
 
 - M/M/1 v0.2.1, Bottlenecks v0.4 and Batching & Setups v0.4.
@@ -103,3 +123,5 @@
 ## 2026-10-30 — Equation visibility standard
 
 - Require visible core equations, current numerical substitutions and symbols beside variable names in all Finance and Operations demos. Keep derivations optional, not the core equation.
+
+- O1 Process Flow v0.3 draft: replaced finite arrivals/queues with an explicitly steady-state, no-buffer, deterministic line; moved diagram above calculations; looping unit/point views; configurable 1–6 processes; default 2/4/1 min per unit; added station capacity-utilization equations and per-process occupancy glow; full-width diagram followed by collapsed full-width equations then full-width assumptions; utilization shown as fractions; followed-unit loop holds at exit until the next scheduled release. Not ready for publication.
