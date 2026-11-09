@@ -1,5 +1,17 @@
 # Change log
 
+## 2026-11-09 — WIP & Buffer Dynamics v0.1
+
+- Released shared-buffer accumulation with independent input/output schedules, exact inventory and rate curves, finite storage and blocked/unmet flow accounting.
+- Grouped input/output schedule cards in left/right columns, with a collapsible buffer diagram above them. Flow schedules appears below the graphs; equations collapse separately.
+- Added the standalone download and Operations catalog listing. Verification evidence and remaining offline/cross-browser limits are recorded in verification/wip.md.
+
+## Local draft — WIP & Buffer Dynamics v0.1, November 9, 2026
+
+- Added general multi-stream accumulation with independently timed rate segments, exact inventory/rate plots, synchronized cursor and network readings.
+- Added unlimited/finite storage, explicit blocked-input and unmet-output accounting, inventory/slope equations and exact average-inventory integration.
+- Nine model tests and desktop preview evidence recorded. Catalog remains draft with no public download or commit/push.
+
 ## 2026-11-07 — Process Flow v0.3
 
 - Released the owner-approved desktop Cycle Time & Throughput Time visualization with a steady-state process diagram, looping unit and fixed-point observations, station activity glow, and one to six configurable processes.

@@ -1,6 +1,6 @@
 # O4 — WIP, Storage & Buffer Dynamics
 
-Status: planned. Catalog slug: wip. Recommended build wave: 2.
+Status: ready v0.1; owner approved commit/push November 9, 2026. Catalog slug: wip. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -72,3 +72,16 @@ Q_unconstrained(t) = Q0 + integral_0^t net_requested(s) ds
 **Out of scope:** Arbitrary plant graph editor with unrestricted routing; detailed routing/splitting for materials with different yields; optimizing buffer location across a large line. Can extend later.
 
 **Acceptance tests:** Exact preset-3 vertices above; zero inventory never goes negative; if inflow=3 and requested output=5 on an empty buffer, actual outflow=3 and inventory stays zero; a net +2 units/h for 4 h starting at 5 units gives 13; zero net rate produces flat Q; average WIP matches exact segment areas; simultaneous events with equal/opposite rate changes don't create spurious inventory jumps; finite-capacity policy conserves or explicitly accounts for units.
+
+
+## Implemented pilot — November 9, 2026
+
+General event-driven shared-buffer model with up to six independently scheduled streams and twelve segments per stream, exact empty/full boundary splitting and trapezoid integration per interval. Finite policy blocks and counts excess requested input, without upstream queueing or retries; unmet requested output is counted independently. UI provides four presets, editable schedules, sliders/exact fields, synchronized time cursor/network/graphs, inventory balance and slope equations, and collapsed full-horizon metrics and symbol key. Desktop-focused per owner. Global time-unit switching, random buffer-placement comparison, stream enable switches, multistage buffers and playback are deferred. Continuous identical units, no source-case replication. See verification/wip.md. No commit/push authorized yet.
+
+Owner layout refinement: moved the time slider and exact time entry directly below the inventory graph. Work in the buffer now appears below Flow schedules in a native disclosure, collapsed by default. Reloaded desktop preview confirms section order; slider at5 updates inventory balance31=55−24 and slope−1=5−6. Build and all72 checks pass.
+
+Owner layout refinement: Flow schedules now has fixed Inputs (left) and Outputs (right) columns. Switching direction moves the card immediately, preserves its schedule and color, recalculates the model, and restores focus to its selector. Empty columns remain labeled. Browser verified Stream A input→output→input, including matching balance changes and desktop screenshot. Build/check pass (72 checks).
+
+Latest owner layout: Work in the buffer is a collapsed disclosure within Flow schedules, above its Inputs/Outputs columns. Equations is now a collapsed disclosure above the main graphs. Browser reload confirmed both default closed and the buffer diagram expands in the intended position. Preview/build and whitespace checks passed.
+
+Final owner direction: Flow schedules stays below the graphs/main assumptions and does not collapse. Its nested Work in the buffer and the separate Equations sections remain collapsible. This supersedes the preceding schedule-position/disclosure note.

@@ -34,7 +34,7 @@
       "title": "WIP, Storage & Buffer Dynamics",
       "question": "How does inventory accumulate when several flows change over time?",
       "wave": 2,
-      "status": "planned"
+      "status": "ready"
     },
     {
       "id": "O5",
