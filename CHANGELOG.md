@@ -1,5 +1,19 @@
 # Change log
 
+## 2026-11-09 — Inventory Decisions v0.1
+
+- Released EOQ and normal-demand single-period stocking with cost curves, bell-curve probabilities, exact expected shortage/leftover costs and type-specific examples that select the optimum.
+- Added fixed replenishment-chart scales with Fit view, quantity sliders matching graph bounds, textbook square-root overbars and a prominent optimal-quantity button.
+- Added the catalog listing and standalone download. Verification scope and remaining offline/browser limits are documented.
+
+## Local draft — Inventory Decisions v0.1, November 9, 2026
+
+- Owner refinement: normal mean/SD replace uniform bounds; normal-quantile optimum and analytic normal loss functions; quantity slider matches the graph domain.
+
+- Added EOQ and normal-demand single-period stocking as distinct modes with relevant cost curves, linked replenishment/demand plots and optimal-quantity action.
+- Added type-specific examples, exact fields/sliders, collapsed worked equations with nested symbols, shortage/leftover expectations and service probabilities.
+- Seven model tests and desktop evidence recorded; catalog remains draft pending owner review.
+
 ## 2026-11-09 — WIP & Buffer Dynamics v0.1
 
 - Released shared-buffer accumulation with independent input/output schedules, exact inventory and rate curves, finite storage and blocked/unmet flow accounting.

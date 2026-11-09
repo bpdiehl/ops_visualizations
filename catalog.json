@@ -50,7 +50,7 @@
       "title": "Inventory Decisions",
       "question": "How much should we order or stock?",
       "wave": 2,
-      "status": "planned"
+      "status": "ready"
     },
     {
       "id": "O7",

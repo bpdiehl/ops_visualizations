@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**M/M/1 Queueing, Bottlenecks and Batching & Setups are available.** No GitHub account is needed.
+**Cycle Time & Throughput Time, Bottlenecks, Batching & Setups, WIP & Buffer Dynamics, M/M/1 Queueing and Inventory Decisions are available.** No GitHub account is needed.
 
 ## For classmates
 
@@ -14,12 +14,12 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/ops_visu
 
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
-| O1 | [Process Flow Fundamentals](specs/process-flow.md) | 1 | Planned |
+| O1 | [Process Flow Fundamentals](specs/process-flow.md) | 1 | Available |
 | O2 | [Bottlenecks & Production Design](specs/bottlenecks.md) | 1 | Available |
 | O3 | [Batching, Setups & Scheduling](specs/batching.md) | 2 | Available |
-| O4 | [WIP, Storage & Buffer Dynamics](specs/wip.md) | 2 | Planned |
+| O4 | [WIP, Storage & Buffer Dynamics](specs/wip.md) | 2 | Available |
 | O5 | [M/M/1 Queueing](specs/mm1.md) | 1 | Available |
-| O6 | [Inventory Decisions](specs/inventory.md) | 2 | Planned |
+| O6 | [Inventory Decisions](specs/inventory.md) | 2 | Available |
 | O7 | [Quality: SPC & Capability](specs/spc.md) | 3 | Planned |
 
 Build waves are priorities, not availability promises. See the [finance collection](https://github.com/bpdiehl/finance_visualizations) for the other seven topics.
@@ -64,3 +64,5 @@ The O2 constraint lab is in local owner review. Build it with `python3 scripts/m
 ## Batching & Setups draft
 
 O3 compares batch-size-dependent station capacity with an exact whole-batch order schedule. Preview with `python3 scripts/manage.py preview batching`, then serve `.preview/` locally. See the brief and verification/batching.md for assumptions and evidence. Drafts have no public download.
+
+[Open Inventory Decisions](https://bpdiehl.github.io/ops_visualizations/downloads/inventory.html): compare EOQ ordering/holding costs and single-period normal-demand stocking. See verification/inventory.md.
