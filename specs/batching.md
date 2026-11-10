@@ -54,3 +54,8 @@ Owner refinement v0.2: every setup/processing input now has a synchronized slide
 ## November 6, 2026 — v0.4 release
 
 Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/batching.md and verification/equation-layout-review.md for evidence and limits.
+
+
+## Local review refinement
+
+Owner requested initially collapsed capacity equations and setup/processing help aligned to the right of each column. See ../verification/ops-review-refinements.md.

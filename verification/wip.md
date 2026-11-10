@@ -35,3 +35,8 @@ Latest owner layout: Work in the buffer is a collapsed disclosure within Flow sc
 Release layout check: Flow schedules moved before inventory/assumptions and made a native disclosure, initially open. Buffer diagram stays nested at its top and closed by default; equations closed by default. Browser stream creation confirmed a new Input D card; removal and final disclosures checked during release.
 
 Final owner direction: Flow schedules stays below the graphs/main assumptions and does not collapse. Its nested Work in the buffer and the separate Equations sections remain collapsible. This supersedes the preceding schedule-position/disclosure note.
+
+
+## Local owner-review refinement — November 9, 2026
+
+Uncommitted review changes; public deployment is unchanged. See [Operations review evidence](ops-review-refinements.md).

@@ -85,3 +85,8 @@ Owner layout refinement: Flow schedules now has fixed Inputs (left) and Outputs 
 Latest owner layout: Work in the buffer is a collapsed disclosure within Flow schedules, above its Inputs/Outputs columns. Equations is now a collapsed disclosure above the main graphs. Browser reload confirmed both default closed and the buffer diagram expands in the intended position. Preview/build and whitespace checks passed.
 
 Final owner direction: Flow schedules stays below the graphs/main assumptions and does not collapse. Its nested Work in the buffer and the separate Equations sections remain collapsible. This supersedes the preceding schedule-position/disclosure note.
+
+
+## Local review refinement
+
+Show a distinct zero reference on actual rate plots, even when evenly spaced ticks omit zero. See ../verification/ops-review-refinements.md.

@@ -1,5 +1,12 @@
 # Change log
 
+## Local review — Operations presentation refinements
+
+- Collapsible Batching/M/M/1 equations; right-aligned Batching column help.
+- Explicit zero line on WIP actual flow rates.
+- Persistent Inventory comparison scales, clear scale readouts and deliberate Fit view controls.
+- Owner review pending; no commit/push.
+
 ## November 9, 2026 — Catalog navigation
 
 - Made the upper-right Operations label link to the public Operations catalog in every visualization, including downloaded HTML files.

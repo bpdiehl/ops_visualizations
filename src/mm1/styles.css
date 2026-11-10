@@ -17,3 +17,5 @@
 .worked .eq-result,.dist-worked .eq-result { width:13ch; min-width:13ch; white-space:nowrap; }
 
 .equation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:720px){.equation-grid{grid-template-columns:1fr}}
+
+.mm1-app .equations>summary{font-size:1rem;padding:0;min-height:24px}.equations[open]>summary{margin-bottom:10px}.equations>.section-top{justify-content:flex-end}

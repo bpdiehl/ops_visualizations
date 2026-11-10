@@ -7,3 +7,5 @@ header,main,footer{max-width:1440px;padding:20px 32px}header{padding-top:26px}.m
 #fit-cycle{margin-left:auto;white-space:nowrap}.cycle-view-label{font-size:.7rem;color:var(--muted);margin:9px 0 5px}#cycle-note{font-size:.73rem;padding:9px 12px;border-left:3px solid var(--attention-edge);background:#fff7e4}
 
 .use-optimal{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;padding:10px 15px;min-height:42px;border:1px solid #275894;border-radius:6px;background:#275894;color:white;font-size:.78rem;font-weight:650;box-shadow:0 2px 4px #17283815}.use-optimal:hover{background:#1d4679}.use-optimal:active{background:#15385f}.use-optimal:disabled{opacity:.5;cursor:default;box-shadow:none}
+
+#fit-cost{margin-left:auto}

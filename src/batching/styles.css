@@ -16,3 +16,5 @@
 .badge.station-a{background:#edf4fa;border-color:#9ab5ce;color:#285b85}.badge.station-b{background:#fbf1e7;border-color:#d9ad84;color:#854716}.badge.station-c{background:#eaf5f3;border-color:#90c1b9;color:#12695f}.badge.station-tied{background:linear-gradient(115deg,#edf4fa 0 33%,#fbf1e7 33% 66%,#eaf5f3 66%);border-color:#aab7c3;color:#374957}
 
 .equation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:720px){.equation-grid{grid-template-columns:1fr}}
+
+.station-column-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}.station-column-heading>span{min-width:0}.station-column-heading .info{flex-shrink:0;margin-left:auto}.panel.equations>summary{font-size:1rem;padding:0;min-height:24px}.panel.equations[open]>summary{margin-bottom:14px}

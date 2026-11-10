@@ -87,3 +87,8 @@ Owner sawtooth refinement: replenishment chart now holds time/inventory scales f
 Owner example refinement: selecting any example now applies its full-precision optimalQ; mode baselines, Reset and initial load do the same. Example selection remains active when Q matches its computed optimum and clears on manual changes. Browser verified starting EOQ223.61/cost447.21 and expensive-shortage normalQ116.83/cost55.99/probability80%. Optimal-action button is filled blue. Build/check79pass before final initialization-only change; latest preview/build/whitespace verified.
 
 Owner approved release November9: initial/examples/mode defaults use optimalQ; normal-demand singleperiod; fixed sawtooth scales with Fit view; filled optimal action; radical overbar. Standalone download/catalog generated.
+
+
+## Local review refinement
+
+Keep comparable scales across examples/edits. Expand only when needed, retain expanded frames until Fit view or Reset, show frame readouts and keep quantity slider aligned with plot bounds. See ../verification/ops-review-refinements.md.

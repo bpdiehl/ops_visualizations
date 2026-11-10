@@ -49,3 +49,8 @@ Local equation presentation update: see [equation alignment and fraction review]
 ## November 6, 2026 — Accepted consistency release
 
 Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.
+
+
+## Local owner-review refinement — November 9, 2026
+
+Uncommitted review changes; public deployment is unchanged. See [Operations review evidence](ops-review-refinements.md).

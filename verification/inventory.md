@@ -59,3 +59,8 @@ Owner sawtooth refinement: replenishment chart now holds time/inventory scales f
 Owner example refinement: selecting any example now applies its full-precision optimalQ; mode baselines, Reset and initial load do the same. Example selection remains active when Q matches its computed optimum and clears on manual changes. Browser verified starting EOQ223.61/cost447.21 and expensive-shortage normalQ116.83/cost55.99/probability80%. Optimal-action button is filled blue. Build/check79pass before final initialization-only change; latest preview/build/whitespace verified.
 
 Final release: repository build/check79 pass after all source changes, diff whitespace/private-path/credential-pattern scan pass. Inventory public artifact generated and catalog updated. Deployment verification follows push.
+
+
+## Local owner-review refinement — November 9, 2026
+
+Uncommitted review changes; public deployment is unchanged. See [Operations review evidence](ops-review-refinements.md).
