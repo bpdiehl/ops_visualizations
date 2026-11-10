@@ -36,3 +36,15 @@ No completed demos are included in this setup. All catalog statuses start planne
 ## 2026-10-31 — M/M/1 pilot
 
 The pilot distinguishes Poisson counts over a fixed interval from exponential gaps between arrivals and exponential service times. “Markov” describes the memoryless queue model, not a separate count/time distribution. λ and μ use customers/hour; displayed times use minutes, with conversions visible in equations. Fractional Lq/L are expected counts; the sample snapshot remains integer valued. At λ ≥ μ the rate ratio can exceed one, but actual busy time cannot exceed 100% and no finite steady-state Lq/L/Wq/W is shown. Numerical examples are illustrative and checked independently of the inherited planning brief. The local draft is awaiting owner review; no public download is generated.
+
+
+## November 9, 2026 — SPC & Capability draft
+
+Owner requires “in control” terminology and signals for runs/trends as well as limit violations. The private reading's page 4 explicitly uses eight same-side points; its Exhibit 5 illustrates drift without a numerical trend threshold. The implemented six-point monotone rule follows NIST pmc32. Eight same-side points deliberately follows the supplied reading rather than silently substituting another convention. Equality breaks a run/trend; endpoints are marked when evidence becomes available, without backdating signals. Investigation signals can arise by chance.
+
+NIST A2/D3/D4 constants are used verbatim, including D4=2.575 for n3 and 2.115 for n5; d2 is from the official Minitab table. Capability uses known model μ/σ; fitted reference σ is separate. Current modeled normal capability and observed conformance are different outputs. A one-off observation outside specifications need not establish overall process incapability. Original 50 mm examples replace private case figures. See spc.md and ../verification/spc.md for scope, sources and evidence.
+
+
+## November 9 — SPC owner refinements v0.2
+
+Auto-rescaling had visually normalized different in-control mean/spread cases; use common frames and a shared seed for causal comparison. Strengthened off-center/high-variation cases and validated each preset's signal/conformance feature. Selected random trend seed28 demonstrates a statistical signal can occur by chance; it is not a simulated drift cause. All contributing points now highlighted separately from signal endpoint counts. Screenshot reproduction Cp14.6/Cpk13.6 meets the current model's goal despite reduced spread versus historical reference triggering control signals; show both assessments, with long-run caveat in help and contaminated-reference warnings retained.

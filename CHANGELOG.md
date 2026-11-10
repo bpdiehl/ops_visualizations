@@ -1,5 +1,35 @@
 # Change log
 
+## Local draft refinement — X̄ specification reference lines
+
+- Added labeled LSL/USL reference lines to X̄, using a distinct color/dash and individual-item interpretation in the legend/help.
+- Expanded chart bounds when needed to keep the specifications visible; statistical control limits and the R chart remain unaffected.
+- Kept current example-button styling unchanged.
+
+## Local draft refinement — SPC matching examples and equation disclosure
+
+- Matched example styling across tabs and added the centered In control default to Control charts.
+- Made Equations collapsible and initially closed, as requested; retained its nested symbol key and live substitutions.
+- Verified initial/reset selection, identical button styling and equation expansion in the desktop preview.
+
+## Local draft refinement — SPC examples and specification context
+
+- Scoped capability comparison and control-signal presets to their respective tabs.
+- Added a collapsible individual-measurement plot with LSL/USL, keeping specification lines separate from X̄/R control limits.
+- Verified tab-state preservation, preset routing, reading selection and specification-only updates in the desktop browser.
+
+## Local draft refinement — SPC & Capability v0.2
+
+- Fixed comparison axes so mean shifts and spread differences remain visible; emphasized and strengthened the three in-control examples.
+- Verified eight seeded examples, including an isolated outlier and a six-point trend inside limits. Highlight all points belonging to detected patterns.
+- Separated current-model capability from historical control status and explained improved spread triggering a process-change signal.96automated checks pass; local review only.
+
+## Local draft — Quality: SPC & Capability, November 9, 2026
+
+- Added linked X̄/R control charts and normal-model capability, explicit reference-limit snapshots, seed/subgroup controls and seven original examples.
+- Checks beyond-limit points, eight same-side points and six-point trends; signal details identifies each window and highlights it on selection.
+- Visible aligned equations, exact symbol/numerical glows, individual specification comparison and conditional capability warnings. Draft only; no public download, commit or push.
+
 ## 2026-11-09 — Inventory Decisions v0.1
 
 - Released EOQ and normal-demand single-period stocking with cost curves, bell-curve probabilities, exact expected shortage/leftover costs and type-specific examples that select the optimum.
