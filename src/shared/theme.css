@@ -41,3 +41,5 @@ body .swatch.legend-dot{width:9px;height:9px;border:2px solid #a65d1c;border-rad
 @media(prefers-reduced-motion:reduce){body .key-row button,body .notation-grid .symbol-link{transition:none!important}}
 
 body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-link sub,body .notation-grid .symbol-link sup{font-size:.7em}
+
+.masthead .subject-home{color:inherit;text-decoration:underline;text-underline-offset:3px}.masthead .subject-home:hover{color:var(--blue)}

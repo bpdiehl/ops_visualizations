@@ -44,6 +44,8 @@ body .swatch.legend-dot{width:9px;height:9px;border:2px solid #a65d1c;border-rad
 
 body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-link sub,body .notation-grid .symbol-link sup{font-size:.7em}
 
+.masthead .subject-home{color:inherit;text-decoration:underline;text-underline-offset:3px}.masthead .subject-home:hover{color:var(--blue)}
+
 .bottleneck-app { --constraint:#a55a16; --teal:#157569; background:#f5f6f8; }
 .bottleneck-app header,.bottleneck-app main,.bottleneck-app footer { max-width:1240px; padding:0 32px; }
 .bottleneck-app [hidden] { display:none!important; }.bottleneck-app button,.bottleneck-app input { font:inherit; }.bottleneck-app button { cursor:pointer; }.bottleneck-app button:disabled { opacity:.45; cursor:default; }.bottleneck-app output,.bottleneck-app input,.worked,.station-table,.comparison strong { font-variant-numeric:tabular-nums; }
@@ -108,7 +110,7 @@ body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-li
 <body class="bottleneck-app">
   <a class="skip" href="#main">Skip to visualization</a>
   <header class="lab-header">
-    <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>OPERATIONS / 02</span></div>
+    <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><a class="subject-home" href="https://bpdiehl.github.io/ops_visualizations/" aria-label="Operations home">OPERATIONS / 02</a></div>
     <div class="heading-row"><div><h1>Bottlenecks</h1><p>Improve a station. Watch what limits the line.</p></div><button class="action" id="download">Download HTML ↓</button></div>
   </header>
   <main id="main">

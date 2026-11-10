@@ -56,9 +56,9 @@
       "id": "O7",
       "slug": "spc",
       "title": "Quality: SPC & Capability",
-      "question": "Is a process stable, and is it meeting requirements?",
+      "question": "Is a process in control, and is it meeting specifications?",
       "wave": 3,
-      "status": "draft"
+      "status": "ready"
     }
   ]
 }

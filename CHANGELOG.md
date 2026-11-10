@@ -1,5 +1,10 @@
 # Change log
 
+## November 9, 2026 — Catalog navigation
+
+- Made the upper-right Operations label link to the public Operations catalog in every visualization, including downloaded HTML files.
+- Published the owner-approved SPC & Capability visualization and its catalog entry.
+
 ## Local draft refinement — X̄ specification reference lines
 
 - Added labeled LSL/USL reference lines to X̄, using a distinct color/dash and individual-item interpretation in the legend/help.

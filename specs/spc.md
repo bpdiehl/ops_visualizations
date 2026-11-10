@@ -1,6 +1,6 @@
 # O7 — Quality: SPC & Capability
 
-Status: local owner-review draft, November 9, 2026. Catalog slug: spc. Recommended build wave: 3.
+Status: ready; owner authorized public release November 9, 2026. Catalog slug: spc. Recommended build wave: 3.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 

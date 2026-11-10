@@ -91,3 +91,8 @@ CUA in-app browser on macOS, engine version not reported, HTTP preview port8776.
 ## Limits and next validation
 
 Not tested: latest actual HTML download/save, detached file execution with network blocked, cross-browser, full keyboard coverage, every help dialog, reduced-motion override. Existing browser file-URL policy restriction remains; no workaround attempted. No narrow/mobile optimization, per owner. No empirical production-data validation or capability confidence intervals. Owner tests draft next; release/download catalog generation waits for approval.
+
+
+## Owner-authorized public release — November 9, 2026
+
+Owner accepted the draft, then explicitly requested making it public. Catalog status is now ready and generated SPC standalone HTML is included. Final96automated checks pass. The selected-subgroup section is scoped to Control charts. Historical draft-only statements above record earlier stages. Offline/file-URL and browser-coverage limits remain as recorded; owner authorized release with these limits.

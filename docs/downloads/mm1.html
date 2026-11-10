@@ -47,6 +47,8 @@ body .swatch.legend-dot{width:9px;height:9px;border:2px solid #a65d1c;border-rad
 
 body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-link sub,body .notation-grid .symbol-link sup{font-size:.7em}
 
+.masthead .subject-home{color:inherit;text-decoration:underline;text-underline-offset:3px}.masthead .subject-home:hover{color:var(--blue)}
+
 .mm1-app { --arrival:#2458a8; --service:#14786d; --orange:#a85a12; background:#f5f6f8; }
 .mm1-app header,.mm1-app main,.mm1-app footer { max-width:1240px; padding:0 32px; }
 .mm1-app [hidden] { display:none!important; }.mm1-app button,.mm1-app input,.mm1-app select { font:inherit; }.mm1-app button { cursor:pointer; }.mm1-app button:disabled { opacity:.5; cursor:default; }.mm1-app svg { display:block; width:100%; font-family:inherit; overflow:visible; }.mm1-app output,.mm1-app strong,.mm1-app input,.mm1-app .worked { font-variant-numeric:tabular-nums; }
@@ -71,7 +73,7 @@ body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-li
 <body class="mm1-app">
   <a class="skip" href="#main">Skip to visualization</a>
   <header class="lab-header">
-    <div class="masthead"><span>MBA INTERACTIVE LAB</span><span>OPERATIONS / O5</span></div>
+    <div class="masthead"><span>MBA INTERACTIVE LAB</span><a class="subject-home" href="https://bpdiehl.github.io/ops_visualizations/" aria-label="Operations home">OPERATIONS / O5</a></div>
     <div class="heading-row"><div><h1>M/M/1 Queueing</h1><p>Why does waiting grow so quickly near full utilization?</p></div><button class="action primary" id="download">Download HTML</button></div>
   </header>
   <main id="main">
